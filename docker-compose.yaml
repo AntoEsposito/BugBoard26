@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # Database PostgreSQL per tutto il sistema
+  database:
+    image: postgres:15-alpine
+    container_name: bugboard26-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"   # Esposta per dev locale; rimuovere in produzione
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - bugboard26-net
+
+volumes:
+  db_data:
+
+networks:
+  bugboard26-net:
+    driver: bridge
