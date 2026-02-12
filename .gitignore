@@ -1,8 +1,10 @@
 # Java & Maven
 target/
 *.class
-.mvn/
 *.jar
+# Ignora la cartella .mvn tranne il wrapper properties (serve ai collaboratori)
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
 
 # IDE files
 .idea/

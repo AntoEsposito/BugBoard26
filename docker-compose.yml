@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Database PostgreSQL per tutto il sistema
   database:
@@ -11,7 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"   # Esposta per dev locale; rimuovere in produzione
+      - "5433:5432"   # ESPONE LA 5433 PER eVITARE CONFLITTI CON POSTGRES LOCALE
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
