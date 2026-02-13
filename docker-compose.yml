@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5433:5432"   # ESPONE LA 5433 PER eVITARE CONFLITTI CON POSTGRES LOCALE
+      - "5433:5432"   # ESPONE LA 5433 PER EVITARE CONFLITTI CON POSTGRES LOCALE
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
