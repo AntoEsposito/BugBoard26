@@ -1,0 +1,336 @@
+/* ===========================
+   PAGINA LOGIN - BugBoard26
+   =========================== */
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.pagina-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #0f0f0f;
+  padding: 32px 16px;
+  gap: 20px;
+}
+
+/* ===========================
+   INTESTAZIONE CON LOGO
+   =========================== */
+
+.intestazione {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icona {
+  width: 52px;
+  height: 52px;
+  background-color: #3b82f6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.logo-testo {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.logo-sottotitolo {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===========================
+   CARD LOGIN
+   =========================== */
+
+.scheda-login {
+  width: 100%;
+  max-width: 480px;
+  background-color: #1c1c1e;
+  border-radius: 16px;
+  padding: 36px 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.intestazione-scheda {
+  margin-bottom: 28px;
+}
+
+.titolo-accedi {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.sottotitolo-accedi {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===========================
+   FORM
+   =========================== */
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.etichetta {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.obbligatorio {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.contenitore-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icona-input {
+  position: absolute;
+  left: 14px;
+  font-size: 16px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.input-testo {
+  width: 100%;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 14px 14px 14px 44px;
+  font-size: 14px;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.input-testo::placeholder {
+  color: #6b7280;
+}
+
+.input-testo:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.btn-mostra-password {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6b7280;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.btn-mostra-password:hover {
+  color: #9ca3af;
+}
+
+/* ===========================
+   RIGA RICORDAMI
+   =========================== */
+
+.riga-opzioni {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label-ricordami {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #d1d5db;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.checkbox-ricordami {
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.link-password-dimenticata {
+  font-size: 14px;
+  color: #3b82f6;
+  text-decoration: none;
+  font-family: 'Segoe UI', sans-serif;
+  transition: color 0.2s;
+}
+
+.link-password-dimenticata:hover {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+/* ===========================
+   MESSAGGIO ERRORE
+   =========================== */
+
+.messaggio-errore {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #f87171;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===========================
+   BOTTONE ACCEDI
+   =========================== */
+
+.btn-accedi {
+  width: 100%;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 4px;
+}
+
+.btn-accedi:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.btn-accedi:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.btn-accedi:disabled {
+  background-color: #4b5563;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ===========================
+   DIVIDER E FOOTER
+   =========================== */
+
+.separatore {
+  height: 1px;
+  background-color: #2a2a2e;
+  margin: 24px 0 16px 0;
+}
+
+.testo-footer {
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.link-amministratore {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.link-amministratore:hover {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+/* ===========================
+   CARD CREDENZIALI DEMO
+   =========================== */
+
+.scheda-demo {
+  width: 100%;
+  max-width: 480px;
+  background-color: #1c1c1e;
+  border-radius: 12px;
+  padding: 16px 24px;
+  text-align: center;
+}
+
+.demo-titolo {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9ca3af;
+  margin: 0 0 10px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.demo-riga {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.demo-label {
+  font-size: 13px;
+  color: #6b7280;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.demo-valore {
+  font-size: 13px;
+  color: #3b82f6;
+  font-family: 'Segoe UI', sans-serif;
+}

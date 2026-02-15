@@ -1,0 +1,107 @@
+<div class="pagina-login">
+
+  <!-- Header con logo -->
+  <div class="intestazione">
+    <div class="logo-wrapper">
+      <span class="logo-testo">BugBoard26</span>
+    </div>
+    <p class="logo-sottotitolo">Gestione collaborativa delle issue</p>
+  </div>
+
+  <!-- Card login -->
+  <div class="scheda-login">
+
+    <div class="intestazione-scheda">
+      <h1 class="titolo-accedi">Accedi</h1>
+      <p class="sottotitolo-accedi">Inserisci le tue credenziali per continuare</p>
+    </div>
+
+    <form class="form-login" (ngSubmit)="onAccedi()">
+
+      <!-- Campo Email -->
+      <div class="campo-form">
+        <label class="etichetta" for="email">
+          Email <span class="obbligatorio">*</span>
+        </label>
+        <div class="contenitore-input">
+          <span class="icona-input">✉</span>
+          <input
+            id="email"
+            type="email"
+            class="input-testo"
+            placeholder="Inserisci la tua email"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Campo Password -->
+      <div class="campo-form">
+        <label class="etichetta" for="password">
+          Password <span class="obbligatorio">*</span>
+        </label>
+        <div class="contenitore-input">
+          <span class="icona-input">🔒</span>
+          <input
+            id="password"
+            [type]="mostraPassword ? 'text' : 'password'"
+            class="input-testo"
+            placeholder="Inserisci la password"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+          <button type="button" class="btn-mostra-password" (click)="mostraNascondiPassword()">
+            <span>{{ mostraPassword ? '🙈' : '👁' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ricordami e Password dimenticata -->
+      <div class="riga-opzioni">
+        <label class="label-ricordami">
+          <input type="checkbox" [(ngModel)]="ricordami" name="ricordami" class="checkbox-ricordami" />
+          <span>Ricordami</span>
+        </label>
+      </div>
+
+      <!-- Messaggio errore -->
+      @if (errore) {
+        <div class="messaggio-errore">
+          {{ errore }}
+        </div>
+      }
+
+      <!-- Bottone Accedi -->
+      <button type="submit" class="btn-accedi" [disabled]="caricamento">
+        {{ caricamento ? 'Accesso in corso...' : 'Accedi' }}
+      </button>
+
+    </form>
+
+    <!-- Separatore -->
+    <div class="separatore"></div>
+
+    <!-- Link contatta amministratore -->
+    <p class="testo-footer">
+      Problemi di accesso? <a href="#" class="link-amministratore">Contatta l'amministratore</a>
+    </p>
+
+  </div>
+
+  <!-- Credenziali demo -->
+  <div class="scheda-demo">
+    <p class="demo-titolo">Credenziali demo:</p>
+    <div class="demo-riga">
+      <span class="demo-label">Email:</span>
+      <span class="demo-valore">admin&#64;bugboard26.com</span>
+    </div>
+    <div class="demo-riga">
+      <span class="demo-label">Password:</span>
+      <span class="demo-valore">demo123</span>
+    </div>
+  </div>
+
+</div>
