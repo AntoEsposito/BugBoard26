@@ -1,0 +1,555 @@
+/* ===========================
+   LISTA ISSUE - BugBoard26
+   =========================== */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
+
+/* ===========================
+   LAYOUT PRINCIPALE
+   =========================== */
+
+.layout-principale {
+  display: flex;
+  height: 100vh;
+  background-color: #0f0f0f;
+  overflow: hidden;
+}
+
+/* ===========================
+   SIDEBAR
+   =========================== */
+
+.barra-laterale {
+  width: 260px;
+  min-width: 260px;
+  background-color: #1c1c1e;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  border-right: 1px solid #2a2a2e;
+}
+
+/* Logo */
+.barra-laterale-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  margin-bottom: 28px;
+}
+
+.logo-icona {
+  width: 40px;
+  height: 40px;
+  background-color: #3b82f6;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.logo-testi {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-nome {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.logo-sottotitolo {
+  font-size: 11px;
+  color: #6b7280;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Navigazione */
+.barra-laterale-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.nav-collegamento {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-collegamento:hover {
+  background-color: #2a2a2e;
+  color: #ffffff;
+}
+
+.nav-collegamento.attivo {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.nav-icona {
+  font-size: 16px;
+}
+
+/* Utente in basso */
+.barra-laterale-utente {
+  border-top: 1px solid #2a2a2e;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.utente-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.utente-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.utente-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-riserva {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.utente-testi {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.utente-nome {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.utente-email {
+  font-size: 11px;
+  color: #6b7280;
+  font-family: 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-esci {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  text-align: left;
+}
+
+.btn-esci:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.esci-icona {
+  font-size: 16px;
+}
+
+/* ===========================
+   CONTENUTO PRINCIPALE
+   =========================== */
+
+.contenuto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 32px 36px;
+  gap: 20px;
+}
+
+/* Header pagina */
+.pagina-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.intestazione-sinistra {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.titolo-pagina {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.sottotitolo-pagina {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.btn-nuova-issue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn-nuova-issue:hover {
+  background-color: #2563eb;
+}
+
+.btn-nuova-issue:active {
+  transform: scale(0.98);
+}
+
+/* Barra ricerca e filtri */
+.barra-ricerca-filtri {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contenitore-ricerca {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icona-ricerca {
+  position: absolute;
+  left: 14px;
+  font-size: 16px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.input-ricerca {
+  width: 100%;
+  background-color: #1c1c1e;
+  border: 1px solid #2a2a2e;
+  border-radius: 10px;
+  padding: 13px 14px 13px 44px;
+  font-size: 14px;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.input-ricerca::placeholder {
+  color: #4b5563;
+}
+
+.input-ricerca:focus {
+  border-color: #3b82f6;
+}
+
+.btn-filtri {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-filtri:hover {
+  background-color: #2563eb;
+}
+
+.contenitore-select {
+  position: relative;
+}
+
+.select-ordinamento {
+  background-color: #1c1c1e;
+  border: 1px solid #2a2a2e;
+  border-radius: 10px;
+  padding: 13px 36px 13px 16px;
+  font-size: 14px;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* ===========================
+   PANNELLO FILTRI
+   =========================== */
+
+.pannello-filtri {
+  background-color: #1c1c1e;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid #2a2a2e;
+}
+
+.filtri-titolo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.filtro-gruppo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filtro-etichetta {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9ca3af;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.filtro-opzioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-filtro {
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #d1d5db;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.2s;
+}
+
+.btn-filtro:hover {
+  background-color: #3a3a3e;
+  color: #ffffff;
+}
+
+.btn-filtro.attivo {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+/* ===========================
+   LISTA ISSUE
+   =========================== */
+
+.lista-issue {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scheda-issue {
+  background-color: #1c1c1e;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border: 1px solid #2a2a2e;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.scheda-issue:hover {
+  border-color: #3b82f6;
+  background-color: #222226;
+}
+
+.scheda-sinistra {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.issue-icona {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.issue-icona.tipo-bug {
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+.issue-icona.tipo-domanda {
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+.issue-icona.tipo-documentazione {
+  background-color: rgba(107, 114, 128, 0.15);
+}
+
+.issue-icona.tipo-funzionalita {
+  background-color: rgba(16, 185, 129, 0.15);
+}
+
+.issue-dettagli {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.issue-titolo {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.issue-badge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etichetta {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  text-transform: capitalize;
+}
+
+.etichetta.tipo {
+  background-color: #2a2a2e;
+  color: #9ca3af;
+  border: 1px solid #3a3a3e;
+}
+
+.etichetta.stato {
+  background-color: #2a2a2e;
+  color: #9ca3af;
+  border: 1px solid #3a3a3e;
+}
+
+.etichetta.priorita-alta {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.etichetta.priorita-critica {
+  background-color: rgba(220, 38, 38, 0.2);
+  color: #ef4444;
+}
+
+.etichetta.priorita-media {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.etichetta.priorita-bassa {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.issue-meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.scheda-destra {
+  display: flex;
+  align-items: center;
+}
+
+.icona-allegato {
+  font-size: 18px;
+  color: #6b7280;
+}

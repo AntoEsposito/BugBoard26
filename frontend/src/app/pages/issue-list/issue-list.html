@@ -1,0 +1,214 @@
+<div class="layout-principale">
+
+  <!-- SIDEBAR -->
+  <aside class="barra-laterale">
+
+    <!-- Logo -->
+    <div class="barra-laterale-logo">
+      <div class="logo-testi">
+        <span class="logo-nome">BugBoard26</span>
+        <span class="logo-sottotitolo">Issue Tracking</span>
+      </div>
+    </div>
+
+    <!-- Navigazione -->
+    <nav class="barra-laterale-nav">
+      <a class="nav-collegamento attivo">
+        <span class="nav-icona">☰</span>
+        <span>Issue</span>
+      </a>
+      <a class="nav-collegamento">
+        <span class="nav-icona">👤</span>
+        <span>Gestione Utenti</span>
+      </a>
+    </nav>
+
+    <!-- Utente in basso -->
+    <div class="barra-laterale-utente">
+      <div class="utente-info">
+        <div class="utente-avatar">
+          <img src="assets/avatar.png" alt="avatar" onerror="this.style.display='none'" />
+          <span class="avatar-riserva">MR</span>
+        </div>
+        <div class="utente-testi">
+          <span class="utente-nome">Marco Rossi</span>
+          <span class="utente-email">marco.rossi&#64;bugboard26.c...</span>
+        </div>
+      </div>
+      <button class="btn-esci" (click)="onEsci()">
+        <span class="esci-icona">↪</span>
+        <span class="esci-testo">Esci</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- CONTENUTO PRINCIPALE -->
+  <main class="contenuto">
+
+    <!-- Header pagina -->
+    <div class="pagina-header">
+      <div class="intestazione-sinistra">
+        <h1 class="titolo-pagina">Issue</h1>
+        <p class="sottotitolo-pagina">{{ issueList.length }} issue trovate</p>
+      </div>
+      <button class="btn-nuova-issue" (click)="onNuovaIssue()">
+        <span>+</span> Nuova Issue
+      </button>
+    </div>
+
+    <!-- Barra ricerca e filtri -->
+    <div class="barra-ricerca-filtri">
+      <div class="contenitore-ricerca">
+        <span class="icona-ricerca">🔍</span>
+        <input
+          type="text"
+          class="input-ricerca"
+          placeholder="Cerca issue per titolo, descrizione o autore..."
+          [(ngModel)]="testoRicerca"
+          name="ricerca"
+        />
+      </div>
+      <button class="btn-filtri" (click)="toggleFiltri()">
+        <span>⚙</span> Filtri
+      </button>
+      <div class="contenitore-select">
+        <select class="select-ordinamento" [(ngModel)]="ordinamento" name="ordinamento">
+          <option value="data_creazione">Data creazione</option>
+          <option value="priorita">Priorità</option>
+          <option value="stato">Stato</option>
+          <option value="tipo">Tipo</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Pannello filtri -->
+    <div class="pannello-filtri" *ngIf="mostraFiltri">
+
+      <p class="filtri-titolo">Filtra per</p>
+
+      <!-- Filtro Tipo -->
+      <div class="filtro-gruppo">
+        <p class="filtro-etichetta">Tipo</p>
+        <div class="filtro-opzioni">
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'domanda'"
+            (click)="setFiltroTipo('domanda')"
+          >
+            ❓ Domanda
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'bug'"
+            (click)="setFiltroTipo('bug')"
+          >
+            🐛 Bug
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'documentazione'"
+            (click)="setFiltroTipo('documentazione')"
+          >
+            📄 Documentazione
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'funzionalita'"
+            (click)="setFiltroTipo('funzionalita')"
+          >
+            ✨ Funzionalità
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtro Priorità -->
+      <div class="filtro-gruppo">
+        <p class="filtro-etichetta">Priorità</p>
+        <div class="filtro-opzioni">
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'bassa'"
+            (click)="setFiltroPriorita('bassa')"
+          >
+            Bassa
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'media'"
+            (click)="setFiltroPriorita('media')"
+          >
+            Media
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'alta'"
+            (click)="setFiltroPriorita('alta')"
+          >
+            Alta
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'critica'"
+            (click)="setFiltroPriorita('critica')"
+          >
+            Critica
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtro Stato -->
+      <div class="filtro-gruppo">
+        <p class="filtro-etichetta">Stato</p>
+        <div class="filtro-opzioni">
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroStato === 'da_fare'"
+            (click)="setFiltroStato('da_fare')"
+          >
+            Da Fare
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroStato === 'in_corso'"
+            (click)="setFiltroStato('in_corso')"
+          >
+            In Corso
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroStato === 'completato'"
+            (click)="setFiltroStato('completato')"
+          >
+            Completato
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lista Issue -->
+    <div class="lista-issue">
+      <div class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)">
+        <div class="scheda-sinistra">
+          <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo">
+            {{ getIconaTipo(issue.tipo) }}
+          </div>
+          <div class="issue-dettagli">
+            <p class="issue-titolo">{{ issue.titolo }}</p>
+            <div class="issue-etichetta">
+              <span class="etichetta tipo">{{ issue.tipo }}</span>
+              <span class="etichetta stato">{{ issue.stato }}</span>
+              <span class="etichetta priorita" [ngClass]="'priorita-' + issue.priorita">{{ issue.priorita }}</span>
+            </div>
+            <p class="issue-meta">{{ issue.autore }} &bull; {{ issue.data }}</p>
+          </div>
+        </div>
+        <div class="scheda-destra" *ngIf="issue.allegato">
+          <span class="icona-allegato">📎</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

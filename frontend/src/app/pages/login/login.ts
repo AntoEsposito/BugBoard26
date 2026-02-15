@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,8 @@ export class Login {
   caricamento = false;
   errore = '';
 
+  constructor(private router: Router) {}
+
   mostraNascondiPassword() {
     this.mostraPassword = !this.mostraPassword;
   }
@@ -23,11 +26,11 @@ export class Login {
     this.caricamento = true;
     this.errore = '';
 
-    // TODO: implementare la chiamata al backend
-    console.log('Login con:', this.email, this.password);
-
-    setTimeout(() => {
+    if (this.email === 'admin@bugboard26.com' && this.password === 'demo123') {
+      this.router.navigate(['/issue-list']);
+    } else {
+      this.errore = 'Email o password non corretti.';
       this.caricamento = false;
-    }, 1000);
+    }
   }
 }
