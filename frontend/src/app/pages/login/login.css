@@ -223,12 +223,12 @@
    =========================== */
 
 .messaggio-errore {
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: #2d1515;
+  border: 1px solid #5c2020;
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13px;
-  color: #fecaca;
+  color: #ffffff;
   font-family: 'Segoe UI', sans-serif;
 }
 
