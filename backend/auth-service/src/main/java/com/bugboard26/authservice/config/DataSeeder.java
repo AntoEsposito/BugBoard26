@@ -69,10 +69,8 @@ public class DataSeeder implements ApplicationRunner
             return;
         }
 
-        Ruolo ruoloAdmin = ruoloRepository.findByNome("ROLE_ADMIN")
-                .orElseThrow(() -> new IllegalStateException(
-                    "ROLE_ADMIN non trovato."
-                ));
+        Ruolo ruoloAdmin = ruoloRepository.findByNome("ROLE_ADMIN").orElseThrow
+            (() -> new IllegalStateException("ROLE_ADMIN non trovato."));
 
         Utente admin = Utente.builder()
                 .email(adminEmail)
