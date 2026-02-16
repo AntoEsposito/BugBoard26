@@ -34,12 +34,12 @@ export class IssueList {
 
   constructor(private router: Router) {}
 
-  // TODO: implementare la navigazione verso la creazione di una nuova issue
   onNuovaIssue() {
+    this.router.navigate(['/issue/nuova']);
   }
 
-  // TODO: implementare la navigazione verso il dettaglio dell'issue
   onApriIssue(issue: Issue) {
+    this.router.navigate(['/issue', issue.id]);
   }
 
   onEsci() {
