@@ -16,7 +16,7 @@ export class Login {
   caricamento = false;
   errore = '';
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   mostraNascondiPassword() {
     this.mostraPassword = !this.mostraPassword;
