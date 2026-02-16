@@ -32,7 +32,7 @@ export class IssueList {
 
   issueList: Issue[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   onNuovaIssue() {
     this.router.navigate(['/issue/nuova']);

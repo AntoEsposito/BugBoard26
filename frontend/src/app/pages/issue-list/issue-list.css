@@ -522,23 +522,23 @@
 }
 
 .etichetta.priorita-alta {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #991b1b;
+  background-color: #3b1c1c;
+  color: #fca5a5;
 }
 
 .etichetta.priorita-critica {
-  background-color: rgba(220, 38, 38, 0.2);
-  color: #ef4444;
+  background-color: #451a1a;
+  color: #fca5a5;
 }
 
 .etichetta.priorita-media {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
+  background-color: #3b2f10;
+  color: #fde68a;
 }
 
 .etichetta.priorita-bassa {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #34d399;
+  background-color: #1a3a2e;
+  color: #6ee7b7;
 }
 
 .issue-meta {
