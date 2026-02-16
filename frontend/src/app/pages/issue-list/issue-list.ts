@@ -21,7 +21,9 @@ interface Issue {
   styleUrl: './issue-list.css',
 })
 export class IssueList {
+  avatarNonCaricato = false;
   testoRicerca = '';
+
   ordinamento = 'data_creazione';
   mostraFiltri = false;
   filtroTipo = '';

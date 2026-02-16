@@ -27,7 +27,7 @@
     <div class="barra-laterale-utente">
       <div class="utente-info">
         <div class="utente-avatar">
-          <img src="assets/avatar.png" alt="avatar" onerror="this.style.display='none'" />
+          <img src="assets/avatar.png" alt="avatar" [hidden]="avatarNonCaricato" (error)="avatarNonCaricato = true" />
           <span class="avatar-riserva">MR</span>
         </div>
         <div class="utente-testi">
