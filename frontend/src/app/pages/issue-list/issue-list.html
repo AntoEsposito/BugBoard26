@@ -189,7 +189,7 @@
 
     <!-- Lista Issue -->
     <div class="lista-issue">
-      <div class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)" (keyup.enter)="onApriIssue(issue)" tabindex="0" role="button">
+      <button class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)">
         <div class="scheda-sinistra">
           <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo">
             {{ getIconaTipo(issue.tipo) }}
@@ -207,7 +207,7 @@
         <div class="scheda-destra" *ngIf="issue.allegato">
           <span class="icona-allegato">📎</span>
         </div>
-      </div>
+      </button>
     </div>
 
   </main>
