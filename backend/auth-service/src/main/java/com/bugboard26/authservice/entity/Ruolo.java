@@ -1,4 +1,4 @@
-package com.bugboard26.auth_service.entity;
+package com.bugboard26.authservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

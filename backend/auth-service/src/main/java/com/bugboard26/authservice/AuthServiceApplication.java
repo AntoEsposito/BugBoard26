@@ -1,4 +1,4 @@
-package com.bugboard26.auth_service;
+package com.bugboard26.authservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,6 @@
-package com.bugboard26.auth_service.repository;
+package com.bugboard26.authservice.repository;
 
-import com.bugboard26.auth_service.entity.Utente;
+import com.bugboard26.authservice.entity.Utente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
