@@ -1,7 +1,7 @@
 package com.bugboard26.authservice.config;
 
 import com.bugboard26.authservice.constants.AuthenticationConstants;
-import com.bugboard26.authservice.repository.UtenteRepository;
+import com.bugboard26.authservice.repository.UserRepository;
 import com.bugboard26.authservice.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +37,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration 
 {
     private final JwtFilter filtroJwt;
-    private final UtenteRepository utenteRepository;
+    private final UserRepository utenteRepository;
 
     /**
      * Catena di filtri di sicurezza principale.

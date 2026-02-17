@@ -2,8 +2,8 @@ package com.bugboard26.authservice.config;
 
 import com.bugboard26.authservice.entity.UserRole;
 import com.bugboard26.authservice.entity.User;
-import com.bugboard26.authservice.repository.RuoloRepository;
-import com.bugboard26.authservice.repository.UtenteRepository;
+import com.bugboard26.authservice.repository.UserRoleRepository;
+import com.bugboard26.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +27,8 @@ import java.util.List;
 @DependsOn("securityConfiguration")
 public class DataSeeder implements ApplicationRunner 
 {
-    private final RuoloRepository  ruoloRepository;
-    private final UtenteRepository utenteRepository;
+    private final UserRoleRepository  ruoloRepository;
+    private final UserRepository utenteRepository;
     private final PasswordEncoder  passwordEncoder;
 
     @Value("${admin.email}")
