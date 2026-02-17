@@ -61,7 +61,8 @@ public class Utente implements UserDetails
 
     // Override dei metodi di Serializable
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) 
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Utente user = (Utente) o;
@@ -69,7 +70,5 @@ public class Utente implements UserDetails
     }
 
     @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+    public int hashCode() {return getClass().hashCode();}
 }

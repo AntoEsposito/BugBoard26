@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ruoli")
+@Table(name = "ruoli_utente")
 @Getter
 @Setter
 @NoArgsConstructor
