@@ -12,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Ruolo implements java.io.Serializable
+public class RuoloUtente implements java.io.Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class Ruolo implements java.io.Serializable
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Ruolo role = (Ruolo) o;
+        RuoloUtente role = (RuoloUtente) o;
         // Due ruoli sono uguali se hanno lo stesso ID non nullo
         return id != null && Objects.equals(id, role.id);
     }

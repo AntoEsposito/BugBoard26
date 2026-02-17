@@ -40,7 +40,7 @@ public class Utente implements UserDetails
     // EAGER = carica il ruolo insieme all'utente, optional = false = ogni utente deve avere un ruolo
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
-    private Ruolo ruoloUtente;
+    private RuoloUtente ruoloUtente;
 
 
     // Implementazione dei metodi di UserDetails per Spring Security
