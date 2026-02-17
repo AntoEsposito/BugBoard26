@@ -19,8 +19,6 @@ import java.util.Objects;
 @Builder
 public class User implements UserDetails 
 {
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -52,12 +50,6 @@ public class User implements UserDetails
     {
         return List.of(new SimpleGrantedAuthority(ruoloUtente.getNome()));
     }
-
-    @Override public boolean isAccountNonExpired()     {return true;}
-    @Override public boolean isAccountNonLocked()      {return true;}
-    @Override public boolean isCredentialsNonExpired() {return true;}
-    @Override public boolean isEnabled()               {return true;}
-
 
     // Override dei metodi di Serializable
     @Override
