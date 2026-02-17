@@ -4,6 +4,8 @@ import com.bugboard26.authservice.constants.AuthenticationConstants;
 import com.bugboard26.authservice.repository.UserRepository;
 import com.bugboard26.authservice.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * - Tutti gli altri endpoint richiedono autenticazione
  * - Filtro JWT eseguito prima del filtro di autenticazione standard
  */
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -40,27 +43,33 @@ public class SecurityConfiguration
     /**
      * Catena di filtri di sicurezza principale.
      */
-    @SuppressWarnings("java:S4502") // per evitare warning da sonarQube su configurazione HttpSecurity
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws IllegalStateException 
+    @SuppressWarnings("java:S4502")
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
     {
-        http.csrf(csrf -> csrf.disable()) // Disabilita CSRF (non serve per API REST stateless
-
-            // Configurazione autorizzazioni
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll() // Endpoint di autenticazione pubblici
-                .anyRequest().authenticated() // Tutti gli altri endpoint richiedono autenticazione
-            )
-            // Sessioni STATELESS (niente cookie, solo JWT)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            
-            // Configura il provider di autenticazione
-            .authenticationProvider(authenticationProvider())
-            
-            // Aggiungi il filtro JWT PRIMA del filtro di autenticazione standard
-            .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+        try 
+        {
+            return http
+                // Disabilitiamo CSRF perché stiamo usando JWT 
+                .csrf(csrf -> csrf.disable())
+                // Configuriamo le regole di autorizzazione
+                .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll()
+                    .anyRequest().authenticated())
+                // Configuriamo la gestione delle sessioni come stateless
+                .sessionManagement(session -> session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                // Configuriamo il provider di autenticazione personalizzato
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class)
+                .build();
+        }
+        catch (Exception e)
+        {
+            log.error("Errore configurazione SecurityFilterChain", e);
+            throw new IllegalStateException("Impossibile configurare la SecurityFilterChain", e);
+        }
     }
 
     /**
@@ -88,8 +97,18 @@ public class SecurityConfiguration
      * nei servizi (es. AuthService per validare login).
      */
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws IllegalStateException
-    {return config.getAuthenticationManager();}
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) 
+    {
+        try 
+        {
+            return config.getAuthenticationManager();
+        } 
+        catch (Exception e) 
+        {
+            log.error("Errore configurazione AuthenticationManager", e);
+            throw new IllegalStateException("Impossibile configurare l'AuthenticationManager", e);
+        }
+    }
 
     /**
      * Encoder per le password usando BCrypt.
