@@ -17,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Utente implements UserDetails 
+public class User implements UserDetails 
 {
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +40,7 @@ public class Utente implements UserDetails
     // EAGER = carica il ruolo insieme all'utente, optional = false = ogni utente deve avere un ruolo
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
-    private RuoloUtente ruoloUtente;
+    private UserRole ruoloUtente;
 
 
     // Implementazione dei metodi di UserDetails per Spring Security
@@ -65,7 +65,7 @@ public class Utente implements UserDetails
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Utente user = (Utente) o;
+        User user = (User) o;
         return id != null && Objects.equals(id, user.id);
     }
 

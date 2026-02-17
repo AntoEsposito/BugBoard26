@@ -1,11 +1,11 @@
 package com.bugboard26.authservice.repository;
 
-import com.bugboard26.authservice.entity.RuoloUtente;
+import com.bugboard26.authservice.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RuoloRepository extends JpaRepository<RuoloUtente, Integer> 
+public interface RuoloRepository extends JpaRepository<UserRole, Integer> 
 {
-    Optional<RuoloUtente> findByNome(String nome);
+    Optional<UserRole> findByNome(String nome);
 }

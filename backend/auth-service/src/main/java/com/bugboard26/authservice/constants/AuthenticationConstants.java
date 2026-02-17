@@ -8,7 +8,7 @@ public final class AuthenticationConstants
     public static final String AUTHORIZATION_HEADER = "Authorization";
     
     // Ruoli
-    public static final String ROLE_PREFIX = "ROLE_";
+    public static final String ROLE_PREFIX = "ROLE_"; // spring security richiede che i ruoli siano prefissati con "ROLE_"
     public static final String ROLE_UTENTE = "ROLE_UTENTE";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     

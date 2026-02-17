@@ -12,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RuoloUtente implements java.io.Serializable
+public class UserRole implements java.io.Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -30,10 +30,11 @@ public class RuoloUtente implements java.io.Serializable
     
     // Override dei metodi di Serializable
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) 
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RuoloUtente role = (RuoloUtente) o;
+        UserRole role = (UserRole) o;
         // Due ruoli sono uguali se hanno lo stesso ID non nullo
         return id != null && Objects.equals(id, role.id);
     }

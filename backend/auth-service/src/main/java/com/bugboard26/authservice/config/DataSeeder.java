@@ -1,7 +1,7 @@
 package com.bugboard26.authservice.config;
 
-import com.bugboard26.authservice.entity.RuoloUtente;
-import com.bugboard26.authservice.entity.Utente;
+import com.bugboard26.authservice.entity.UserRole;
+import com.bugboard26.authservice.entity.User;
 import com.bugboard26.authservice.repository.RuoloRepository;
 import com.bugboard26.authservice.repository.UtenteRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,11 +48,11 @@ public class DataSeeder implements ApplicationRunner
         if (ruoloRepository.count() == 0) 
         {
             ruoloRepository.saveAll(List.of(
-                RuoloUtente.builder()
+                UserRole.builder()
                     .nome("ROLE_UTENTE")
                     .descrizione("Utente con permessi standard")
                     .build(),
-                RuoloUtente.builder()
+                UserRole.builder()
                     .nome("ROLE_ADMIN")
                     .descrizione("Amministratore con accesso completo a tutte le funzionalità")
                     .build()
@@ -69,10 +69,10 @@ public class DataSeeder implements ApplicationRunner
             return;
         }
 
-        RuoloUtente ruoloAdmin = ruoloRepository.findByNome("ROLE_ADMIN").orElseThrow
+        UserRole ruoloAdmin = ruoloRepository.findByNome("ROLE_ADMIN").orElseThrow
             (() -> new IllegalStateException("ROLE_ADMIN non trovato."));
 
-        Utente admin = Utente.builder()
+        User admin = User.builder()
                 .email(adminEmail)
                 .nome(adminNome)
                 .cognome(adminCognome)

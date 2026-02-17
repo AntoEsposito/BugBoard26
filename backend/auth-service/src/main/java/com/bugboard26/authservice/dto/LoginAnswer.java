@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RispostaLogin
+public class LoginAnswer
 {
     private String token;
-    private String tipoToken;   // nel nostro caso sempre "Bearer"
+    private String tokenType;   // nel nostro caso sempre "Bearer"
     private String email;
     private String nome;
     private String cognome;
-    private String ruoloUtente;
-    private long scadeIn;     // millisecondi
+    private String userRole;
+    private long expireTime;     // millisecondi
 }
