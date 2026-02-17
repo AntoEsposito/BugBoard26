@@ -12,7 +12,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Configurazione di Spring Security per l'applicazione.
- * 
  * Configurazioni applicate:
  * - CSRF disabilitato (API REST stateless)
  * - Sessioni STATELESS (niente cookie di sessione)
@@ -42,25 +40,19 @@ public class SecurityConfiguration
     /**
      * Catena di filtri di sicurezza principale.
      */
+    @SuppressWarnings("java:S4502") // per evitare warning da sonarQube su configurazione HttpSecurity
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws IllegalStateException 
     {
-        http
-            // Disabilita CSRF (non serve per API REST stateless)
-            .csrf(AbstractHttpConfigurer::disable)
-            
+        http.csrf(csrf -> csrf.disable()) // Disabilita CSRF (non serve per API REST stateless
+
             // Configurazione autorizzazioni
             .authorizeHttpRequests(auth -> auth
-                // Endpoint di autenticazione pubblici
-                .requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll()
-                // Tutti gli altri endpoint richiedono autenticazione
-                .anyRequest().authenticated()
+                .requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll() // Endpoint di autenticazione pubblici
+                .anyRequest().authenticated() // Tutti gli altri endpoint richiedono autenticazione
             )
-            
             // Sessioni STATELESS (niente cookie, solo JWT)
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             // Configura il provider di autenticazione
             .authenticationProvider(authenticationProvider())
@@ -73,13 +65,11 @@ public class SecurityConfiguration
 
     /**
      * UserDetailsService personalizzato che carica gli utenti dal database.
-     * Cerca per email invece che per username.
      */
     @Bean
     public UserDetailsService userDetailsService() 
     {
-        return email -> utenteRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato: " + email));
+        return email -> utenteRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Utente non trovato: " + email));
     }
 
     /**
@@ -98,19 +88,12 @@ public class SecurityConfiguration
      * nei servizi (es. AuthService per validare login).
      */
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) 
-        throws IllegalStateException
-    {
-        return config.getAuthenticationManager();
-    }
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws IllegalStateException
+    {return config.getAuthenticationManager();}
 
     /**
      * Encoder per le password usando BCrypt.
-     * BCrypt è un algoritmo di hashing lento di proposito (rallenta brute force).
      */
     @Bean
-    public PasswordEncoder passwordEncoder() 
-    {
-        return new BCryptPasswordEncoder();
-    }
+    public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
 }
