@@ -20,7 +20,7 @@ docker ps
 # Deve apparire bugboard26-db sulla porta 5433
 ```
 
-### 2. Compila e avvia i servizi (un terminale per ciascuno)
+### 2. Compila e avvia
 
 **Auth Service:**
 
@@ -30,25 +30,12 @@ cd backend\auth-service
 .\mvnw.cmd spring-boot:run
 ```
 
-**Core Service:**
-
-```powershell
-cd backend\core-service
-.\mvnw.cmd clean compile
-.\mvnw.cmd spring-boot:run
-```
-
 ### 3. Verifica che funziona
 
-- Auth Service sulla porta **8081**, Core Service sulla porta **8082**
-- Nei log devi vedere `HikariPool-1 - Start completed.` (connessione al DB riuscita)
+- Auth Service sulla porta **8081**, devono uscire nel terminale i vari log dei servizi che partono
 
-```powershell
-# Auth Service: deve dare errore 401 (Security attivo)
-Invoke-WebRequest -Uri http://localhost:8081 -UseBasicParsing
-
-# Core Service: deve dare errore 404 (nessun controller ancora)
-Invoke-WebRequest -Uri http://localhost:8082 -UseBasicParsing
+```powershell invia una richiesta http per simulare un login
+curl -X POST http://localhost:8081/api/auth/login  -H "Content-Type: application/json"  -d '{"email":"admin@bugboard26.com","password":"admin"}'    
 ```
 
-> **Se qualcosa non va**, controlla che la porta 5433 non sia già occupata e che Docker sia avviato.
+dovresti ricevere il token jwt con tutte le info del caso
