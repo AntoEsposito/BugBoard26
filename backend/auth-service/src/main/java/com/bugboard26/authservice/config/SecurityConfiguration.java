@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -37,7 +38,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration 
 {
-    private final JwtFilter filtroJwt;
     private final UserRepository utenteRepository;
 
     /**
@@ -45,7 +45,7 @@ public class SecurityConfiguration
      */
     @Bean
     @SuppressWarnings("java:S4502")
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, @Lazy JwtFilter filtroJwt)
     {
         try 
         {
