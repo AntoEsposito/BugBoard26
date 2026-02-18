@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,10 @@ export class Login {
   caricamento = false;
   errore = '';
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) {}
 
   mostraNascondiPassword() {
     this.mostraPassword = !this.mostraPassword;
@@ -26,11 +30,19 @@ export class Login {
     this.caricamento = true;
     this.errore = '';
 
-    if (this.email === 'admin@bugboard26.com' && this.password === 'demo123') {
-      this.router.navigate(['/issue-list']);
-    } else {
-      this.errore = 'Email o password non corretti.';
-      this.caricamento = false;
-    }
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (risposta) => {
+        this.authService.salvaSessione(risposta);
+        this.router.navigate(['/issue-list']);
+      },
+      error: (err) => {
+        if (err.status === 401 || err.status === 404) {
+          this.errore = 'Email o password non corretti.';
+        } else {
+          this.errore = 'Errore di connessione. Riprova più tardi.';
+        }
+        this.caricamento = false;
+      }
+    });
   }
 }
