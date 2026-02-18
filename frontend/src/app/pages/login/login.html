@@ -53,18 +53,7 @@
             name="password"
             required
           />
-          <button type="button" class="btn-mostra-password" (click)="mostraNascondiPassword()">
-            <span>{{ mostraPassword ? '🙈' : '👁' }}</span>
-          </button>
         </div>
-      </div>
-
-      <!-- Ricordami e Password dimenticata -->
-      <div class="riga-opzioni">
-        <label class="label-ricordami">
-          <input type="checkbox" [(ngModel)]="ricordami" name="ricordami" class="checkbox-ricordami" />
-          <span>Ricordami</span>
-        </label>
       </div>
 
       <!-- Messaggio errore -->
