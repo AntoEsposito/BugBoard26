@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.URI;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class GlobalExceptionHandler
     public ProblemDetail handleInvalidCredentials(InvalidCredentialsException e) 
     {
         log.warn("Credenziali non valide: {}", e.getMessage());
-        return creaProblemDetail(HttpStatus.UNAUTHORIZED, "Credenziali non valide", e.getMessage(), "invalid-credentials");
+        return creaProblemDetail(HttpStatus.UNAUTHORIZED, "Credenziali non valide", e.getMessage());
     }
 
     /**
@@ -48,7 +47,7 @@ public class GlobalExceptionHandler
     public ProblemDetail handleAuthenticationException(AuthenticationException e) 
     {
         log.warn("Errore di autenticazione: {}", e.getMessage());
-        return creaProblemDetail(HttpStatus.UNAUTHORIZED, "Errore di autenticazione", e.getMessage(), "generic-authentication-error");
+        return creaProblemDetail(HttpStatus.UNAUTHORIZED, "Errore di autenticazione", e.getMessage());
     }
 
     /**
@@ -59,7 +58,7 @@ public class GlobalExceptionHandler
     public ProblemDetail handleUserNotFound(UserNotFoundException e) 
     {
         log.warn("Utente non trovato: {}", e.getMessage());
-        return creaProblemDetail(HttpStatus.NOT_FOUND, "Utente non trovato", e.getMessage(), "user-not-found");
+        return creaProblemDetail(HttpStatus.NOT_FOUND, "Utente non trovato", e.getMessage());
     }
 
     /**
@@ -76,7 +75,7 @@ public class GlobalExceptionHandler
                 .collect(Collectors.joining("; "));
 
         log.warn("Errore di validazione: {}", dettagliErrori);
-        return creaProblemDetail(HttpStatus.BAD_REQUEST, "Errore di validazione", dettagliErrori, "validation-error");
+        return creaProblemDetail(HttpStatus.BAD_REQUEST, "Errore di validazione", dettagliErrori);
     }
 
     /**
@@ -87,18 +86,17 @@ public class GlobalExceptionHandler
     public ProblemDetail handleGenericException(Exception e) 
     {
         log.error("Errore interno non gestito", e); // log.error per stack trace completo
-        return creaProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Errore interno", "Si è verificato un errore imprevisto. Riprova più tardi.", "generic-error");
+        return creaProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Errore interno", "Si è verificato un errore imprevisto. Riprova più tardi.");
     }
 
     
     /**
      * Crea un ProblemDetail con i campi standard e un URI di tipo personalizzato.
      */
-    private ProblemDetail creaProblemDetail(HttpStatus status, String title, String detail, String errorType) 
+    private ProblemDetail creaProblemDetail(HttpStatus status, String title, String detail) 
     {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setTitle(title);
-        problemDetail.setType(URI.create("https://bugboard26.com/errori/" + errorType));
         problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }
