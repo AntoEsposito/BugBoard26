@@ -41,9 +41,6 @@ public class JwtService
 
     /**
      * Genera un JWT con claims personalizzati.
-     * @param userDetails utente per cui generare il token
-     * @param extraClaims claims aggiuntivi (es. ruolo)
-     * @return token JWT firmato
      */
     public String generaToken(UserDetails userDetails, Map<String, Object> extraClaims) 
     {
