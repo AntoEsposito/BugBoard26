@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -45,7 +44,7 @@ public class SecurityConfiguration
      */
     @Bean
     @SuppressWarnings("java:S4502")
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, @Lazy JwtFilter filtroJwt)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter filtroJwt)
     {
         return http
             // Disabilitiamo CSRF perché stiamo usando JWT 
