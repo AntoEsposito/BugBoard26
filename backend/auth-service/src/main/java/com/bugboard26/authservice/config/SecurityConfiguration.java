@@ -47,29 +47,17 @@ public class SecurityConfiguration
     @SuppressWarnings("java:S4502")
     public SecurityFilterChain securityFilterChain(HttpSecurity http, @Lazy JwtFilter filtroJwt)
     {
-        try 
-        {
-            return http
-                // Disabilitiamo CSRF perché stiamo usando JWT 
-                .csrf(csrf -> csrf.disable())
-                // Configuriamo le regole di autorizzazione
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll()
-                    .anyRequest().authenticated())
-                // Configuriamo la gestione delle sessioni come stateless
-                .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                // Configuriamo il provider di autenticazione personalizzato
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class)
-                .build();
-        }
-        catch (Exception e)
-        {
-            log.error("Errore configurazione SecurityFilterChain", e);
-            throw new IllegalStateException("Impossibile configurare la SecurityFilterChain", e);
-        }
+        return http
+            // Disabilitiamo CSRF perché stiamo usando JWT 
+            .csrf(csrf -> csrf.disable())
+            // Configuriamo le regole di autorizzazione
+            .authorizeHttpRequests(auth -> auth.requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll().anyRequest().authenticated())
+            // Configuriamo la gestione delle sessioni come stateless
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Configuriamo il provider di autenticazione personalizzato
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     /**
@@ -99,15 +87,7 @@ public class SecurityConfiguration
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) 
     {
-        try 
-        {
-            return config.getAuthenticationManager();
-        } 
-        catch (Exception e) 
-        {
-            log.error("Errore configurazione AuthenticationManager", e);
-            throw new IllegalStateException("Impossibile configurare l'AuthenticationManager", e);
-        }
+        return config.getAuthenticationManager();
     }
 
     /**
