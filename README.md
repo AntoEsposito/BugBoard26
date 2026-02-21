@@ -9,6 +9,8 @@ Repo per il progetto di Ingegneria del Software
 ### 1. AUTH SERVICE CONTAINERIZZATO
 
 ```Docker compose up -d per far partire database e auth service
+auth service gira sulla porta 8081 della rete docker e 8081 del sistema
+database sulla 5432 della rete docker e 5433 del sistema
 ```
 
 ### 2. Verifica che funziona
