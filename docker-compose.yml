@@ -1,5 +1,4 @@
 services:
-  # Database PostgreSQL per tutto il sistema
   database:
     image: postgres:15-alpine
     container_name: bugboard26-db
@@ -9,15 +8,28 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5433:5432"   # ESPONE LA 5433 PER EVITARE CONFLITTI CON POSTGRES LOCALE
+      - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-    networks:
-      - bugboard26-net
+
+  auth-service:
+    build: ./backend/auth-service
+    container_name: bugboard26-auth
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ADMIN_NOME=${ADMIN_NOME}
+      - ADMIN_COGNOME=${ADMIN_COGNOME}
+    depends_on:
+      - database
 
 volumes:
   db_data:
-
-networks:
-  bugboard26-net:
-    driver: bridge
