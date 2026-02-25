@@ -59,10 +59,10 @@ public class JwtFilter extends OncePerRequestFilter {
      */
     private void processaAutenticazioneToken(String jwt, HttpServletRequest request) 
     {
-        try 
+        try
         {
             final String userEmail = servizioJwt.estraiUsername(jwt);
-            if (userEmail != null) authenticateUser(userEmail, jwt, request);
+            if (userEmail != null) autenticaUtente(userEmail, jwt, request);
         } 
         catch (JwtException | IllegalArgumentException e) 
         {
@@ -74,7 +74,7 @@ public class JwtFilter extends OncePerRequestFilter {
     /**
      * Carica i dettagli utente, verifica il token e aggiorna il SecurityContext.
      */
-    private void authenticateUser(String userEmail, String jwt, HttpServletRequest request) 
+    private void autenticaUtente(String userEmail, String jwt, HttpServletRequest request) 
     {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 

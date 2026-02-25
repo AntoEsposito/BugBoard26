@@ -9,8 +9,8 @@ public final class AuthenticationConstants
     
     // Ruoli
     public static final String ROLE_PREFIX = "ROLE_"; // spring security richiede che i ruoli siano prefissati con "ROLE_"
-    public static final String ROLE_UTENTE = "ROLE_UTENTE";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_UTENTE = ROLE_PREFIX + "UTENTE";
+    public static final String ROLE_ADMIN  = ROLE_PREFIX + "ADMIN";
     
     // Endpoint pubblici
     public static final String PUBLIC_PATH = "/api/auth/**";

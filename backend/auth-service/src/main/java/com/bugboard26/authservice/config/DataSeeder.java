@@ -1,5 +1,6 @@
 package com.bugboard26.authservice.config;
 
+import com.bugboard26.authservice.constants.AuthenticationConstants;
 import com.bugboard26.authservice.entity.UserRole;
 import com.bugboard26.authservice.entity.User;
 import com.bugboard26.authservice.repository.UserRoleRepository;
@@ -11,6 +12,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DataSeeder implements ApplicationRunner 
+public class DataSeeder implements ApplicationRunner
 {
     private final UserRoleRepository  ruoloRepository;
     private final UserRepository utenteRepository;
@@ -43,17 +45,17 @@ public class DataSeeder implements ApplicationRunner
 
     // ----------------------------------------------------------------
 
-    private void seedRuoli() 
+    private void seedRuoli()
     {
-        if (ruoloRepository.count() == 0) 
+        if (ruoloRepository.count() == 0)
         {
             ruoloRepository.saveAll(List.of(
                 UserRole.builder()
-                    .nome("ROLE_UTENTE")
+                    .nome(AuthenticationConstants.ROLE_UTENTE)
                     .descrizione("Utente con permessi standard")
                     .build(),
                 UserRole.builder()
-                    .nome("ROLE_ADMIN")
+                    .nome(AuthenticationConstants.ROLE_ADMIN)
                     .descrizione("Amministratore con accesso completo a tutte le funzionalità")
                     .build()
             ));
@@ -61,15 +63,15 @@ public class DataSeeder implements ApplicationRunner
         } else {log.info("DataSeeder: ruoli già presenti, skip.");}
     }
 
-    private void seedAdmin() 
+    private void seedAdmin()
     {
-        if (utenteRepository.existsByEmail(adminEmail)) 
+        if (utenteRepository.existsByEmail(adminEmail))
         {
             log.info("DataSeeder: admin già presente, skip.");
             return;
         }
 
-        UserRole ruoloAdmin = ruoloRepository.findByNome("ROLE_ADMIN").orElseThrow
+        UserRole ruoloAdmin = ruoloRepository.findByNome(AuthenticationConstants.ROLE_ADMIN).orElseThrow
             (() -> new IllegalStateException("ROLE_ADMIN non trovato."));
 
         User admin = User.builder()
@@ -85,7 +87,8 @@ public class DataSeeder implements ApplicationRunner
     }
 
     @Override
-    public void run(ApplicationArguments args) 
+    @Transactional
+    public void run(ApplicationArguments args)
     {
         seedRuoli();
         seedAdmin();

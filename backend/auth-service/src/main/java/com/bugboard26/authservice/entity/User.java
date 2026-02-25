@@ -51,7 +51,7 @@ public class User implements UserDetails
         return List.of(new SimpleGrantedAuthority(ruoloUtente.getNome()));
     }
 
-    // Override dei metodi di Serializable
+    // Override di equals e hashCode (da Object) basato sull'ID dell'entità
     @Override
     public boolean equals(Object o) 
     {
