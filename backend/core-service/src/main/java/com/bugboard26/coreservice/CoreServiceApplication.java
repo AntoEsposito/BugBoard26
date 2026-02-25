@@ -1,4 +1,4 @@
-package com.bugboard26.core_service;
+package com.bugboard26.coreservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
