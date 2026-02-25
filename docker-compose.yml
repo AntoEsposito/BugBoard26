@@ -17,7 +17,7 @@ services:
     container_name: bugboard26-auth
     restart: always
     ports:
-      - "8081:8081"
+      - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}

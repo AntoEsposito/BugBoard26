@@ -9,14 +9,14 @@ Repo per il progetto di Ingegneria del Software
 ### 1. AUTH SERVICE CONTAINERIZZATO
 
 ```Docker compose up -d per far partire database e auth service
-auth service gira sulla porta 8081 della rete docker e 8081 del sistema
+auth service gira sulla porta 8080 della rete docker e 8080 del sistema
 database sulla 5432 della rete docker e 5433 del sistema
 ```
 
 ### 2. Verifica che funziona
 
 ```powershell invia una richiesta http per simulare un login
-curl -X POST http://localhost:8081/api/auth/login  -H "Content-Type: application/json"  -d '{"email":"admin@bugboard26.com","password":"admin"}'    
+curl -X POST http://localhost:8080/api/auth/login  -H "Content-Type: application/json"  -d '{"email":"admin@bugboard26.com","password":"admin"}'    
 ```
 
 dovresti ricevere il token jwt con tutte le info del caso
