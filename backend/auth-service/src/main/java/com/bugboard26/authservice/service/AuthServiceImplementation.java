@@ -28,7 +28,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImplementazione implements AuthService
+public class AuthServiceImplementation implements AuthService
 {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;

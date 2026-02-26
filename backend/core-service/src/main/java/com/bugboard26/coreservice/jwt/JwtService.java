@@ -1,24 +1,17 @@
 package com.bugboard26.coreservice.jwt;
 
+import io.jsonwebtoken.JwtException;
+
 /**
  * Interfaccia del servizio JWT per il core-service.
- * A differenza dell'auth-service, questo servizio NON genera token
- * ma valida e legge i token emessi dall'auth-service.
+ * A differenza dell'auth-service, questo servizio NON genera token:
+ * valida e legge i token emessi dall'auth-service in un'unica operazione.
  */
 public interface JwtService
 {
     /**
-     * Estrae l'username (email) dal subject del token.
+     * Valida il token (firma + scadenza) ed estrae email e ruolo in un solo parse.
+     * Lancia JwtException se il token è assente, malformato o scaduto.
      */
-    String estraiUsername(String token);
-
-    /**
-     * Estrae il claim "ruolo" dal token.
-     */
-    String estraiRuolo(String token);
-
-    /**
-     * Verifica che il token sia valido: firma corretta e non scaduto.
-     */
-    boolean tokenValido(String token);
+    ClaimsUtente validaEOttieniClaims(String token) throws JwtException;
 }

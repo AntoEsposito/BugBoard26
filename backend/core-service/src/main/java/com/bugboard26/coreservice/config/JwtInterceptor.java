@@ -1,6 +1,7 @@
 package com.bugboard26.coreservice.config;
 
 import com.bugboard26.coreservice.constants.CoreConstants;
+import com.bugboard26.coreservice.jwt.ClaimsUtente;
 import com.bugboard26.coreservice.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,16 +28,26 @@ public class JwtInterceptor implements HandlerInterceptor
     {
         String token = estraiToken(request);
 
-        if (token == null || !jwtService.tokenValido(token))
+        if (token == null)
         {
-            log.warn("Errore: Token assente o non valido [{}]", request.getRequestURI());
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token JWT assente o non valido");
+            log.warn("Richiesta rifiutata: token assente [{}]", request.getRequestURI());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token JWT assente");
             return false;
         }
 
-        request.setAttribute(CoreConstants.USER_EMAIL_ATTR, jwtService.estraiUsername(token));
-        request.setAttribute(CoreConstants.USER_RUOLO_ATTR, jwtService.estraiRuolo(token));
-        return true;
+        try
+        {
+            ClaimsUtente claims = jwtService.validaEOttieniClaims(token);
+            request.setAttribute(CoreConstants.USER_EMAIL_ATTR, claims.email());
+            request.setAttribute(CoreConstants.USER_RUOLO_ATTR, claims.ruolo());
+            return true;
+        }
+        catch (Exception e)
+        {
+            log.warn("Richiesta rifiutata: token non valido [{}] — {}", request.getRequestURI(), e.getMessage());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token JWT non valido o scaduto");
+            return false;
+        }
     }
 
     private String estraiToken(HttpServletRequest request)

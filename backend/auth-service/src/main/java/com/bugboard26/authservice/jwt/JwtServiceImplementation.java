@@ -26,7 +26,7 @@ import java.util.function.Function;
  */
 @Slf4j
 @Component
-public class JwtServiceImpl implements JwtService
+public class JwtServiceImplementation implements JwtService
 {
     @Value("${jwt.secret}")
     private String secretKeyString;

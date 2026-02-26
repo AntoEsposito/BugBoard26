@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @RequiredArgsConstructor
-public class WebConfig implements WebMvcConfigurer
+public class WebConfiguration implements WebMvcConfigurer
 {
     private final JwtInterceptor jwtInterceptor;
 

@@ -8,7 +8,7 @@ public final class CoreConstants
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     // Ruoli (devono corrispondere ai valori emessi dall'auth-service)
-    public static final String ROLE_PREFIX = "ROLE_"; // Spring Security richiede che i ruoli siano prefissati con "ROLE_"
+    public static final String ROLE_PREFIX = "ROLE_"; // prefisso atteso dal claim "ruolo" nel JWT emesso dall'auth-service
     public static final String ROLE_UTENTE = ROLE_PREFIX + "UTENTE";
     public static final String ROLE_ADMIN  = ROLE_PREFIX + "ADMIN";
 
