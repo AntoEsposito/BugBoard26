@@ -3,6 +3,7 @@ package com.bugboard26.coreservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import com.bugboard26.coreservice.entity.enums.TipoCommento;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -31,6 +32,10 @@ public class Commento
 
     @Column(nullable = false)
     private String contenuto;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoCommento tipo;
 
     @Column(name = "data_creazione", nullable = false, updatable = false)
     private OffsetDateTime dataCreazione;

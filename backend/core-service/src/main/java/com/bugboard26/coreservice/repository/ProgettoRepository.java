@@ -11,6 +11,9 @@ public interface ProgettoRepository extends JpaRepository<Progetto, Integer> {
 
     boolean existsByNome(String nome);
 
+    /** Verifica se un utente è membro di un progetto (controllo permessi UC-03). */
+    boolean existsByIdAndMembri_Id(Integer id, Integer idUtente);
+
     /** Tutti i progetti in cui l'utente è membro (via join table progetti_membri). */
     List<Progetto> findByMembri_Id(Integer idUtente);
 

@@ -57,6 +57,9 @@ public class Issue
     @Column(name = "data_creazione", nullable = false, updatable = false)
     private OffsetDateTime dataCreazione;
 
+    @Column(name = "data_ultima_modifica")
+    private OffsetDateTime dataUltimaModifica;
+
     // Set per garantire unicità degli assegnatari — nessun cascade, Utente è read-only
     @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY)
@@ -71,6 +74,12 @@ public class Issue
     private void impostaDataCreazione()
     {
         this.dataCreazione = OffsetDateTime.now();
+    }
+
+    @PreUpdate
+    private void impostaDataUltimaModifica()
+    {
+        this.dataUltimaModifica = OffsetDateTime.now();
     }
 
     @Override
