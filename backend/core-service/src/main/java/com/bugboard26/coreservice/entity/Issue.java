@@ -14,8 +14,7 @@ import com.bugboard26.coreservice.entity.enums.TipoIssue;
 
 /**
  * Rappresenta una issue associata a un progetto.
- * Gli assegnatari sono salvati nella join table "issue_utente_assegnato"
- * come semplici id interi (FK verso la tabella utenti dell'auth-service).
+ * Gli assegnatari sono mappati via @ManyToMany sulla join table "issue_utente_assegnato".
  * La data di creazione viene impostata automaticamente al momento del persist.
  */
 @Entity
@@ -58,15 +57,15 @@ public class Issue
     @Column(name = "data_creazione", nullable = false, updatable = false)
     private OffsetDateTime dataCreazione;
 
-    // Mappa la join table issue_utente_assegnato — Set per garantire unicità
+    // Set per garantire unicità degli assegnatari — nessun cascade, Utente è read-only
     @Builder.Default
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
             name = "issue_utente_assegnato",
-            joinColumns = @JoinColumn(name = "id_issue")
+            joinColumns = @JoinColumn(name = "id_issue"),
+            inverseJoinColumns = @JoinColumn(name = "id_utente_assegnato")
     )
-    @Column(name = "id_utente_assegnato", nullable = false)
-    private Set<Integer> idAssegnatari = new HashSet<>();
+    private Set<Utente> assegnatari = new HashSet<>();
 
     @PrePersist
     private void impostaDataCreazione()

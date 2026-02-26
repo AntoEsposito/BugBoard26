@@ -9,8 +9,7 @@ import java.util.Set;
 
 /**
  * Rappresenta un progetto software.
- * I membri del progetto sono salvati nella join table "progetti_membri"
- * come semplici id interi (FK verso la tabella utenti dell'auth-service).
+ * I membri sono mappati via @ManyToMany sulla join table "progetti_membri".la tabella utenti è gestita dall'auth-service.
  */
 @Entity
 @Table(name = "progetti")
@@ -31,15 +30,15 @@ public class Progetto
     @Column
     private String descrizione;
 
-    // Mappa la join table progetti_membri — Set per garantire unicità dei membri
+    // Set per garantire unicità dei membri — nessun cascade, Utente è read-only
     @Builder.Default
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
             name = "progetti_membri",
-            joinColumns = @JoinColumn(name = "id_progetto")
+            joinColumns = @JoinColumn(name = "id_progetto"),
+            inverseJoinColumns = @JoinColumn(name = "id_utente")
     )
-    @Column(name = "id_utente", nullable = false)
-    private Set<Integer> idMembri = new HashSet<>();
+    private Set<Utente> membri = new HashSet<>();
 
     @Override
     public boolean equals(Object o)
