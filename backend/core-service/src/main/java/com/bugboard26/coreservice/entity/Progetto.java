@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Rappresenta un progetto software.
- * I membri sono mappati via @ManyToMany sulla join table "progetti_membri".la tabella utenti è gestita dall'auth-service.
+ * I membri sono mappati via @ManyToMany sulla join table "progetti_membri". La tabella utenti è gestita dall'auth-service.
  */
 @Entity
 @Table(name = "progetti")
