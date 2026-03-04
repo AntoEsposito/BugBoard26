@@ -44,6 +44,9 @@ public class IssueServiceImplementation implements IssueService
     @Transactional(readOnly = true)
     public List<IssueRiepilogoResponse> ottieniIssuePerProgetto(Integer idProgetto, UtenteAutenticato utenteCorrente)
     {
+        if (!progettoRepository.existsById(idProgetto))
+            throw new RisorsaNonTrovataException("Progetto non trovato: id=" + idProgetto);
+
         if (utenteCorrente.isAdmin())
             return issueRepository.findByIdProgettoOrderByDataCreazioneDesc(idProgetto).stream().map(this::mappaIssueRiepilogo).toList();
 
@@ -57,6 +60,9 @@ public class IssueServiceImplementation implements IssueService
     {
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
 
+        if (!progettoRepository.existsById(request.getIdProgetto()))
+            throw new RisorsaNonTrovataException("Progetto non trovato: id=" + request.getIdProgetto());
+
         if (!progettoRepository.existsByIdAndMembri_Id(request.getIdProgetto(), utente.getId()))
             throw new AccesoNegatoException("Non sei membro del progetto con id " + request.getIdProgetto());
 
@@ -69,7 +75,7 @@ public class IssueServiceImplementation implements IssueService
                 .titolo(request.getTitolo())
                 .tipo(request.getTipo())
                 .stato(StatoIssue.TODO)
-                .priorita(PrioritaIssue.LOW)
+                .priorita(request.getPriorita() != null ? request.getPriorita() : PrioritaIssue.LOW)
                 .descrizione(request.getDescrizione())
                 .assegnatari(assegnatari)
                 .build();
@@ -81,14 +87,17 @@ public class IssueServiceImplementation implements IssueService
 
     @Override
     @Transactional(readOnly = true)
-    public IssueDettaglioResponse ottieniDettaglioIssue(Integer idIssue, UtenteAutenticato utenteCorrente) 
+    public IssueDettaglioResponse ottieniDettaglioIssue(Integer idIssue, UtenteAutenticato utenteCorrente)
     {
-        Utente utente = trovaUtentePerEmail(utenteCorrente.email());
+        Issue issue = issueRepository.findByIdConDettagli(idIssue)
+                .orElseThrow(() -> new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue));
 
-        if (!utenteCorrente.isAdmin() && !issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId())) 
-            throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
-
-        Issue issue = issueRepository.findByIdConDettagli(idIssue).orElseThrow(() -> new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue));
+        if (!utenteCorrente.isAdmin())
+        {
+            Utente utente = trovaUtentePerEmail(utenteCorrente.email());
+            if (!issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId()))
+                throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
+        }
 
         List<Commento> commenti = commentoRepository.findByIdIssueOrderByDataCreazioneDesc(idIssue);
 
@@ -136,8 +145,9 @@ public class IssueServiceImplementation implements IssueService
 
         if (request.getDescrizione() != null) issue.setDescrizione(request.getDescrizione());
         if (request.getStato() != null) issue.setStato(request.getStato());
-
-        if (utenteCorrente.isAdmin()) applicaCampiAdmin(issue, request);
+        if (request.getPriorita() != null) issue.setPriorita(request.getPriorita());
+        if (request.getIdAssegnatari() != null && !request.getIdAssegnatari().isEmpty())
+            issue.setAssegnatari(new HashSet<>(utenteRepository.findAllByIdIn(request.getIdAssegnatari())));
 
         Issue aggiornata = issueRepository.save(issue);
         log.info("Issue modificata: id={}", idIssue);
@@ -151,13 +161,6 @@ public class IssueServiceImplementation implements IssueService
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
         if (!issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId()))
             throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
-    }
-
-    private void applicaCampiAdmin(Issue issue, ModificaIssueRequest request)
-    {
-        if (request.getPriorita() != null) issue.setPriorita(request.getPriorita());
-        if (request.getIdAssegnatari() != null && !request.getIdAssegnatari().isEmpty())
-            issue.setAssegnatari(new HashSet<>(utenteRepository.findAllByIdIn(request.getIdAssegnatari())));
     }
 
     private Utente trovaUtentePerEmail(String email) 

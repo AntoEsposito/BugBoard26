@@ -46,9 +46,9 @@ public class JwtServiceImplementation implements JwtService
                 .parseSignedClaims(token)
                 .getPayload();
 
-        return new ClaimsUtente(
-                claims.getSubject(),
-                claims.get("ruolo", String.class)
-        );
+        String ruolo = claims.get("ruolo", String.class);
+        if (ruolo == null) throw new JwtException("Claim 'ruolo' mancante nel token");
+
+        return new ClaimsUtente(claims.getSubject(), ruolo);
     }
 }

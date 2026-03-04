@@ -22,6 +22,9 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
     /** Verifica se una issue è assegnata a un utente (controllo permessi UC-05, UC-06, UC-07). */
     boolean existsByIdAndAssegnatari_Id(Integer id, Integer idUtente);
 
+    /** Verifica se un utente ha almeno una issue assegnata in un progetto (controllo visibilità progetto). */
+    boolean existsByIdProgettoAndAssegnatari_Id(Integer idProgetto, Integer idUtente);
+
     /** Verifica se un utente ha creato almeno una issue (UC-09, prima dell'eliminazione utente). */
     boolean existsByIdUtenteCreatore(Integer idUtenteCreatore);
 

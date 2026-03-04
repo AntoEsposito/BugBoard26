@@ -17,7 +17,7 @@ public interface ProgettoService {
 
     /**
      * Restituisce i membri di un progetto.
-     * Usato dall'admin per popolare la checklist degli assegnatari in fase di modifica issue.
+     * Admin: accesso libero. Utente: solo se ha almeno una issue assegnata nel progetto.
      */
-    List<UtenteResponse> ottieniMembri(Integer idProgetto);
+    List<UtenteResponse> ottieniMembri(Integer idProgetto, UtenteAutenticato utenteCorrente);
 }

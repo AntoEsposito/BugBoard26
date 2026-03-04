@@ -4,5 +4,6 @@ public enum TipoIssue
 {
     BUG,
     FEATURE,
-    QUESTION
+    QUESTION,
+    DOCUMENTATION
 }

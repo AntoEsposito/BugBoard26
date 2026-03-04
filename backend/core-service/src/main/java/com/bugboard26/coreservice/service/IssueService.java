@@ -32,8 +32,8 @@ public interface IssueService {
 
     /**
      * Aggiorna una issue esistente.
-     * Descrizione e stato: modificabili da tutti gli assegnatari.
-     * Priorità e assegnatari: modificabili solo da admin.
+     * Utente: tutti i campi, ma solo delle issue a lui assegnate.
+     * Admin: tutti i campi di qualsiasi issue.
      */
     IssueRiepilogoResponse modificaIssue(Integer idIssue, ModificaIssueRequest request, UtenteAutenticato utenteCorrente);
 }
