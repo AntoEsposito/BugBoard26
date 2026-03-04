@@ -146,8 +146,14 @@ public class IssueServiceImplementation implements IssueService
         if (request.getDescrizione() != null) issue.setDescrizione(request.getDescrizione());
         if (request.getStato() != null) issue.setStato(request.getStato());
         if (request.getPriorita() != null) issue.setPriorita(request.getPriorita());
+        if (request.getTipo() != null) issue.setTipo(request.getTipo());
         if (request.getIdAssegnatari() != null && !request.getIdAssegnatari().isEmpty())
-            issue.setAssegnatari(new HashSet<>(utenteRepository.findAllByIdIn(request.getIdAssegnatari())));
+        {
+            List<Utente> trovati = utenteRepository.findAllByIdIn(request.getIdAssegnatari());
+            if (trovati.size() != request.getIdAssegnatari().size())
+                throw new RisorsaNonTrovataException("Uno o più utenti negli assegnatari non esistono");
+            issue.setAssegnatari(new HashSet<>(trovati));
+        }
 
         Issue aggiornata = issueRepository.save(issue);
         log.info("Issue modificata: id={}", idIssue);
