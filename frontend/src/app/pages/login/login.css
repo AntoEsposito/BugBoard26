@@ -31,6 +31,12 @@
   margin-bottom: 8px;
 }
 
+.logo-immagine {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
 .logo-wrapper {
   display: flex;
   align-items: center;
