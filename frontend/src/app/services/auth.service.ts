@@ -45,4 +45,37 @@ export class AuthService {
   isAutenticato(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getRuolo(): string | null {
+    return localStorage.getItem('ruolo');
+  }
+
+  getNome(): string | null {
+    return localStorage.getItem('nome');
+  }
+
+  getCognome(): string | null {
+    return localStorage.getItem('cognome');
+  }
+
+  getEmail(): string | null {
+    return localStorage.getItem('email');
+  }
+
+  isAdmin(): boolean {
+    return this.getRuolo() === 'ROLE_ADMIN';
+  }
+
+  getIniziali(): string {
+    const nome = this.getNome();
+    const cognome = this.getCognome();
+    if (nome && cognome) {
+      return (nome[0] + cognome[0]).toUpperCase();
+    }
+    return '??';
+  }
 }
