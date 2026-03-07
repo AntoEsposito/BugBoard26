@@ -1,0 +1,142 @@
+<div class="pagina-crea-issue">
+
+  <div class="intestazione">
+    <h1 class="titolo-pagina">Nuova Issue</h1>
+    <p class="sottotitolo-pagina">Compila i campi per segnalare una nuova issue</p>
+  </div>
+
+  <div class="scheda-form">
+
+    <form (ngSubmit)="onCreaIssue()">
+
+      <!-- Campo Titolo -->
+      <div class="campo-form">
+        <label class="etichetta" for="titolo">
+          Titolo <span class="obbligatorio">*</span>
+        </label>
+        <input
+          id="titolo"
+          type="text"
+          class="input-testo"
+          placeholder="Titolo della issue"
+          [(ngModel)]="titolo"
+          name="titolo"
+          maxlength="32"
+        />
+      </div>
+
+      <!-- Campo Tipo -->
+      <div class="campo-form">
+        <label class="etichetta">
+          Tipo <span class="obbligatorio">*</span>
+        </label>
+        <div class="gruppo-bottoni">
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'BUG'"
+            (click)="tipo = 'BUG'"
+          >
+            🐛 Bug
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'QUESTION'"
+            (click)="tipo = 'QUESTION'"
+          >
+            ❓ Question
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'DOCUMENTATION'"
+            (click)="tipo = 'DOCUMENTATION'"
+          >
+            📄 Documentation
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'FEATURE'"
+            (click)="tipo = 'FEATURE'"
+          >
+            ✨ Feature
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo Priorità -->
+      <div class="campo-form">
+        <label class="etichetta">Priorità <span class="opzionale">(opzionale, default: Low)</span></label>
+        <div class="gruppo-bottoni">
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="priorita === 'LOW'"
+            (click)="priorita = priorita === 'LOW' ? '' : 'LOW'"
+          >
+            Low
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="priorita === 'MEDIUM'"
+            (click)="priorita = priorita === 'MEDIUM' ? '' : 'MEDIUM'"
+          >
+            Medium
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="priorita === 'HIGH'"
+            (click)="priorita = priorita === 'HIGH' ? '' : 'HIGH'"
+          >
+            High
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo Descrizione -->
+      <div class="campo-form">
+        <label class="etichetta" for="descrizione">Descrizione <span class="opzionale">(opzionale)</span></label>
+        <textarea
+          id="descrizione"
+          class="input-textarea"
+          placeholder="Descrivi la issue in dettaglio..."
+          [(ngModel)]="descrizione"
+          name="descrizione"
+          maxlength="500"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <!-- Messaggio errore -->
+      @if (errore) {
+        <div class="messaggio-errore">
+          {{ errore }}
+        </div>
+      }
+
+      <!-- Messaggio successo -->
+      @if (successo) {
+        <div class="messaggio-successo">
+          Issue creata con successo!
+        </div>
+      }
+
+      <!-- Bottoni azione -->
+      <div class="gruppo-azioni">
+        <button type="button" class="btn-annulla" (click)="onAnnulla()">
+          Annulla
+        </button>
+        <button type="submit" class="btn-crea" [disabled]="caricamento">
+          {{ caricamento ? 'Creazione in corso...' : 'Crea Issue' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
