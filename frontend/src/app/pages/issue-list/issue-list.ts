@@ -31,7 +31,7 @@ export class IssueList implements OnInit {
     private readonly router: Router,
     private readonly progettoService: ProgettoService,
     private readonly issueService: IssueService,
-    private readonly authService: AuthService
+    protected readonly authService: AuthService
   ) {}
 
   ngOnInit(): void {

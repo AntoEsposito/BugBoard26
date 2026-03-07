@@ -13,14 +13,15 @@
 
     <!-- Navigazione -->
     <nav class="barra-laterale-nav">
-      <a class="nav-collegamento attivo">
-        <span class="nav-icona">☰</span>
-        <span>Issue</span>
-      </a>
-      <a class="nav-collegamento">
-        <span class="nav-icona">👤</span>
-        <span>Gestione Utenti</span>
-      </a>
+      <button
+        class="nav-collegamento"
+        *ngFor="let progetto of progetti"
+        [class.attivo]="progettoSelezionato?.id === progetto.id"
+        (click)="selezionaProgetto(progetto)"
+      >
+        <span class="nav-icona">📁</span>
+        <span>{{ progetto.nome }}</span>
+      </button>
     </nav>
 
     <!-- Utente in basso -->
@@ -28,11 +29,11 @@
       <div class="utente-info">
         <div class="utente-avatar">
           <img src="assets/avatar.png" alt="avatar" [hidden]="avatarNonCaricato" (error)="avatarNonCaricato = true" />
-          <span class="avatar-riserva">MR</span>
+          <span class="avatar-riserva">{{ authService.getIniziali() }}</span>
         </div>
         <div class="utente-testi">
-          <span class="utente-nome">Marco Rossi</span>
-          <span class="utente-email">marco.rossi&#64;bugboard26.c...</span>
+          <span class="utente-nome">{{ authService.getNome() }} {{ authService.getCognome() }}</span>
+          <span class="utente-email">{{ authService.getEmail() }}</span>
         </div>
       </div>
       <button class="btn-esci" (click)="onEsci()">
