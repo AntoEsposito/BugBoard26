@@ -1,6 +1,7 @@
 package com.bugboard26.authservice.constants;
 
 // Costanti di sicurezza utilizzate in tutto il modulo di autenticazione.
+@SuppressWarnings("java:S1075") // URI centralizzate (sonarqube non rompere le palle)
 public final class AuthenticationConstants
 {
     // JWT
@@ -12,8 +13,9 @@ public final class AuthenticationConstants
     public static final String ROLE_UTENTE = ROLE_PREFIX + "UTENTE";
     public static final String ROLE_ADMIN  = ROLE_PREFIX + "ADMIN";
     
-    // Endpoint pubblici
-    public static final String PUBLIC_PATH = "/api/auth/**";
+    // Endpoint
+    public static final String PUBLIC_PATH       = "/api/auth/login";
+    public static final String ADMIN_USERS_PATH  = "/api/auth/utenti";
     
     // Costruttore privato per impedire istanziazione
     private AuthenticationConstants() 

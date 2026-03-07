@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * Configurazioni applicate:
  * - CSRF disabilitato (API REST stateless)
  * - Sessioni STATELESS (niente cookie di sessione)
- * - Endpoint /api/auth/** pubblici (login)
+ * - Endpoint /api/auth/login pubblico; /api/auth/utenti richiede ROLE_ADMIN
  * - Tutti gli altri endpoint richiedono autenticazione
  * - Filtro JWT eseguito prima del filtro di autenticazione standard
  *
@@ -51,7 +52,11 @@ public class SecurityConfiguration
             // Disabilitiamo CSRF perché stiamo usando JWT
             .csrf(csrf -> csrf.disable())
             // Configuriamo le regole di autorizzazione
-            .authorizeHttpRequests(auth -> auth.requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll().anyRequest().authenticated())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(AuthenticationConstants.PUBLIC_PATH).permitAll()
+                .requestMatchers(HttpMethod.POST, AuthenticationConstants.ADMIN_USERS_PATH).hasAuthority(AuthenticationConstants.ROLE_ADMIN)
+                .anyRequest().authenticated()
+            )
             // Configuriamo la gestione delle sessioni come stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Configuriamo il provider di autenticazione personalizzato

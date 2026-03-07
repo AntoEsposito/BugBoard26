@@ -1,18 +1,25 @@
 package com.bugboard26.authservice.service;
 
 import com.bugboard26.authservice.constants.AuthenticationConstants;
+import com.bugboard26.authservice.dto.CreaUtenteRequest;
 import com.bugboard26.authservice.dto.LoginAnswer;
 import com.bugboard26.authservice.dto.LoginRequest;
+import com.bugboard26.authservice.dto.UtenteResponse;
 import com.bugboard26.authservice.entity.User;
+import com.bugboard26.authservice.entity.UserRole;
+import com.bugboard26.authservice.exception.EmailGiaInUsoException;
 import com.bugboard26.authservice.exception.InvalidCredentialsException;
+import com.bugboard26.authservice.exception.RoleNotFoundException;
 import com.bugboard26.authservice.exception.UserNotFoundException;
 import com.bugboard26.authservice.jwt.JwtService;
 import com.bugboard26.authservice.repository.UserRepository;
+import com.bugboard26.authservice.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -33,6 +40,8 @@ public class AuthServiceImplementation implements AuthService
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Autentica un utente tramite email e password.
@@ -61,6 +70,39 @@ public class AuthServiceImplementation implements AuthService
                 .cognome(utente.getCognome())
                 .userRole(utente.getRuoloUtente().getNome())
                 .expireTime(jwtService.ottieniScadenzaMs())
+                .build();
+    }
+
+    /**
+     * Crea un nuovo utente nel sistema.
+     * Solo un admin può invocare questo metodo.
+     */
+    @Override
+    public UtenteResponse creaUtente(CreaUtenteRequest request)
+    {
+        if (userRepository.existsByEmail(request.getEmail()))
+            throw new EmailGiaInUsoException(request.getEmail());
+
+        UserRole ruolo = userRoleRepository.findByNome(request.getRuolo())
+                .orElseThrow(() -> new RoleNotFoundException(request.getRuolo()));
+
+        User nuovoUtente = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .nome(request.getNome())
+                .cognome(request.getCognome())
+                .ruoloUtente(ruolo)
+                .build();
+
+        User salvato = userRepository.save(nuovoUtente);
+        log.info("Nuovo utente creato: id={}, email={}, ruolo={}", salvato.getId(), salvato.getEmail(), ruolo.getNome());
+
+        return UtenteResponse.builder()
+                .id(salvato.getId())
+                .email(salvato.getEmail())
+                .nome(salvato.getNome())
+                .cognome(salvato.getCognome())
+                .ruolo(ruolo.getNome())
                 .build();
     }
 

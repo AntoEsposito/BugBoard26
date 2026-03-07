@@ -55,10 +55,32 @@ public class GlobalExceptionHandler
      * HTTP 404 Not Found.
      */
     @ExceptionHandler(UserNotFoundException.class)
-    public ProblemDetail handleUserNotFound(UserNotFoundException e) 
+    public ProblemDetail handleUserNotFound(UserNotFoundException e)
     {
         log.warn("Utente non trovato: {}", e.getMessage());
         return creaProblemDetail(HttpStatus.NOT_FOUND, "Utente non trovato", e.getMessage());
+    }
+
+    /**
+     * Gestisce tentativi di creazione utente con email già registrata.
+     * HTTP 409 Conflict.
+     */
+    @ExceptionHandler(EmailGiaInUsoException.class)
+    public ProblemDetail handleEmailGiaInUso(EmailGiaInUsoException e)
+    {
+        log.warn("Email già in uso: {}", e.getMessage());
+        return creaProblemDetail(HttpStatus.CONFLICT, "Email già in uso", e.getMessage());
+    }
+
+    /**
+     * Gestisce ruolo non trovato nel database (non credo servirà).
+     * HTTP 404 Not Found.
+     */
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ProblemDetail handleRoleNotFound(RoleNotFoundException e)
+    {
+        log.warn("Ruolo non trovato: {}", e.getMessage());
+        return creaProblemDetail(HttpStatus.NOT_FOUND, "Ruolo non trovato", e.getMessage());
     }
 
     /**
