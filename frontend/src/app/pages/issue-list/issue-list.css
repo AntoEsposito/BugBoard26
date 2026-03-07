@@ -468,15 +468,15 @@
   background-color: rgba(239, 68, 68, 0.15);
 }
 
-.issue-icona.tipo-domanda {
+.issue-icona.tipo-question {
   background-color: rgba(59, 130, 246, 0.15);
 }
 
-.issue-icona.tipo-documentazione {
+.issue-icona.tipo-documentation {
   background-color: rgba(107, 114, 128, 0.15);
 }
 
-.issue-icona.tipo-funzionalita {
+.issue-icona.tipo-feature {
   background-color: rgba(16, 185, 129, 0.15);
 }
 
@@ -521,22 +521,17 @@
   border: 1px solid #3a3a3e;
 }
 
-.etichetta.priorita-alta {
+.etichetta.priorita-high {
   background-color: #3b1c1c;
   color: #fca5a5;
 }
 
-.etichetta.priorita-critica {
-  background-color: #451a1a;
-  color: #fca5a5;
-}
-
-.etichetta.priorita-media {
+.etichetta.priorita-medium {
   background-color: #3b2f10;
   color: #fde68a;
 }
 
-.etichetta.priorita-bassa {
+.etichetta.priorita-low {
   background-color: #1a3a2e;
   color: #6ee7b7;
 }
