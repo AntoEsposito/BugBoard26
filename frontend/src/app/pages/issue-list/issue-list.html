@@ -94,31 +94,31 @@
         <div class="filtro-opzioni">
           <button
             class="btn-filtro"
-            [class.attivo]="filtroTipo === 'domanda'"
-            (click)="setFiltroTipo('domanda')"
-          >
-            ❓ Domanda
-          </button>
-          <button
-            class="btn-filtro"
-            [class.attivo]="filtroTipo === 'bug'"
-            (click)="setFiltroTipo('bug')"
+            [class.attivo]="filtroTipo === 'BUG'"
+            (click)="setFiltroTipo('BUG')"
           >
             🐛 Bug
           </button>
           <button
             class="btn-filtro"
-            [class.attivo]="filtroTipo === 'documentazione'"
-            (click)="setFiltroTipo('documentazione')"
+            [class.attivo]="filtroTipo === 'QUESTION'"
+            (click)="setFiltroTipo('QUESTION')"
           >
-            📄 Documentazione
+            ❓ Question
           </button>
           <button
             class="btn-filtro"
-            [class.attivo]="filtroTipo === 'funzionalita'"
-            (click)="setFiltroTipo('funzionalita')"
+            [class.attivo]="filtroTipo === 'DOCUMENTATION'"
+            (click)="setFiltroTipo('DOCUMENTATION')"
           >
-            ✨ Funzionalità
+            📄 Documentation
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'FEATURE'"
+            (click)="setFiltroTipo('FEATURE')"
+          >
+            ✨ Feature
           </button>
         </div>
       </div>
@@ -129,31 +129,24 @@
         <div class="filtro-opzioni">
           <button
             class="btn-filtro"
-            [class.attivo]="filtroPriorita === 'bassa'"
-            (click)="setFiltroPriorita('bassa')"
+            [class.attivo]="filtroPriorita === 'LOW'"
+            (click)="setFiltroPriorita('LOW')"
           >
-            Bassa
+            Low
           </button>
           <button
             class="btn-filtro"
-            [class.attivo]="filtroPriorita === 'media'"
-            (click)="setFiltroPriorita('media')"
+            [class.attivo]="filtroPriorita === 'MEDIUM'"
+            (click)="setFiltroPriorita('MEDIUM')"
           >
-            Media
+            Medium
           </button>
           <button
             class="btn-filtro"
-            [class.attivo]="filtroPriorita === 'alta'"
-            (click)="setFiltroPriorita('alta')"
+            [class.attivo]="filtroPriorita === 'HIGH'"
+            (click)="setFiltroPriorita('HIGH')"
           >
-            Alta
-          </button>
-          <button
-            class="btn-filtro"
-            [class.attivo]="filtroPriorita === 'critica'"
-            (click)="setFiltroPriorita('critica')"
-          >
-            Critica
+            High
           </button>
         </div>
       </div>
@@ -164,24 +157,24 @@
         <div class="filtro-opzioni">
           <button
             class="btn-filtro"
-            [class.attivo]="filtroStato === 'da_fare'"
-            (click)="setFiltroStato('da_fare')"
+            [class.attivo]="filtroStato === 'TODO'"
+            (click)="setFiltroStato('TODO')"
           >
-            Da Fare
+            Todo
           </button>
           <button
             class="btn-filtro"
-            [class.attivo]="filtroStato === 'in_corso'"
-            (click)="setFiltroStato('in_corso')"
+            [class.attivo]="filtroStato === 'IN_PROGRESS'"
+            (click)="setFiltroStato('IN_PROGRESS')"
           >
-            In Corso
+            In Progress
           </button>
           <button
             class="btn-filtro"
-            [class.attivo]="filtroStato === 'completato'"
-            (click)="setFiltroStato('completato')"
+            [class.attivo]="filtroStato === 'DONE'"
+            (click)="setFiltroStato('DONE')"
           >
-            Completato
+            Done
           </button>
         </div>
       </div>
