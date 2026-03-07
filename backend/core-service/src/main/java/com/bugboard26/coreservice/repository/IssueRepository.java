@@ -25,9 +25,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
     /** Verifica se un utente ha almeno una issue assegnata in un progetto (controllo visibilità progetto). */
     boolean existsByIdProgettoAndAssegnatari_Id(Integer idProgetto, Integer idUtente);
 
-    /** Verifica se un utente ha creato almeno una issue (UC-09, prima dell'eliminazione utente). */
-    boolean existsByIdUtenteCreatore(Integer idUtenteCreatore);
-
     /** Dettaglio issue con assegnatari in un'unica query per evitare N+1 (UC-07). */
     @Query("SELECT i FROM Issue i LEFT JOIN FETCH i.assegnatari WHERE i.id = :issueId")
     Optional<Issue> findByIdConDettagli(@Param("issueId") Integer issueId);

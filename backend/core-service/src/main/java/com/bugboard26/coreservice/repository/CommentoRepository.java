@@ -12,7 +12,4 @@ public interface CommentoRepository extends JpaRepository<Commento, Integer> {
 
     /** Cancella tutti i commenti di una issue (usato alla cancellazione della issue). */
     void deleteAllByIdIssue(Integer idIssue);
-
-    /** Conta i commenti scritti da un utente (UC-09, prima dell'eliminazione utente). */
-    long countByIdUtenteCreatore(Integer idUtenteCreatore);
 }
