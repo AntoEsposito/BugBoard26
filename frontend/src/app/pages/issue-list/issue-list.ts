@@ -1,18 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
-interface Issue {
-  id: number;
-  titolo: string;
-  tipo: string;
-  stato: string;
-  priorita: string;
-  autore: string;
-  data: string;
-  allegato: boolean;
-}
+import { ProgettoResponse, IssueRiepilogoResponse } from '../../models/api.models';
+import { ProgettoService } from '../../services/progetto.service';
+import { IssueService } from '../../services/issue.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-issue-list',
@@ -20,7 +13,7 @@ interface Issue {
   templateUrl: './issue-list.html',
   styleUrl: './issue-list.css',
 })
-export class IssueList {
+export class IssueList implements OnInit {
   avatarNonCaricato = false;
   testoRicerca = '';
 
@@ -30,15 +23,45 @@ export class IssueList {
   filtroPriorita = '';
   filtroStato = '';
 
-  issueList: Issue[] = [];
+  progetti: ProgettoResponse[] = [];
+  progettoSelezionato: ProgettoResponse | null = null;
+  issueList: IssueRiepilogoResponse[] = [];
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly progettoService: ProgettoService,
+    private readonly issueService: IssueService,
+    private readonly authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.progettoService.ottieniProgetti().subscribe(progetti => {
+      this.progetti = progetti;
+      if (progetti.length > 0) {
+        this.progettoSelezionato = progetti[0];
+        this.caricaIssue();
+      }
+    });
+  }
+
+  caricaIssue(): void {
+    if (this.progettoSelezionato !== null) {
+      this.issueService.ottieniIssuePerProgetto(this.progettoSelezionato.id).subscribe(issues => {
+        this.issueList = issues;
+      });
+    }
+  }
+
+  selezionaProgetto(progetto: ProgettoResponse): void {
+    this.progettoSelezionato = progetto;
+    this.caricaIssue();
+  }
 
   onNuovaIssue() {
     this.router.navigate(['/issue/nuova']);
   }
 
-  onApriIssue(issue: Issue) {
+  onApriIssue(issue: IssueRiepilogoResponse) {
     this.router.navigate(['/issue', issue.id]);
   }
 
