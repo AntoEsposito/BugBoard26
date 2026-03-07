@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProgettoResponse, IssueRiepilogoResponse } from '../../models/api.models';
 import { ProgettoService } from '../../services/progetto.service';
@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-issue-list',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, DatePipe],
   templateUrl: './issue-list.html',
   styleUrl: './issue-list.css',
 })
@@ -91,10 +91,10 @@ export class IssueList implements OnInit {
 
   getIconaTipo(tipo: string): string {
     switch (tipo) {
-      case 'bug': return '🐛';
-      case 'domanda': return '❓';
-      case 'documentazione': return '📄';
-      case 'funzionalita': return '✨';
+      case 'BUG': return '🐛';
+      case 'QUESTION': return '❓';
+      case 'DOCUMENTATION': return '📄';
+      case 'FEATURE': return '✨';
       default: return '📋';
     }
   }

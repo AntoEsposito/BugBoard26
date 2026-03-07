@@ -192,7 +192,7 @@
     <div class="lista-issue">
       <button class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)">
         <div class="scheda-sinistra">
-          <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo">
+          <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo.toLowerCase()">
             {{ getIconaTipo(issue.tipo) }}
           </div>
           <div class="issue-dettagli">
@@ -200,13 +200,10 @@
             <div class="issue-etichetta">
               <span class="etichetta tipo">{{ issue.tipo }}</span>
               <span class="etichetta stato">{{ issue.stato }}</span>
-              <span class="etichetta priorita" [ngClass]="'priorita-' + issue.priorita">{{ issue.priorita }}</span>
+              <span class="etichetta priorita" [ngClass]="'priorita-' + issue.priorita.toLowerCase()">{{ issue.priorita }}</span>
             </div>
-            <p class="issue-meta">{{ issue.autore }} &bull; {{ issue.data }}</p>
+            <p class="issue-meta">ID #{{ issue.id }} &bull; {{ issue.dataCreazione | date:'dd/MM/yyyy' }}</p>
           </div>
-        </div>
-        <div class="scheda-destra" *ngIf="issue.allegato">
-          <span class="icona-allegato">📎</span>
         </div>
       </button>
     </div>
