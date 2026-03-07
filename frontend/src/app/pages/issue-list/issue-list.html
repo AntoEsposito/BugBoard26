@@ -67,6 +67,7 @@
           class="input-ricerca"
           placeholder="Cerca issue per titolo, descrizione o autore..."
           [(ngModel)]="testoRicerca"
+          (ngModelChange)="applicaFiltri()"
           name="ricerca"
         />
       </div>
