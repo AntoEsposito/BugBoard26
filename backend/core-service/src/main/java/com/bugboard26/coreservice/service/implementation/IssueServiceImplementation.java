@@ -135,7 +135,6 @@ public class IssueServiceImplementation implements IssueService
                                 .idIssue(c.getIdIssue())
                                 .idUtenteCreatore(c.getIdUtenteCreatore())
                                 .contenuto(c.getContenuto())
-                                .tipo(c.getTipo())
                                 .dataCreazione(c.getDataCreazione())
                                 .build())
                         .toList())

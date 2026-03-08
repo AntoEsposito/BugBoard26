@@ -42,7 +42,6 @@ public class CommentoServiceImplementation implements CommentoService
                 .idIssue(idIssue)
                 .idUtenteCreatore(utente.getId())
                 .contenuto(request.getContenuto())
-                .tipo(request.getTipo())
                 .build();
 
         Commento salvato = commentoRepository.save(commento);
@@ -53,7 +52,6 @@ public class CommentoServiceImplementation implements CommentoService
                 .idIssue(salvato.getIdIssue())
                 .idUtenteCreatore(salvato.getIdUtenteCreatore())
                 .contenuto(salvato.getContenuto())
-                .tipo(salvato.getTipo())
                 .dataCreazione(salvato.getDataCreazione())
                 .build();
     }
