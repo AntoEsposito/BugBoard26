@@ -31,6 +31,7 @@ export interface IssueRiepilogoResponse {
   descrizione: string;
   dataCreazione: string;
   dataUltimaModifica: string;
+  immaginePath?: string;
 }
 
 export interface IssueDettaglioResponse extends IssueRiepilogoResponse {

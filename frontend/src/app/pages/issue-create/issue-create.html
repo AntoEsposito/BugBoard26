@@ -111,6 +111,32 @@
         ></textarea>
       </div>
 
+      <!-- Campo Immagine -->
+      <div class="campo-form">
+        <label class="etichetta">Allegato immagine <span class="opzionale">(opzionale)</span></label>
+        <div class="contenitore-upload">
+          <input
+            #inputImmagine
+            type="file"
+            id="immagine"
+            accept="image/*"
+            (change)="onFileSelezionato($event)"
+            style="display: none"
+          />
+          @if (!anteprimaImmagine) {
+            <button type="button" class="btn-upload" (click)="apriSelezioneFile()">
+              📎 Seleziona immagine
+            </button>
+          }
+          @if (anteprimaImmagine) {
+            <div class="anteprima-immagine">
+              <img [src]="anteprimaImmagine" alt="Anteprima" class="img-anteprima" />
+              <button type="button" class="btn-rimuovi-immagine" (click)="rimuoviImmagine()">✕ Rimuovi</button>
+            </div>
+          }
+        </div>
+      </div>
+
       <!-- Messaggio errore -->
       @if (errore) {
         <div class="messaggio-errore">

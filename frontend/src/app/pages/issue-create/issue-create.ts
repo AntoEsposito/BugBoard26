@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,9 +18,14 @@ export class IssueCreate implements OnInit {
   priorita: string = '';
   idProgetto: number = 0;
 
+  immagineSelezionata: File | null = null;
+  anteprimaImmagine: string | null = null;
+
   caricamento: boolean = false;
   errore: string = '';
   successo: boolean = false;
+
+  @ViewChild('inputImmagine') inputImmagine!: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly router: Router,
@@ -57,7 +62,7 @@ export class IssueCreate implements OnInit {
     };
 
     this.caricamento = true;
-    this.issueService.creaIssue(request).subscribe({
+    this.issueService.creaIssue(request, this.immagineSelezionata ?? undefined).subscribe({
       next: () => {
         this.caricamento = false;
         this.successo = true;
@@ -68,6 +73,27 @@ export class IssueCreate implements OnInit {
         this.errore = 'Errore durante la creazione dell\'issue. Riprova.';
       }
     });
+  }
+
+  onFileSelezionato(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.immagineSelezionata = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.anteprimaImmagine = reader.result as string;
+      };
+      reader.readAsDataURL(this.immagineSelezionata);
+    }
+  }
+
+  rimuoviImmagine(): void {
+    this.immagineSelezionata = null;
+    this.anteprimaImmagine = null;
+  }
+
+  apriSelezioneFile(): void {
+    this.inputImmagine.nativeElement.click();
   }
 
   onAnnulla(): void {

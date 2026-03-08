@@ -24,11 +24,21 @@ export class IssueService {
     return this.http.get<IssueDettaglioResponse>(`/api/issue/${idIssue}`);
   }
 
-  creaIssue(request: CreaIssueRequest): Observable<IssueRiepilogoResponse> {
-    return this.http.post<IssueRiepilogoResponse>('/api/issue', request);
+  creaIssue(request: CreaIssueRequest, immagine?: File): Observable<IssueRiepilogoResponse> {
+    const formData = new FormData();
+    formData.append('dati', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+    if (immagine) {
+      formData.append('immagine', immagine);
+    }
+    return this.http.post<IssueRiepilogoResponse>('/api/issue', formData);
   }
 
-  modificaIssue(idIssue: number, request: ModificaIssueRequest): Observable<IssueRiepilogoResponse> {
-    return this.http.put<IssueRiepilogoResponse>(`/api/issue/${idIssue}`, request);
+  modificaIssue(idIssue: number, request: ModificaIssueRequest, immagine?: File): Observable<IssueRiepilogoResponse> {
+    const formData = new FormData();
+    formData.append('dati', new Blob([JSON.stringify(request)], { type: 'application/json' }));
+    if (immagine) {
+      formData.append('immagine', immagine);
+    }
+    return this.http.put<IssueRiepilogoResponse>(`/api/issue/${idIssue}`, formData);
   }
 }
