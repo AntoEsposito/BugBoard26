@@ -6,17 +6,35 @@ Repo per il progetto di Ingegneria del Software
 - **Java 25** (JDK)
 - **Git**
 
-### 1. AUTH SERVICE CONTAINERIZZATO
+### 1. Avvio
 
-```Docker compose up -d per far partire database e auth service
-auth service gira sulla porta 8080 della rete docker e 8080 del sistema
-database sulla 5432 della rete docker e 5433 del sistema
+```bash
+docker compose up -d --build
 ```
 
-### 2. Verifica che funziona
+auth-service → porta **8080**, core-service → porta **8081**, database → porta interna 5432 (host: 5433)
 
-```powershell invia una richiesta http per simulare un login
-curl -X POST http://localhost:8080/api/auth/login  -H "Content-Type: application/json"  -d '{"email":"admin@bugboard26.com","password":"admin"}'    
+---
+
+### 2. Utenti di default
+
+All'avvio il DataSeeder crea automaticamente due utenti se non esistono:
+
+| Ruolo | Email | Password |
+|---|---|---|
+| Admin | `admin@bugboard26.com` | `admin` |
+| Utente | `utente@bugboard26.com` | `utente` |
+
+---
+
+### 3. Verifica — Login
+
+```bash
+# Admin
+curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d '{"email":"admin@bugboard26.com","password":"admin"}'
+
+# Utente base
+curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d '{"email":"utente@bugboard26.com","password":"utente"}'
 ```
 
-dovresti ricevere il token jwt con tutte le info del caso
+La risposta contiene il token JWT da usare come `Authorization: Bearer <token>` nelle chiamate successive.

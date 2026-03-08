@@ -73,17 +73,6 @@ public class GlobalExceptionHandler
     }
 
     /**
-     * Gestisce ruolo non trovato nel database (non credo servirà).
-     * HTTP 404 Not Found.
-     */
-    @ExceptionHandler(RoleNotFoundException.class)
-    public ProblemDetail handleRoleNotFound(RoleNotFoundException e)
-    {
-        log.warn("Ruolo non trovato: {}", e.getMessage());
-        return creaProblemDetail(HttpStatus.NOT_FOUND, "Ruolo non trovato", e.getMessage());
-    }
-
-    /**
      * Gestisce errori di validazione dei DTO (es. campi mancanti, formato email errato).
      * HTTP 400 Bad Request.
      */

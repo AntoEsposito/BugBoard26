@@ -1,7 +1,9 @@
 package com.bugboard26.authservice.dto;
 
+import com.bugboard26.authservice.entity.enums.Ruolo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -20,6 +22,6 @@ public class CreaUtenteRequest
     @NotBlank
     private String cognome;
 
-    @NotBlank // ROLE_UTENTE o ROLE_ADMIN
-    private String ruolo;
+    @NotNull
+    private Ruolo ruolo;
 }

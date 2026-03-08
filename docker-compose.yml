@@ -28,6 +28,10 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ADMIN_NOME=${ADMIN_NOME}
       - ADMIN_COGNOME=${ADMIN_COGNOME}
+      - UTENTE_EMAIL=${UTENTE_EMAIL}
+      - UTENTE_PASSWORD=${UTENTE_PASSWORD}
+      - UTENTE_NOME=${UTENTE_NOME}
+      - UTENTE_COGNOME=${UTENTE_COGNOME}
     depends_on:
       - database
 

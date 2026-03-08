@@ -1,5 +1,6 @@
 package com.bugboard26.authservice.entity;
 
+import com.bugboard26.authservice.entity.enums.Ruolo;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,20 +36,17 @@ public class User implements UserDetails
     @Column(nullable = false)
     private String password;
 
-    // EAGER = carica il ruolo insieme all'utente, optional = false = ogni utente deve avere un ruolo
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "role_id", nullable = false)
-    private UserRole ruoloUtente;
-
-
-    // Implementazione dei metodi di UserDetails per Spring Security
-    @Override
-    public String getUsername() {return this.email;}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ruolo", nullable = false)
+    private Ruolo ruolo;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() 
+    public String getUsername() { return this.email; }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
     {
-        return List.of(new SimpleGrantedAuthority(ruoloUtente.getNome()));
+        return List.of(new SimpleGrantedAuthority(ruolo.name()));
     }
 
     // Override di equals e hashCode (da Object) basato sull'ID dell'entità

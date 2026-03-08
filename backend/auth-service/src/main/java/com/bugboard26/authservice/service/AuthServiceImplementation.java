@@ -6,14 +6,12 @@ import com.bugboard26.authservice.dto.LoginAnswer;
 import com.bugboard26.authservice.dto.LoginRequest;
 import com.bugboard26.authservice.dto.UtenteResponse;
 import com.bugboard26.authservice.entity.User;
-import com.bugboard26.authservice.entity.UserRole;
+import com.bugboard26.authservice.entity.enums.Ruolo;
 import com.bugboard26.authservice.exception.EmailGiaInUsoException;
 import com.bugboard26.authservice.exception.InvalidCredentialsException;
-import com.bugboard26.authservice.exception.RoleNotFoundException;
 import com.bugboard26.authservice.exception.UserNotFoundException;
 import com.bugboard26.authservice.jwt.JwtService;
 import com.bugboard26.authservice.repository.UserRepository;
-import com.bugboard26.authservice.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +38,6 @@ public class AuthServiceImplementation implements AuthService
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -57,7 +54,7 @@ public class AuthServiceImplementation implements AuthService
                 .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
         // Generazione JWT con claim del ruolo
-        String token = jwtService.generaToken(utente, Map.of("ruolo", utente.getRuoloUtente().getNome()));
+        String token = jwtService.generaToken(utente, Map.of("ruolo", utente.getRuolo().name()));
 
         log.info("Login effettuato con successo per: {}", request.getEmail());
 
@@ -68,7 +65,7 @@ public class AuthServiceImplementation implements AuthService
                 .email(utente.getEmail())
                 .nome(utente.getNome())
                 .cognome(utente.getCognome())
-                .userRole(utente.getRuoloUtente().getNome())
+                .userRole(utente.getRuolo().name())
                 .expireTime(jwtService.ottieniScadenzaMs())
                 .build();
     }
@@ -83,26 +80,25 @@ public class AuthServiceImplementation implements AuthService
         if (userRepository.existsByEmail(request.getEmail()))
             throw new EmailGiaInUsoException(request.getEmail());
 
-        UserRole ruolo = userRoleRepository.findByNome(request.getRuolo())
-                .orElseThrow(() -> new RoleNotFoundException(request.getRuolo()));
+        Ruolo ruolo = request.getRuolo();
 
         User nuovoUtente = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nome(request.getNome())
                 .cognome(request.getCognome())
-                .ruoloUtente(ruolo)
+                .ruolo(ruolo)
                 .build();
 
         User salvato = userRepository.save(nuovoUtente);
-        log.info("Nuovo utente creato: id={}, email={}, ruolo={}", salvato.getId(), salvato.getEmail(), ruolo.getNome());
+        log.info("Nuovo utente creato: id={}, email={}, ruolo={}", salvato.getId(), salvato.getEmail(), ruolo.name());
 
         return UtenteResponse.builder()
                 .id(salvato.getId())
                 .email(salvato.getEmail())
                 .nome(salvato.getNome())
                 .cognome(salvato.getCognome())
-                .ruolo(ruolo.getNome())
+                .ruolo(ruolo.name())
                 .build();
     }
 
