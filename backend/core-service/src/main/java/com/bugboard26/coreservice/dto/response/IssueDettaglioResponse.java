@@ -25,6 +25,7 @@ public class IssueDettaglioResponse
     private TipoIssue tipo;
     private PrioritaIssue priorita;
     private String descrizione;
+    private String immaginePath;
     private OffsetDateTime dataCreazione;
     private OffsetDateTime dataUltimaModifica;
     private List<UtenteResponse> assegnatari;

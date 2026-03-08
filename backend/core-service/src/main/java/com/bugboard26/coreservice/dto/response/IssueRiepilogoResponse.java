@@ -24,6 +24,7 @@ public class IssueRiepilogoResponse
     private TipoIssue tipo;
     private PrioritaIssue priorita;
     private String descrizione;
+    private String immaginePath;
     private OffsetDateTime dataCreazione;
     private OffsetDateTime dataUltimaModifica;
 }

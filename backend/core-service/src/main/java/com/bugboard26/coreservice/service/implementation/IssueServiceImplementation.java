@@ -18,6 +18,7 @@ import com.bugboard26.coreservice.repository.CommentoRepository;
 import com.bugboard26.coreservice.repository.IssueRepository;
 import com.bugboard26.coreservice.repository.ProgettoRepository;
 import com.bugboard26.coreservice.repository.UtenteRepository;
+import com.bugboard26.coreservice.service.ImageStorageService;
 import com.bugboard26.coreservice.service.IssueService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +41,7 @@ public class IssueServiceImplementation implements IssueService
     private final ProgettoRepository progettoRepository;
     private final UtenteRepository utenteRepository;
     private final CommentoRepository commentoRepository;
+    private final ImageStorageService imageStorageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -56,7 +59,7 @@ public class IssueServiceImplementation implements IssueService
     }
 
     @Override
-    public IssueRiepilogoResponse creaIssue(CreaIssueRequest request, UtenteAutenticato utenteCorrente) 
+    public IssueRiepilogoResponse creaIssue(CreaIssueRequest request, MultipartFile immagine, UtenteAutenticato utenteCorrente)
     {
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
 
@@ -69,6 +72,8 @@ public class IssueServiceImplementation implements IssueService
         HashSet<Utente> assegnatari = new HashSet<>();
         assegnatari.add(utente);
 
+        String immaginePath = (immagine != null && !immagine.isEmpty()) ? imageStorageService.salva(immagine) : null;
+
         Issue nuovaIssue = Issue.builder()
                 .idProgetto(request.getIdProgetto())
                 .idUtenteCreatore(utente.getId())
@@ -77,6 +82,7 @@ public class IssueServiceImplementation implements IssueService
                 .stato(StatoIssue.TODO)
                 .priorita(request.getPriorita() != null ? request.getPriorita() : PrioritaIssue.LOW)
                 .descrizione(request.getDescrizione())
+                .immaginePath(immaginePath)
                 .assegnatari(assegnatari)
                 .build();
 
@@ -110,6 +116,7 @@ public class IssueServiceImplementation implements IssueService
                 .tipo(issue.getTipo())
                 .priorita(issue.getPriorita())
                 .descrizione(issue.getDescrizione())
+                .immaginePath(issue.getImmaginePath())
                 .dataCreazione(issue.getDataCreazione())
                 .dataUltimaModifica(issue.getDataUltimaModifica())
 
@@ -136,7 +143,7 @@ public class IssueServiceImplementation implements IssueService
     }
 
     @Override
-    public IssueRiepilogoResponse modificaIssue(Integer idIssue, ModificaIssueRequest request, UtenteAutenticato utenteCorrente)
+    public IssueRiepilogoResponse modificaIssue(Integer idIssue, ModificaIssueRequest request, MultipartFile immagine, UtenteAutenticato utenteCorrente)
     {
         Issue issue = issueRepository.findById(idIssue)
                 .orElseThrow(() -> new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue));
@@ -153,6 +160,16 @@ public class IssueServiceImplementation implements IssueService
             if (trovati.size() != request.getIdAssegnatari().size())
                 throw new RisorsaNonTrovataException("Uno o più utenti negli assegnatari non esistono");
             issue.setAssegnatari(new HashSet<>(trovati));
+        }
+        if (immagine != null && !immagine.isEmpty())
+        {
+            imageStorageService.elimina(issue.getImmaginePath());
+            issue.setImmaginePath(imageStorageService.salva(immagine));
+        }
+        else if (request.isRimuoviImmagine())
+        {
+            imageStorageService.elimina(issue.getImmaginePath());
+            issue.setImmaginePath(null);
         }
 
         Issue aggiornata = issueRepository.save(issue);
@@ -174,7 +191,7 @@ public class IssueServiceImplementation implements IssueService
         return utenteRepository.findByEmail(email).orElseThrow(() -> new RisorsaNonTrovataException("Utente non trovato: " + email));
     }
 
-    private IssueRiepilogoResponse mappaIssueRiepilogo(Issue i) 
+    private IssueRiepilogoResponse mappaIssueRiepilogo(Issue i)
     {
         return IssueRiepilogoResponse.builder()
                 .id(i.getId())
@@ -185,6 +202,7 @@ public class IssueServiceImplementation implements IssueService
                 .tipo(i.getTipo())
                 .priorita(i.getPriorita())
                 .descrizione(i.getDescrizione())
+                .immaginePath(i.getImmaginePath())
                 .dataCreazione(i.getDataCreazione())
                 .dataUltimaModifica(i.getDataUltimaModifica())
                 .build();

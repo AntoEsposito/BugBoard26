@@ -60,6 +60,9 @@ public class Issue
     @Column(name = "data_ultima_modifica")
     private OffsetDateTime dataUltimaModifica;
 
+    @Column(name = "immagine_path")
+    private String immaginePath;
+
     // Set per garantire unicità degli assegnatari — nessun cascade, Utente è read-only
     @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY)

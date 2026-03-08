@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,13 +32,14 @@ public class IssueController extends AbstractController
         return ResponseEntity.ok(issueService.ottieniIssuePerProgetto(idProgetto, estraiUtente(request)));
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<IssueRiepilogoResponse> creaIssue(
-            @Valid @RequestBody CreaIssueRequest body,
+            @RequestPart("dati") @Valid CreaIssueRequest body,
+            @RequestPart(value = "immagine", required = false) MultipartFile immagine,
             HttpServletRequest request)
     {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(issueService.creaIssue(body, estraiUtente(request)));
+                .body(issueService.creaIssue(body, immagine, estraiUtente(request)));
     }
 
     @GetMapping("/{id}")
@@ -47,12 +50,13 @@ public class IssueController extends AbstractController
         return ResponseEntity.ok(issueService.ottieniDettaglioIssue(id, estraiUtente(request)));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<IssueRiepilogoResponse> modificaIssue(
             @PathVariable Integer id,
-            @Valid @RequestBody ModificaIssueRequest body,
+            @RequestPart("dati") @Valid ModificaIssueRequest body,
+            @RequestPart(value = "immagine", required = false) MultipartFile immagine,
             HttpServletRequest request)
     {
-        return ResponseEntity.ok(issueService.modificaIssue(id, body, estraiUtente(request)));
+        return ResponseEntity.ok(issueService.modificaIssue(id, body, immagine, estraiUtente(request)));
     }
 }

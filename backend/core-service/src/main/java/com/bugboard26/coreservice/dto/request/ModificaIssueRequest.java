@@ -21,4 +21,7 @@ public class ModificaIssueRequest
     private TipoIssue tipo;
 
     private Set<Integer> idAssegnatari;
+
+    /** Se true, rimuove l'immagine esistente (ignorato se viene fornita una nuova immagine). */
+    private boolean rimuoviImmagine;
 }
