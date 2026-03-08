@@ -1,0 +1,457 @@
+/* ===========================
+   DETTAGLIO ISSUE - BugBoard26
+   =========================== */
+
+:host {
+  display: block;
+  background-color: #0f0f0f;
+  min-height: 100vh;
+}
+
+.pagina-dettaglio {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+/* Stato caricamento/errore */
+.stato-caricamento,
+.stato-errore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+}
+
+.testo-caricamento {
+  color: #9ca3af;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.testo-errore {
+  color: #ef4444;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Bottone torna */
+.btn-torna {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.btn-torna:hover {
+  color: #60a5fa;
+}
+
+/* Intestazione */
+.intestazione-dettaglio {
+  margin-bottom: 24px;
+}
+
+.titolo-riga {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.icona-tipo {
+  font-size: 28px;
+}
+
+.titolo-issue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.badge-riga {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge-tipo,
+.badge-stato,
+.badge-priorita {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.badge-tipo {
+  background-color: #1e293b;
+  color: #93c5fd;
+}
+
+.badge-stato {
+  color: #ffffff;
+}
+
+.stato-todo {
+  background-color: #374151;
+}
+
+.stato-in-progress {
+  background-color: #d97706;
+}
+
+.stato-done {
+  background-color: #16a34a;
+}
+
+.badge-priorita {
+  color: #ffffff;
+}
+
+.priorita-alta {
+  background-color: #dc2626;
+}
+
+.priorita-media {
+  background-color: #d97706;
+}
+
+.priorita-bassa {
+  background-color: #6b7280;
+}
+
+/* Card dettagli */
+.scheda-dettagli {
+  background-color: #1c1c1e;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+
+.sezione-dettaglio {
+  margin-bottom: 24px;
+}
+
+.sezione-dettaglio:last-child {
+  margin-bottom: 0;
+}
+
+.etichetta-sezione {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9ca3af;
+  margin: 0 0 10px 0;
+  font-family: 'Segoe UI', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.testo-descrizione {
+  font-size: 15px;
+  color: #d1d5db;
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  white-space: pre-wrap;
+}
+
+.testo-vuoto {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Allegato immagine */
+.contenitore-allegato {
+  background-color: #2a2a2e;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.immagine-allegato {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Griglia info */
+.griglia-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #2a2a2e;
+  border-radius: 10px;
+}
+
+.info-elemento {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-etichetta {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.info-valore {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Assegnatari */
+.lista-assegnatari {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip-assegnatario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #2a2a2e;
+  border-radius: 20px;
+  padding: 6px 14px 6px 6px;
+}
+
+.avatar-piccolo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.nome-assegnatario {
+  font-size: 13px;
+  color: #d1d5db;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sezione commenti */
+.scheda-commenti {
+  background-color: #1c1c1e;
+  border-radius: 16px;
+  padding: 28px 32px;
+}
+
+.titolo-commenti {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Lista commenti */
+.lista-commenti {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.commento-card {
+  background-color: #2a2a2e;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.commento-intestazione {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.commento-autore {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nome-autore {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.commento-data {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.commento-testo {
+  font-size: 14px;
+  color: #d1d5db;
+  line-height: 1.5;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  white-space: pre-wrap;
+}
+
+/* Form nuovo commento */
+.form-commento {
+  border-top: 1px solid #2a2a2e;
+  padding-top: 20px;
+}
+
+.etichetta-nuovo-commento {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 14px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.etichetta {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9ca3af;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.gruppo-bottoni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-scelta {
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #d1d5db;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-scelta:hover {
+  background-color: #3a3a3e;
+  color: #ffffff;
+}
+
+.btn-scelta.attivo {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.input-commento {
+  width: 100%;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 14px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.input-commento::placeholder {
+  color: #4b5563;
+}
+
+.input-commento:focus {
+  border-color: #3b82f6;
+}
+
+.messaggio-errore {
+  background-color: #2d1515;
+  border: 1px solid #5c2020;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fca5a5;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 12px;
+}
+
+.messaggio-successo {
+  background-color: #152d15;
+  border: 1px solid #205c20;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #86efac;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 12px;
+}
+
+.btn-invia-commento {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-invia-commento:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-invia-commento:disabled {
+  background-color: #374151;
+  cursor: not-allowed;
+  color: #6b7280;
+}
+
+@media (max-width: 600px) {
+  .griglia-info {
+    grid-template-columns: 1fr;
+  }
+
+  .titolo-issue {
+    font-size: 22px;
+  }
+}
