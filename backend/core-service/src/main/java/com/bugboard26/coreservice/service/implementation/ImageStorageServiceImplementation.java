@@ -1,5 +1,7 @@
 package com.bugboard26.coreservice.service.implementation;
 
+import com.bugboard26.coreservice.exception.FormatoNonValidoException;
+import com.bugboard26.coreservice.exception.SalvataggioImmagineException;
 import com.bugboard26.coreservice.service.ImageStorageService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +43,7 @@ public class ImageStorageServiceImplementation implements ImageStorageService
         String estensione = estraiEstensione(nomeOriginale);
 
         if (!ESTENSIONI_AMMESSE.contains(estensione.toLowerCase()))
-            throw new IllegalArgumentException("Formato immagine non supportato: " + estensione);
+            throw new FormatoNonValidoException("Formato immagine non supportato: " + estensione);
 
         String nomeFile = UUID.randomUUID() + "." + estensione.toLowerCase();
         Path destinazione = Paths.get(uploadDir, nomeFile);
@@ -53,7 +55,7 @@ public class ImageStorageServiceImplementation implements ImageStorageService
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Errore durante il salvataggio dell'immagine", e);
+            throw new SalvataggioImmagineException("Errore durante il salvataggio dell'immagine", e);
         }
 
         return "/api/uploads/" + nomeFile;
@@ -81,7 +83,7 @@ public class ImageStorageServiceImplementation implements ImageStorageService
     private String estraiEstensione(String nomeFile)
     {
         if (nomeFile == null || !nomeFile.contains("."))
-            throw new IllegalArgumentException("Nome file non valido o privo di estensione");
+            throw new FormatoNonValidoException("Nome file non valido o privo di estensione");
         return nomeFile.substring(nomeFile.lastIndexOf('.') + 1);
     }
 }

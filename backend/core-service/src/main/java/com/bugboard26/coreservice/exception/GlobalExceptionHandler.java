@@ -28,6 +28,20 @@ public class GlobalExceptionHandler
         return creaProblemDetail(HttpStatus.NOT_FOUND, "Risorsa non trovata", e.getMessage());
     }
 
+    @ExceptionHandler(FormatoNonValidoException.class)
+    public ProblemDetail handleFormatoNonValido(FormatoNonValidoException e)
+    {
+        log.warn("Formato non valido: {}", e.getMessage());
+        return creaProblemDetail(HttpStatus.BAD_REQUEST, "Formato non valido", e.getMessage());
+    }
+
+    @ExceptionHandler(SalvataggioImmagineException.class)
+    public ProblemDetail handleSalvataggioImmagine(SalvataggioImmagineException e)
+    {
+        log.error("Errore salvataggio immagine: {}", e.getMessage(), e);
+        return creaProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Errore salvataggio immagine", e.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidazione(MethodArgumentNotValidException e)
     {
