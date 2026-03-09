@@ -194,22 +194,13 @@
       <div class="form-commento">
         <h3 class="etichetta-nuovo-commento">Aggiungi un commento</h3>
 
-        <div class="campo-form">
-          <label class="etichetta">Tipo commento</label>
-          <div class="gruppo-bottoni">
-            <button type="button" class="btn-scelta" [class.attivo]="tipoCommento === 'GENERALE'" (click)="tipoCommento = 'GENERALE'">Generale</button>
-            <button type="button" class="btn-scelta" [class.attivo]="tipoCommento === 'AGGIORNAMENTO'" (click)="tipoCommento = 'AGGIORNAMENTO'">Aggiornamento</button>
-            <button type="button" class="btn-scelta" [class.attivo]="tipoCommento === 'CHIARIMENTO'" (click)="tipoCommento = 'CHIARIMENTO'">Chiarimento</button>
-          </div>
-        </div>
-
         <textarea
           class="input-commento"
           placeholder="Scrivi il tuo commento..."
           [(ngModel)]="nuovoCommento"
           name="nuovoCommento"
           rows="4"
-          maxlength="1000"
+          maxlength="500"
         ></textarea>
 
         @if (erroreCommento) {

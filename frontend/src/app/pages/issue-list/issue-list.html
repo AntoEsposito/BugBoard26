@@ -75,7 +75,7 @@
         <span>⚙</span> Filtri
       </button>
       <div class="contenitore-select">
-        <select class="select-ordinamento" [(ngModel)]="ordinamento" name="ordinamento">
+        <select class="select-ordinamento" [(ngModel)]="ordinamento" name="ordinamento" (ngModelChange)="applicaFiltri()">
           <option value="data_creazione">Data creazione</option>
           <option value="priorita">Priorità</option>
           <option value="stato">Stato</option>

@@ -77,7 +77,28 @@ export class IssueList implements OnInit {
       risultato = risultato.filter(i => i.stato === this.filtroStato);
     }
 
+    risultato = this.ordinaIssue(risultato);
+
     this.issueList = risultato;
+  }
+
+  ordinaIssue(lista: IssueRiepilogoResponse[]): IssueRiepilogoResponse[] {
+    const pesoPriorita: Record<string, number> = { 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
+    const pesoStato: Record<string, number> = { 'TODO': 1, 'IN_PROGRESS': 2, 'DONE': 3 };
+
+    return [...lista].sort((a, b) => {
+      switch (this.ordinamento) {
+        case 'priorita':
+          return (pesoPriorita[b.priorita] ?? 0) - (pesoPriorita[a.priorita] ?? 0);
+        case 'stato':
+          return (pesoStato[a.stato] ?? 0) - (pesoStato[b.stato] ?? 0);
+        case 'tipo':
+          return a.tipo.localeCompare(b.tipo);
+        case 'data_creazione':
+        default:
+          return new Date(b.dataCreazione).getTime() - new Date(a.dataCreazione).getTime();
+      }
+    });
   }
 
   selezionaProgetto(progetto: ProgettoResponse): void {
@@ -86,7 +107,9 @@ export class IssueList implements OnInit {
   }
 
   onNuovaIssue() {
-    this.router.navigate(['/issue/nuova']);
+    this.router.navigate(['/issue/nuova'], {
+      queryParams: { idProgetto: this.progettoSelezionato?.id }
+    });
   }
 
   onApriIssue(issue: IssueRiepilogoResponse) {
@@ -94,6 +117,7 @@ export class IssueList implements OnInit {
   }
 
   onEsci() {
+    this.authService.esci();
     this.router.navigate(['/login']);
   }
 

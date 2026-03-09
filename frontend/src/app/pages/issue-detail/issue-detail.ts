@@ -27,7 +27,6 @@ export class IssueDetail implements OnInit {
 
   // Commenti
   nuovoCommento = '';
-  tipoCommento = 'GENERALE';
   invioCommento = false;
   erroreCommento = '';
   successoCommento = false;
@@ -181,15 +180,13 @@ export class IssueDetail implements OnInit {
     this.invioCommento = true;
 
     const request: CreaCommentoRequest = {
-      contenuto: this.nuovoCommento.trim(),
-      tipo: this.tipoCommento
+      contenuto: this.nuovoCommento.trim()
     };
 
     this.commentoService.aggiungiCommento(this.issue.id, request).subscribe({
       next: (commento) => {
         this.issue!.commenti.push(commento);
         this.nuovoCommento = '';
-        this.tipoCommento = 'GENERALE';
         this.invioCommento = false;
         this.successoCommento = true;
         setTimeout(() => this.successoCommento = false, 2000);
