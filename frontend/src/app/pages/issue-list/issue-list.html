@@ -24,6 +24,14 @@
       </button>
     </nav>
 
+    <!-- Sezione Admin -->
+    <div class="barra-laterale-admin" *ngIf="authService.isAdmin()">
+      <button class="nav-collegamento admin-link" (click)="onGestioneUtenti()">
+        <span class="nav-icona">🛡️</span>
+        <span>Gestione Utenti</span>
+      </button>
+    </div>
+
     <!-- Utente in basso -->
     <div class="barra-laterale-utente">
       <div class="utente-info">

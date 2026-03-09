@@ -109,6 +109,19 @@
 }
 
 /* Utente in basso */
+.barra-laterale-admin {
+  border-top: 1px solid #2a2a2e;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.admin-link {
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+
 .barra-laterale-utente {
   border-top: 1px solid #2a2a2e;
   padding-top: 16px;
