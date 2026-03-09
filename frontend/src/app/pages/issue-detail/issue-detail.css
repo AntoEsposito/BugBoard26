@@ -239,7 +239,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #3b82f6;
+  background-color: #2563eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,7 +343,7 @@
 .etichetta {
   font-size: 13px;
   font-weight: 600;
-  color: #9ca3af;
+  color: #ffffff;
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -406,18 +406,18 @@
   border: 1px solid #5c2020;
   border-radius: 8px;
   padding: 10px 14px;
-  color: #fca5a5;
+  color: #ffffff;
   font-size: 13px;
   font-family: 'Segoe UI', sans-serif;
   margin-bottom: 12px;
 }
 
 .messaggio-successo {
-  background-color: #152d15;
-  border: 1px solid #205c20;
+  background-color: #1a3a2e;
+  border: 1px solid #2d5a3e;
   border-radius: 8px;
   padding: 10px 14px;
-  color: #86efac;
+  color: #6ee7b7;
   font-size: 13px;
   font-family: 'Segoe UI', sans-serif;
   margin-bottom: 12px;
@@ -443,7 +443,7 @@
 .btn-invia-commento:disabled {
   background-color: #374151;
   cursor: not-allowed;
-  color: #6b7280;
+  color: #d1d5db;
 }
 
 /* Azioni intestazione */
@@ -471,7 +471,7 @@
 }
 
 .btn-salva {
-  background-color: #16a34a;
+  background-color: #15803d;
   border: none;
   border-radius: 10px;
   padding: 10px 20px;
@@ -484,13 +484,13 @@
 }
 
 .btn-salva:hover {
-  background-color: #15803d;
+  background-color: #166534;
 }
 
 .btn-salva:disabled {
   background-color: #374151;
   cursor: not-allowed;
-  color: #6b7280;
+  color: #d1d5db;
 }
 
 .btn-annulla-modifica {
