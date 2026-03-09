@@ -18,32 +18,121 @@
     <div class="intestazione-dettaglio">
       <button class="btn-torna" (click)="tornaAllaLista()">← Torna alla lista</button>
       <div class="titolo-riga">
-        <span class="icona-tipo">{{ getIconaTipo(issue.tipo) }}</span>
+        <span class="icona-tipo">{{ getIconaTipo(modalitaModifica ? tipoModifica : issue.tipo) }}</span>
         <h1 class="titolo-issue">{{ issue.titolo }}</h1>
       </div>
       <div class="badge-riga">
-        <span class="badge-tipo">{{ issue.tipo }}</span>
-        <span class="badge-stato" [ngClass]="getClasseStato(issue.stato)">{{ getEtichettaStato(issue.stato) }}</span>
-        <span class="badge-priorita" [ngClass]="getClassePriorita(issue.priorita)">{{ issue.priorita }}</span>
+        @if (!modalitaModifica) {
+          <span class="badge-tipo">{{ issue.tipo }}</span>
+          <span class="badge-stato" [ngClass]="getClasseStato(issue.stato)">{{ getEtichettaStato(issue.stato) }}</span>
+          <span class="badge-priorita" [ngClass]="getClassePriorita(issue.priorita)">{{ issue.priorita }}</span>
+        }
+      </div>
+      <div class="azioni-intestazione">
+        @if (puoModificare && !modalitaModifica) {
+          <button class="btn-modifica" (click)="attivaModifica()">✏️ Modifica</button>
+        }
+        @if (modalitaModifica) {
+          <button class="btn-salva" (click)="onSalvaModifica()" [disabled]="salvataggioInCorso">
+            {{ salvataggioInCorso ? 'Salvataggio...' : '💾 Salva' }}
+          </button>
+          <button class="btn-annulla-modifica" (click)="annullaModifica()">Annulla</button>
+        }
       </div>
     </div>
 
+    @if (erroreModifica) {
+      <div class="messaggio-errore messaggio-errore-modifica">{{ erroreModifica }}</div>
+    }
+
+    @if (successoModifica) {
+      <div class="messaggio-successo messaggio-successo-modifica">Modifiche salvate con successo!</div>
+    }
+
     <div class="scheda-dettagli">
 
-      <div class="sezione-dettaglio">
-        <h2 class="etichetta-sezione">Descrizione</h2>
-        <p class="testo-descrizione">{{ issue.descrizione || 'Nessuna descrizione fornita.' }}</p>
-      </div>
+      <!-- Modalità visualizzazione -->
+      @if (!modalitaModifica) {
 
-      @if (issue.immaginePath) {
         <div class="sezione-dettaglio">
-          <h2 class="etichetta-sezione">Allegato</h2>
-          <div class="contenitore-allegato">
-            <img [src]="'/api/uploads/' + issue.immaginePath" alt="Allegato issue" class="immagine-allegato" />
-          </div>
+          <h2 class="etichetta-sezione">Descrizione</h2>
+          <p class="testo-descrizione">{{ issue.descrizione || 'Nessuna descrizione fornita.' }}</p>
         </div>
+
+        @if (issue.immaginePath) {
+          <div class="sezione-dettaglio">
+            <h2 class="etichetta-sezione">Allegato</h2>
+            <div class="contenitore-allegato">
+              <img [src]="'/api/uploads/' + issue.immaginePath" alt="Allegato issue" class="immagine-allegato" />
+            </div>
+          </div>
+        }
+
       }
 
+      <!-- Modalità modifica -->
+      @if (modalitaModifica) {
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Stato</h2>
+          <div class="gruppo-bottoni">
+            <button type="button" class="btn-scelta" [class.attivo]="statoModifica === 'TODO'" (click)="statoModifica = 'TODO'">To Do</button>
+            <button type="button" class="btn-scelta" [class.attivo]="statoModifica === 'IN_PROGRESS'" (click)="statoModifica = 'IN_PROGRESS'">In Progress</button>
+            <button type="button" class="btn-scelta" [class.attivo]="statoModifica === 'DONE'" (click)="statoModifica = 'DONE'">Done</button>
+          </div>
+        </div>
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Tipo</h2>
+          <div class="gruppo-bottoni">
+            <button type="button" class="btn-scelta" [class.attivo]="tipoModifica === 'BUG'" (click)="tipoModifica = 'BUG'">🐛 Bug</button>
+            <button type="button" class="btn-scelta" [class.attivo]="tipoModifica === 'QUESTION'" (click)="tipoModifica = 'QUESTION'">❓ Question</button>
+            <button type="button" class="btn-scelta" [class.attivo]="tipoModifica === 'DOCUMENTATION'" (click)="tipoModifica = 'DOCUMENTATION'">📄 Documentation</button>
+            <button type="button" class="btn-scelta" [class.attivo]="tipoModifica === 'FEATURE'" (click)="tipoModifica = 'FEATURE'">✨ Feature</button>
+          </div>
+        </div>
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Priorità</h2>
+          <div class="gruppo-bottoni">
+            <button type="button" class="btn-scelta" [class.attivo]="prioritaModifica === 'LOW'" (click)="prioritaModifica = 'LOW'">Low</button>
+            <button type="button" class="btn-scelta" [class.attivo]="prioritaModifica === 'MEDIUM'" (click)="prioritaModifica = 'MEDIUM'">Medium</button>
+            <button type="button" class="btn-scelta" [class.attivo]="prioritaModifica === 'HIGH'" (click)="prioritaModifica = 'HIGH'">High</button>
+          </div>
+        </div>
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Descrizione</h2>
+          <textarea
+            class="input-modifica-descrizione"
+            [(ngModel)]="descrizioneModifica"
+            name="descrizioneModifica"
+            rows="5"
+            maxlength="500"
+            placeholder="Descrivi la issue..."
+          ></textarea>
+        </div>
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Assegnatari</h2>
+          <div class="lista-assegnatari-modifica">
+            @for (membro of membriProgetto; track membro.id) {
+              <label class="checkbox-assegnatario">
+                <input
+                  type="checkbox"
+                  [checked]="assegnatariModifica.includes(membro.id)"
+                  (change)="toggleAssegnatario(membro.id)"
+                />
+                <span class="avatar-piccolo">{{ (membro.nome[0] + membro.cognome[0]).toUpperCase() }}</span>
+                <span class="nome-assegnatario">{{ membro.nome }} {{ membro.cognome }}</span>
+              </label>
+            }
+          </div>
+        </div>
+
+      }
+
+      <!-- Info (sempre visibili) -->
       <div class="griglia-info">
         <div class="info-elemento">
           <span class="info-etichetta">Creata il</span>
@@ -59,22 +148,27 @@
         </div>
       </div>
 
-      <div class="sezione-dettaglio">
-        <h2 class="etichetta-sezione">Assegnatari</h2>
-        @if (issue.assegnatari.length === 0) {
-          <p class="testo-vuoto">Nessun assegnatario.</p>
-        }
-        <div class="lista-assegnatari">
-          @for (utente of issue.assegnatari; track utente.id) {
-            <div class="chip-assegnatario">
-              <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
-              <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
-            </div>
+      <!-- Assegnatari in visualizzazione -->
+      @if (!modalitaModifica) {
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Assegnatari</h2>
+          @if (issue.assegnatari.length === 0) {
+            <p class="testo-vuoto">Nessun assegnatario.</p>
           }
+          <div class="lista-assegnatari">
+            @for (utente of issue.assegnatari; track utente.id) {
+              <div class="chip-assegnatario">
+                <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
+                <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
+              </div>
+            }
+          </div>
         </div>
-      </div>
+      }
+
     </div>
 
+    <!-- Sezione commenti -->
     <div class="scheda-commenti">
       <h2 class="titolo-commenti">Commenti ({{ issue.commenti.length }})</h2>
 
