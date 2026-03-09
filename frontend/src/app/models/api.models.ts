@@ -16,7 +16,6 @@ export interface CommentoResponse {
   idIssue: number;
   idUtenteCreatore: number;
   contenuto: string;
-  tipo: string;
   dataCreazione: string;
 }
 
@@ -53,9 +52,9 @@ export interface ModificaIssueRequest {
   priorita?: string;
   tipo?: string;
   idAssegnatari?: number[];
+  rimuoviImmagine?: boolean;
 }
 
 export interface CreaCommentoRequest {
   contenuto: string;
-  tipo: string;
 }
