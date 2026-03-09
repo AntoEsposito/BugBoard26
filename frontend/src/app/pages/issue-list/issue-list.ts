@@ -116,6 +116,10 @@ export class IssueList implements OnInit {
     this.router.navigate(['/issue', issue.id]);
   }
 
+  onGestioneUtenti() {
+    this.router.navigate(['/admin/utenti']);
+  }
+
   onEsci() {
     this.authService.esci();
     this.router.navigate(['/login']);
