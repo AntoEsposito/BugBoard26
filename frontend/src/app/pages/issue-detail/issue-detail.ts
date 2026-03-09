@@ -2,9 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IssueDettaglioResponse, CreaCommentoRequest, CommentoResponse } from '../../models/api.models';
+import {
+  IssueDettaglioResponse,
+  CreaCommentoRequest,
+  CommentoResponse,
+  ModificaIssueRequest,
+  UtenteResponse
+} from '../../models/api.models';
 import { IssueService } from '../../services/issue.service';
 import { CommentoService } from '../../services/commento.service';
+import { ProgettoService } from '../../services/progetto.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -18,17 +25,34 @@ export class IssueDetail implements OnInit {
   caricamento = true;
   erroreCaricamento = '';
 
+  // Commenti
   nuovoCommento = '';
   tipoCommento = 'GENERALE';
   invioCommento = false;
   erroreCommento = '';
   successoCommento = false;
 
+  // Modifica
+  modalitaModifica = false;
+  puoModificare = false;
+  salvataggioInCorso = false;
+  erroreModifica = '';
+  successoModifica = false;
+
+  // Campi modifica
+  statoModifica = '';
+  tipoModifica = '';
+  prioritaModifica = '';
+  descrizioneModifica = '';
+  assegnatariModifica: number[] = [];
+  membriProgetto: UtenteResponse[] = [];
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly issueService: IssueService,
     private readonly commentoService: CommentoService,
+    private readonly progettoService: ProgettoService,
     protected readonly authService: AuthService
   ) {}
 
@@ -48,6 +72,7 @@ export class IssueDetail implements OnInit {
       next: (issue) => {
         this.issue = issue;
         this.caricamento = false;
+        this.calcolaPermessi();
       },
       error: (err) => {
         this.caricamento = false;
@@ -61,6 +86,93 @@ export class IssueDetail implements OnInit {
       }
     });
   }
+
+  calcolaPermessi(): void {
+    if (!this.issue) return;
+
+    if (this.authService.isAdmin()) {
+      this.puoModificare = true;
+      return;
+    }
+
+    const emailCorrente = this.authService.getEmail();
+    this.puoModificare = this.issue.assegnatari.some(a => a.email === emailCorrente);
+  }
+
+  attivaModifica(): void {
+    if (!this.issue) return;
+
+    this.modalitaModifica = true;
+    this.erroreModifica = '';
+    this.successoModifica = false;
+
+    // Precompila i campi con i valori attuali
+    this.statoModifica = this.issue.stato;
+    this.tipoModifica = this.issue.tipo;
+    this.prioritaModifica = this.issue.priorita;
+    this.descrizioneModifica = this.issue.descrizione || '';
+    this.assegnatariModifica = this.issue.assegnatari.map(a => a.id);
+
+    // Carica i membri del progetto per la selezione assegnatari
+    this.progettoService.ottieniMembri(this.issue.idProgetto).subscribe({
+      next: (membri) => {
+        this.membriProgetto = membri;
+      },
+      error: () => {
+        this.membriProgetto = this.issue!.assegnatari;
+      }
+    });
+  }
+
+  annullaModifica(): void {
+    this.modalitaModifica = false;
+    this.erroreModifica = '';
+  }
+
+  toggleAssegnatario(idUtente: number): void {
+    const index = this.assegnatariModifica.indexOf(idUtente);
+    if (index === -1) {
+      this.assegnatariModifica.push(idUtente);
+    } else {
+      this.assegnatariModifica.splice(index, 1);
+    }
+  }
+
+  onSalvaModifica(): void {
+    if (!this.issue) return;
+
+    this.erroreModifica = '';
+    this.salvataggioInCorso = true;
+
+    const request: ModificaIssueRequest = {
+      stato: this.statoModifica,
+      tipo: this.tipoModifica,
+      priorita: this.prioritaModifica,
+      descrizione: this.descrizioneModifica,
+      idAssegnatari: this.assegnatariModifica
+    };
+
+    this.issueService.modificaIssue(this.issue.id, request).subscribe({
+      next: () => {
+        this.salvataggioInCorso = false;
+        this.modalitaModifica = false;
+        this.successoModifica = true;
+        setTimeout(() => this.successoModifica = false, 3000);
+        // Ricarica il dettaglio aggiornato
+        this.caricaDettaglio(this.issue!.id);
+      },
+      error: (err) => {
+        this.salvataggioInCorso = false;
+        if (err.status === 403) {
+          this.erroreModifica = 'Non hai i permessi per modificare questa issue.';
+        } else {
+          this.erroreModifica = 'Errore durante il salvataggio. Riprova.';
+        }
+      }
+    });
+  }
+
+  // --- Commenti ---
 
   onInviaCommento(): void {
     if (this.nuovoCommento.trim() === '' || !this.issue) return;
@@ -92,6 +204,8 @@ export class IssueDetail implements OnInit {
   tornaAllaLista(): void {
     this.router.navigate(['/issue-list']);
   }
+
+  // --- Utility ---
 
   getIconaTipo(tipo: string): string {
     switch (tipo) {
