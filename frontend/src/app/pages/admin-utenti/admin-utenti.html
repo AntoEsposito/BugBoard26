@@ -86,27 +86,29 @@
 
       <!-- Campo Ruolo -->
       <div class="campo-form">
-        <label class="etichetta">
-          Ruolo <span class="obbligatorio">*</span>
-        </label>
-        <div class="gruppo-bottoni">
-          <button
-            type="button"
-            class="btn-scelta"
-            [class.attivo]="ruolo === 'ROLE_UTENTE'"
-            (click)="ruolo = 'ROLE_UTENTE'"
-          >
-            👤 Utente
-          </button>
-          <button
-            type="button"
-            class="btn-scelta"
-            [class.attivo]="ruolo === 'ROLE_ADMIN'"
-            (click)="ruolo = 'ROLE_ADMIN'"
-          >
-            🛡️ Amministratore
-          </button>
-        </div>
+        <fieldset class="gruppo-bottoni-fieldset">
+          <legend class="etichetta">
+            Ruolo <span class="obbligatorio">*</span>
+          </legend>
+          <div class="gruppo-bottoni">
+            <button
+              type="button"
+              class="btn-scelta"
+              [class.attivo]="ruolo === 'ROLE_UTENTE'"
+              (click)="ruolo = 'ROLE_UTENTE'"
+            >
+              👤 Utente
+            </button>
+            <button
+              type="button"
+              class="btn-scelta"
+              [class.attivo]="ruolo === 'ROLE_ADMIN'"
+              (click)="ruolo = 'ROLE_ADMIN'"
+            >
+              🛡️ Amministratore
+            </button>
+          </div>
+        </fieldset>
       </div>
 
       <!-- Messaggio errore -->

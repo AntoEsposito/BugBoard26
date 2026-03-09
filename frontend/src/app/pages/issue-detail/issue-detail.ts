@@ -57,7 +57,7 @@ export class IssueDetail implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (isNaN(id)) {
+    if (Number.isNaN(id)) {
       this.router.navigate(['/issue-list']);
       return;
     }
