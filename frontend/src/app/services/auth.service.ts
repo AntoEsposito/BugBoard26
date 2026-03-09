@@ -17,17 +17,38 @@ export interface LoginAnswer {
   expireTime: number;
 }
 
+export interface CreaUtenteRequest {
+  email: string;
+  password: string;
+  nome: string;
+  cognome: string;
+  ruolo: string;
+}
+
+export interface UtenteAuthResponse {
+  id: number;
+  email: string;
+  nome: string;
+  cognome: string;
+  ruolo: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
   private readonly loginUrl = '/api/auth/login';
+  private readonly utentiUrl = '/api/auth/utenti';
 
   constructor(private readonly http: HttpClient) {}
 
   login(credenziali: LoginRequest): Observable<LoginAnswer> {
     return this.http.post<LoginAnswer>(this.loginUrl, credenziali);
+  }
+
+  creaUtente(request: CreaUtenteRequest): Observable<UtenteAuthResponse> {
+    return this.http.post<UtenteAuthResponse>(this.utentiUrl, request);
   }
 
   salvaSessione(risposta: LoginAnswer): void {
