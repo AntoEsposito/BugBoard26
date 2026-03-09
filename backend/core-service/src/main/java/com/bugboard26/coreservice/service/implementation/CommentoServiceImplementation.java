@@ -27,16 +27,11 @@ public class CommentoServiceImplementation implements CommentoService
     private final UtenteRepository utenteRepository;
 
     @Override
-    public CommentoResponse aggiungiCommento(Integer idIssue, CreaCommentoRequest request, UtenteAutenticato utenteCorrente) 
+    public CommentoResponse aggiungiCommento(Integer idIssue, CreaCommentoRequest request, UtenteAutenticato utenteCorrente)
     {
-        Utente utente = utenteRepository.findByEmail(utenteCorrente.email())
-                .orElseThrow(() -> new RisorsaNonTrovataException("Utente non trovato: " + utenteCorrente.email()));
-
-        if (!issueRepository.existsById(idIssue)) 
-            throw new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue);
-
-        if (!utenteCorrente.isAdmin() && !issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId())) 
-            throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
+        Utente utente = trovaUtentePerEmail(utenteCorrente.email());
+        verificaEsistenzaIssue(idIssue);
+        verificaAccessoIssue(idIssue, utente, utenteCorrente);
 
         Commento commento = Commento.builder()
                 .idIssue(idIssue)
@@ -54,5 +49,27 @@ public class CommentoServiceImplementation implements CommentoService
                 .contenuto(salvato.getContenuto())
                 .dataCreazione(salvato.getDataCreazione())
                 .build();
+    }
+
+    // ── Verifiche di autorizzazione
+
+    private void verificaEsistenzaIssue(Integer idIssue)
+    {
+        if (!issueRepository.existsById(idIssue))
+            throw new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue);
+    }
+
+    private void verificaAccessoIssue(Integer idIssue, Utente utente, UtenteAutenticato utenteCorrente)
+    {
+        if (utenteCorrente.isAdmin()) return;
+
+        if (!issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId()))
+            throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
+    }
+
+    private Utente trovaUtentePerEmail(String email)
+    {
+        return utenteRepository.findByEmail(email)
+                .orElseThrow(() -> new RisorsaNonTrovataException("Utente non trovato: " + email));
     }
 }

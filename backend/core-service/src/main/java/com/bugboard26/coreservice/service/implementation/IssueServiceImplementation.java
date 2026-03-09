@@ -47,27 +47,19 @@ public class IssueServiceImplementation implements IssueService
     @Transactional(readOnly = true)
     public List<IssueRiepilogoResponse> ottieniIssuePerProgetto(Integer idProgetto, UtenteAutenticato utenteCorrente)
     {
-        if (!progettoRepository.existsById(idProgetto))
-            throw new RisorsaNonTrovataException("Progetto non trovato: id=" + idProgetto);
-
-        if (utenteCorrente.isAdmin())
-            return issueRepository.findByIdProgettoOrderByDataCreazioneDesc(idProgetto).stream().map(this::mappaIssueRiepilogo).toList();
-
+        verificaEsistenzaProgetto(idProgetto);
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
-        return issueRepository.findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(idProgetto, utente.getId())
-            .stream().map(this::mappaIssueRiepilogo).toList();
+
+        return trovaIssuePerProgetto(idProgetto, utente, utenteCorrente)
+                .stream().map(this::mappaIssueRiepilogo).toList();
     }
 
     @Override
     public IssueRiepilogoResponse creaIssue(CreaIssueRequest request, MultipartFile immagine, UtenteAutenticato utenteCorrente)
     {
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
-
-        if (!progettoRepository.existsById(request.getIdProgetto()))
-            throw new RisorsaNonTrovataException("Progetto non trovato: id=" + request.getIdProgetto());
-
-        if (!progettoRepository.existsByIdAndMembri_Id(request.getIdProgetto(), utente.getId()))
-            throw new AccesoNegatoException("Non sei membro del progetto con id " + request.getIdProgetto());
+        verificaEsistenzaProgetto(request.getIdProgetto());
+        verificaAppartenenzaProgetto(request.getIdProgetto(), utente, utenteCorrente);
 
         HashSet<Utente> assegnatari = new HashSet<>();
         assegnatari.add(utente);
@@ -98,12 +90,7 @@ public class IssueServiceImplementation implements IssueService
         Issue issue = issueRepository.findByIdConDettagli(idIssue)
                 .orElseThrow(() -> new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue));
 
-        if (!utenteCorrente.isAdmin())
-        {
-            Utente utente = trovaUtentePerEmail(utenteCorrente.email());
-            if (!issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId()))
-                throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
-        }
+        verificaAccessoIssue(idIssue, utenteCorrente);
 
         List<Commento> commenti = commentoRepository.findByIdIssueOrderByDataCreazioneDesc(idIssue);
 
@@ -147,7 +134,7 @@ public class IssueServiceImplementation implements IssueService
         Issue issue = issueRepository.findById(idIssue)
                 .orElseThrow(() -> new RisorsaNonTrovataException("Issue non trovata: id=" + idIssue));
 
-        verificaPermessiModifica(idIssue, utenteCorrente);
+        verificaAccessoIssue(idIssue, utenteCorrente);
 
         if (request.getDescrizione() != null) issue.setDescrizione(request.getDescrizione());
         if (request.getStato() != null) issue.setStato(request.getStato());
@@ -176,13 +163,39 @@ public class IssueServiceImplementation implements IssueService
         return mappaIssueRiepilogo(aggiornata);
     }
 
-    private void verificaPermessiModifica(Integer idIssue, UtenteAutenticato utenteCorrente)
+    // ── Verifiche di autorizzazione
+
+    private void verificaEsistenzaProgetto(Integer idProgetto)
+    {
+        if (!progettoRepository.existsById(idProgetto))
+            throw new RisorsaNonTrovataException("Progetto non trovato: id=" + idProgetto);
+    }
+
+    private void verificaAppartenenzaProgetto(Integer idProgetto, Utente utente, UtenteAutenticato utenteCorrente)
+    {
+        if (utenteCorrente.isAdmin()) return;
+
+        if (!progettoRepository.existsByIdAndMembri_Id(idProgetto, utente.getId()))
+            throw new AccesoNegatoException("Non sei membro del progetto con id " + idProgetto);
+    }
+
+    private void verificaAccessoIssue(Integer idIssue, UtenteAutenticato utenteCorrente)
     {
         if (utenteCorrente.isAdmin()) return;
 
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
         if (!issueRepository.existsByIdAndAssegnatari_Id(idIssue, utente.getId()))
             throw new AccesoNegatoException("Non hai accesso alla issue con id " + idIssue);
+    }
+
+    // ── Query condizionali per ruolo
+
+    private List<Issue> trovaIssuePerProgetto(Integer idProgetto, Utente utente, UtenteAutenticato utenteCorrente)
+    {
+        if (utenteCorrente.isAdmin())
+            return issueRepository.findByIdProgettoOrderByDataCreazioneDesc(idProgetto);
+
+        return issueRepository.findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(idProgetto, utente.getId());
     }
 
     private Utente trovaUtentePerEmail(String email) 

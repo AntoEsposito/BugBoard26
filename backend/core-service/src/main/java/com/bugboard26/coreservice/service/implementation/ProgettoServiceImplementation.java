@@ -29,18 +29,12 @@ public class ProgettoServiceImplementation implements ProgettoService
     private final IssueRepository issueRepository;
 
     @Override
-    public List<ProgettoResponse> ottieniProgetti(UtenteAutenticato utenteCorrente) 
+    public List<ProgettoResponse> ottieniProgetti(UtenteAutenticato utenteCorrente)
     {
-        if (utenteCorrente.isAdmin()) 
-            return progettoRepository.findAll().stream().map(this::mappaProgetto).toList();
+        Utente utente = trovaUtentePerEmail(utenteCorrente.email());
 
-        else
-        {
-            Utente utente = utenteRepository.findByEmail(utenteCorrente.email())
-                    .orElseThrow(() -> new RisorsaNonTrovataException("Utente non trovato: " + utenteCorrente.email()));
-
-            return progettoRepository.findProgettiConIssueAssegnateA(utente.getId()).stream().map(this::mappaProgetto).toList();
-        }
+        return trovaProgetti(utente, utenteCorrente)
+                .stream().map(this::mappaProgetto).toList();
     }
 
     @Override
@@ -49,13 +43,7 @@ public class ProgettoServiceImplementation implements ProgettoService
         Progetto progetto = progettoRepository.findByIdConMembri(idProgetto)
                 .orElseThrow(() -> new RisorsaNonTrovataException("Progetto non trovato: id=" + idProgetto));
 
-        if (!utenteCorrente.isAdmin())
-        {
-            Utente utente = utenteRepository.findByEmail(utenteCorrente.email())
-                    .orElseThrow(() -> new RisorsaNonTrovataException("Utente non trovato: " + utenteCorrente.email()));
-            if (!issueRepository.existsByIdProgettoAndAssegnatari_Id(idProgetto, utente.getId()))
-                throw new AccesoNegatoException("Non hai accesso al progetto con id " + idProgetto);
-        }
+        verificaAccessoProgetto(idProgetto, utenteCorrente);
 
         return progetto.getMembri().stream()
                 .map(u -> UtenteResponse.builder()
@@ -67,7 +55,36 @@ public class ProgettoServiceImplementation implements ProgettoService
                 .toList();
     }
 
-    private ProgettoResponse mappaProgetto(Progetto p) 
+    // ── Verifiche di autorizzazione
+
+    private void verificaAccessoProgetto(Integer idProgetto, UtenteAutenticato utenteCorrente)
+    {
+        if (utenteCorrente.isAdmin()) return;
+
+        Utente utente = trovaUtentePerEmail(utenteCorrente.email());
+        if (!issueRepository.existsByIdProgettoAndAssegnatari_Id(idProgetto, utente.getId()))
+            throw new AccesoNegatoException("Non hai accesso al progetto con id " + idProgetto);
+    }
+
+    // ── Query condizionali per ruolo
+
+    private List<Progetto> trovaProgetti(Utente utente, UtenteAutenticato utenteCorrente)
+    {
+        if (utenteCorrente.isAdmin())
+            return progettoRepository.findAll();
+
+        return progettoRepository.findProgettiConIssueAssegnateA(utente.getId());
+    }
+
+    // ── Utility
+
+    private Utente trovaUtentePerEmail(String email)
+    {
+        return utenteRepository.findByEmail(email)
+                .orElseThrow(() -> new RisorsaNonTrovataException("Utente non trovato: " + email));
+    }
+
+    private ProgettoResponse mappaProgetto(Progetto p)
     {
         return ProgettoResponse.builder()
                 .id(p.getId())
