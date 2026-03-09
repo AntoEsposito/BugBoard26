@@ -446,6 +446,130 @@
   color: #6b7280;
 }
 
+/* Azioni intestazione */
+.azioni-intestazione {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-modifica {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-modifica:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-salva {
+  background-color: #16a34a;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-salva:hover {
+  background-color: #15803d;
+}
+
+.btn-salva:disabled {
+  background-color: #374151;
+  cursor: not-allowed;
+  color: #6b7280;
+}
+
+.btn-annulla-modifica {
+  background-color: #374151;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #d1d5db;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-annulla-modifica:hover {
+  background-color: #4b5563;
+}
+
+/* Textarea modifica descrizione */
+.input-modifica-descrizione {
+  width: 100%;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 14px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  resize: vertical;
+  min-height: 120px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.input-modifica-descrizione::placeholder {
+  color: #4b5563;
+}
+
+.input-modifica-descrizione:focus {
+  border-color: #3b82f6;
+}
+
+/* Assegnatari modifica */
+.lista-assegnatari-modifica {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-assegnatario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #2a2a2e;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.checkbox-assegnatario:hover {
+  background-color: #3a3a3e;
+}
+
+.checkbox-assegnatario input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+/* Messaggi modifica */
+.messaggio-errore-modifica,
+.messaggio-successo-modifica {
+  margin-bottom: 20px;
+}
+
 @media (max-width: 600px) {
   .griglia-info {
     grid-template-columns: 1fr;
