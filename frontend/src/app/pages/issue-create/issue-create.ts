@@ -57,8 +57,8 @@ export class IssueCreate implements OnInit {
       idProgetto: this.idProgetto,
       titolo: this.titolo.trim(),
       tipo: this.tipo,
-      descrizione: this.descrizione.trim() !== '' ? this.descrizione.trim() : undefined,
-      priorita: this.priorita !== '' ? this.priorita : undefined,
+      descrizione: this.descrizione.trim() === '' ? undefined : this.descrizione.trim(),
+      priorita: this.priorita === '' ? undefined : this.priorita,
     };
 
     this.caricamento = true;
