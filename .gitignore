@@ -24,3 +24,5 @@ Thumbs.db
 .env
 db_data/
 uploads_data/
+
+.htmlhintrc
