@@ -51,7 +51,7 @@ export class AdminUtenti {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (this.email.length > 254 || !emailRegex.test(this.email)) {
       this.errore = 'Formato email non valido.';
       return;
