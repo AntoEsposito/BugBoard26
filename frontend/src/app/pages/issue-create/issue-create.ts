@@ -75,11 +75,12 @@ export class IssueCreate implements OnInit {
       next: () => {
         this.caricamento = false;
         this.successo = true;
-        setTimeout(() => this.router.navigate(['/issue-list']), 1500);
+        this.cdr.detectChanges();
       },
       error: () => {
         this.caricamento = false;
         this.mostraErrore = true;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -90,6 +91,10 @@ export class IssueCreate implements OnInit {
 
   chiudiErrore(): void {
     this.mostraErrore = false;
+  }
+
+  chiudiSuccesso(): void {
+    this.router.navigate(['/issue-list']);
   }
 
   onFileSelezionato(event: Event): void {

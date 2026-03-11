@@ -57,13 +57,6 @@
         </div>
       </div>
 
-      <!-- Messaggio errore -->
-      @if (errore) {
-        <div class="messaggio-errore">
-          {{ errore }}
-        </div>
-      }
-
       <!-- Bottone Accedi -->
       <button type="submit" class="btn-accedi" [disabled]="caricamento">
         {{ caricamento ? 'Accesso in corso...' : 'Accedi' }}
@@ -72,6 +65,18 @@
     </form>
 
   </div>
+
+  <!-- Popup errore login -->
+  @if (mostraErrore) {
+    <div class="overlay-errore">
+      <div class="popup-errore">
+        <p class="testo-errore">{{ messaggioErrore }}</p>
+        <div class="azioni-errore">
+          <button type="button" class="btn-ok-errore" (click)="chiudiErrore()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- Credenziali demo -->
   <div class="scheda-demo">

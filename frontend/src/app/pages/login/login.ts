@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -16,14 +16,21 @@ export class Login {
   ricordami = false;
   caricamento = false;
   errore = '';
+  mostraErrore = false;
+  messaggioErrore = '';
 
   constructor(
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   mostraNascondiPassword() {
     this.mostraPassword = !this.mostraPassword;
+  }
+
+  chiudiErrore(): void {
+    this.mostraErrore = false;
   }
 
   onAccedi() {
@@ -36,12 +43,14 @@ export class Login {
         this.router.navigate(['/issue-list']);
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 404) {
-          this.errore = 'Email o password non corretti.';
-        } else {
-          this.errore = 'Errore di connessione. Riprova più tardi.';
-        }
         this.caricamento = false;
+        if (err.status === 401 || err.status === 404) {
+          this.messaggioErrore = 'Email o password non corretti.';
+        } else {
+          this.messaggioErrore = 'Errore di connessione. Riprova più tardi.';
+        }
+        this.mostraErrore = true;
+        this.cdr.detectChanges();
       }
     });
   }

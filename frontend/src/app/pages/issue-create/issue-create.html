@@ -144,12 +144,7 @@
         </div>
       }
 
-      <!-- Messaggio successo -->
-      @if (successo) {
-        <div class="messaggio-successo">
-          Issue creata con successo!
-        </div>
-      }
+      <!-- Messaggio successo (mostrato come popup) -->
 
       <!-- Bottoni azione -->
       <div class="gruppo-azioni">
@@ -164,6 +159,18 @@
     </form>
 
   </div>
+
+  <!-- Popup successo -->
+  @if (successo) {
+    <div class="overlay-conferma">
+      <div class="popup-conferma">
+        <p class="testo-conferma">Issue creata con successo!</p>
+        <div class="azioni-conferma">
+          <button type="button" class="btn-conferma" (click)="chiudiSuccesso()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- Popup errore -->
   @if (mostraErrore) {
