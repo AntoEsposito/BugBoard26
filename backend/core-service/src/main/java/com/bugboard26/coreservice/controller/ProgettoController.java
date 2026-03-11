@@ -1,15 +1,14 @@
 package com.bugboard26.coreservice.controller;
 
+import com.bugboard26.coreservice.dto.request.ModificaMembriRequest;
 import com.bugboard26.coreservice.dto.response.ProgettoResponse;
 import com.bugboard26.coreservice.dto.response.UtenteResponse;
 import com.bugboard26.coreservice.service.ProgettoService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +29,24 @@ public class ProgettoController extends AbstractController
     public ResponseEntity<List<UtenteResponse>> ottieniMembri(@PathVariable Integer id, HttpServletRequest request)
     {
         return ResponseEntity.ok(progettoService.ottieniMembri(id, estraiUtente(request)));
+    }
+
+    @PostMapping("/{id}/membri")
+    public ResponseEntity<List<UtenteResponse>> aggiungiMembri(
+            @PathVariable Integer id,
+            @Valid @RequestBody ModificaMembriRequest body,
+            HttpServletRequest request)
+    {
+        return ResponseEntity.ok(progettoService.aggiungiMembri(id, body.getIdUtenti(), estraiUtente(request)));
+    }
+
+    @DeleteMapping("/{id}/membri")
+    public ResponseEntity<Void> rimuoviMembri(
+            @PathVariable Integer id,
+            @Valid @RequestBody ModificaMembriRequest body,
+            HttpServletRequest request)
+    {
+        progettoService.rimuoviMembri(id, body.getIdUtenti(), estraiUtente(request));
+        return ResponseEntity.noContent().build();
     }
 }

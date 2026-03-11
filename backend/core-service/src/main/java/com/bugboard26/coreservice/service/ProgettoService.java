@@ -20,4 +20,10 @@ public interface ProgettoService {
      * Admin: accesso libero. Utente: solo se ha almeno una issue assegnata nel progetto.
      */
     List<UtenteResponse> ottieniMembri(Integer idProgetto, UtenteAutenticato utenteCorrente);
+
+    /** Aggiunge membri a un progetto. Solo admin. */
+    List<UtenteResponse> aggiungiMembri(Integer idProgetto, List<Integer> idUtenti, UtenteAutenticato utenteCorrente);
+
+    /** Rimuove membri da un progetto. Solo admin. Blocca la rimozione se l'utente ha issue assegnate nel progetto. */
+    void rimuoviMembri(Integer idProgetto, List<Integer> idUtenti, UtenteAutenticato utenteCorrente);
 }

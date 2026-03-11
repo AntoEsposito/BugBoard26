@@ -35,6 +35,13 @@ public class GlobalExceptionHandler
         return creaProblemDetail(HttpStatus.BAD_REQUEST, "Formato non valido", e.getMessage());
     }
 
+    @ExceptionHandler(OperazioneNonConsentitaException.class)
+    public ProblemDetail handleOperazioneNonConsentita(OperazioneNonConsentitaException e)
+    {
+        log.warn("Operazione non consentita: {}", e.getMessage());
+        return creaProblemDetail(HttpStatus.CONFLICT, "Operazione non consentita", e.getMessage());
+    }
+
     @ExceptionHandler(SalvataggioImmagineException.class)
     public ProblemDetail handleSalvataggioImmagine(SalvataggioImmagineException e)
     {
