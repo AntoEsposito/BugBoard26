@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +24,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 
     /** Verifica se un utente ha almeno una issue assegnata in un progetto (controllo visibilità progetto). */
     boolean existsByIdProgettoAndAssegnatari_Id(Integer idProgetto, Integer idUtente);
-
-    /** Restituisce gli ID degli utenti (tra quelli indicati) che hanno almeno una issue assegnata nel progetto. */
-    @Query("SELECT DISTINCT a.id FROM Issue i JOIN i.assegnatari a WHERE i.idProgetto = :idProgetto AND a.id IN :idUtenti")
-    List<Integer> findAssegnatariConIssueInProgetto(@Param("idProgetto") Integer idProgetto, @Param("idUtenti") Collection<Integer> idUtenti);
 
     /** Dettaglio issue con assegnatari in un'unica query per evitare N+1 (UC-07). */
     @Query("SELECT i FROM Issue i LEFT JOIN FETCH i.assegnatari WHERE i.id = :issueId")

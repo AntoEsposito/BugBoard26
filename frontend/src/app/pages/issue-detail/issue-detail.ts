@@ -11,7 +11,7 @@ import {
 } from '../../models/api.models';
 import { IssueService } from '../../services/issue.service';
 import { CommentoService } from '../../services/commento.service';
-import { ProgettoService } from '../../services/progetto.service';
+import { UtenteService } from '../../services/utente.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -44,14 +44,14 @@ export class IssueDetail implements OnInit {
   prioritaModifica = '';
   descrizioneModifica = '';
   assegnatariModifica: number[] = [];
-  membriProgetto: UtenteResponse[] = [];
+  utentiDisponibili: UtenteResponse[] = [];
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly issueService: IssueService,
     private readonly commentoService: CommentoService,
-    private readonly progettoService: ProgettoService,
+    private readonly utenteService: UtenteService,
     protected readonly authService: AuthService,
     private readonly cdr: ChangeDetectorRef
   ) {}
@@ -115,14 +115,14 @@ export class IssueDetail implements OnInit {
     this.descrizioneModifica = this.issue.descrizione || '';
     this.assegnatariModifica = this.issue.assegnatari.map(a => a.id);
 
-    // Carica i membri del progetto per la selezione assegnatari
-    this.progettoService.ottieniMembri(this.issue.idProgetto).subscribe({
-      next: (membri) => {
-        this.membriProgetto = membri;
+    // Carica tutti gli utenti per la selezione assegnatari
+    this.utenteService.ottieniUtenti().subscribe({
+      next: (utenti) => {
+        this.utentiDisponibili = utenti;
         this.cdr.detectChanges();
       },
       error: () => {
-        this.membriProgetto = this.issue!.assegnatari;
+        this.utentiDisponibili = this.issue!.assegnatari;
         this.cdr.detectChanges();
       }
     });

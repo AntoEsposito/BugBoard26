@@ -116,15 +116,15 @@
         <div class="sezione-dettaglio">
           <h2 class="etichetta-sezione">Assegnatari</h2>
           <div class="lista-assegnatari-modifica">
-            @for (membro of membriProgetto; track membro.id) {
+            @for (utente of utentiDisponibili; track utente.id) {
               <label class="checkbox-assegnatario">
                 <input
                   type="checkbox"
-                  [checked]="assegnatariModifica.includes(membro.id)"
-                  (change)="toggleAssegnatario(membro.id)"
+                  [checked]="assegnatariModifica.includes(utente.id)"
+                  (change)="toggleAssegnatario(utente.id)"
                 />
-                <span class="avatar-piccolo">{{ (membro.nome[0] + membro.cognome[0]).toUpperCase() }}</span>
-                <span class="nome-assegnatario">{{ membro.nome }} {{ membro.cognome }}</span>
+                <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
+                <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
               </label>
             }
           </div>

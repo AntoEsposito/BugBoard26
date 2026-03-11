@@ -6,17 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProgettoRepository extends JpaRepository<Progetto, Integer> {
 
     boolean existsByNome(String nome);
-
-    /** Verifica se un utente è membro di un progetto (controllo permessi UC-03). */
-    boolean existsByIdAndMembri_Id(Integer id, Integer idUtente);
-
-    /** Tutti i progetti in cui l'utente è membro (via join table progetti_membri). */
-    List<Progetto> findByMembri_Id(Integer idUtente);
 
     /**
      * Dashboard utente normale: progetti distinti che contengono almeno una issue assegnata all'utente.
@@ -24,8 +17,4 @@ public interface ProgettoRepository extends JpaRepository<Progetto, Integer> {
      */
     @Query("SELECT DISTINCT p FROM Progetto p WHERE p.id IN (SELECT i.idProgetto FROM Issue i JOIN i.assegnatari a WHERE a.id = :idUtente)")
     List<Progetto> findProgettiConIssueAssegnateA(@Param("idUtente") Integer idUtente);
-
-    /** JOIN FETCH su membri per evitare LazyInitializationException in ottieniMembri. */
-    @Query("SELECT p FROM Progetto p LEFT JOIN FETCH p.membri WHERE p.id = :id")
-    Optional<Progetto> findByIdConMembri(@Param("id") Integer id);
 }

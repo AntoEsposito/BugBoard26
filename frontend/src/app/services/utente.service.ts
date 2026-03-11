@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProgettoResponse } from '../models/api.models';
+import { UtenteResponse } from '../models/api.models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProgettoService {
+export class UtenteService {
 
   constructor(private readonly http: HttpClient) {}
 
-  ottieniProgetti(): Observable<ProgettoResponse[]> {
-    return this.http.get<ProgettoResponse[]>('/api/progetti');
+  ottieniUtenti(): Observable<UtenteResponse[]> {
+    return this.http.get<UtenteResponse[]>('/api/utenti');
   }
 }

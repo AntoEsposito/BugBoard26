@@ -59,7 +59,6 @@ public class IssueServiceImplementation implements IssueService
     {
         Utente utente = trovaUtentePerEmail(utenteCorrente.email());
         verificaEsistenzaProgetto(request.getIdProgetto());
-        verificaAppartenenzaProgetto(request.getIdProgetto(), utente, utenteCorrente);
 
         HashSet<Utente> assegnatari = new HashSet<>();
         assegnatari.add(utente);
@@ -169,14 +168,6 @@ public class IssueServiceImplementation implements IssueService
     {
         if (!progettoRepository.existsById(idProgetto))
             throw new RisorsaNonTrovataException("Progetto non trovato: id=" + idProgetto);
-    }
-
-    private void verificaAppartenenzaProgetto(Integer idProgetto, Utente utente, UtenteAutenticato utenteCorrente)
-    {
-        if (utenteCorrente.isAdmin()) return;
-
-        if (!progettoRepository.existsByIdAndMembri_Id(idProgetto, utente.getId()))
-            throw new AccesoNegatoException("Non sei membro del progetto con id " + idProgetto);
     }
 
     private void verificaAccessoIssue(Integer idIssue, UtenteAutenticato utenteCorrente)
