@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -52,7 +52,8 @@ export class IssueDetail implements OnInit {
     private readonly issueService: IssueService,
     private readonly commentoService: CommentoService,
     private readonly progettoService: ProgettoService,
-    protected readonly authService: AuthService
+    protected readonly authService: AuthService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -72,9 +73,11 @@ export class IssueDetail implements OnInit {
         this.issue = issue;
         this.caricamento = false;
         this.calcolaPermessi();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.caricamento = false;
+        this.cdr.detectChanges();
         if (err.status === 403) {
           this.erroreCaricamento = 'Non hai i permessi per visualizzare questa issue.';
         } else if (err.status === 404) {
@@ -116,9 +119,11 @@ export class IssueDetail implements OnInit {
     this.progettoService.ottieniMembri(this.issue.idProgetto).subscribe({
       next: (membri) => {
         this.membriProgetto = membri;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.membriProgetto = this.issue!.assegnatari;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -156,12 +161,14 @@ export class IssueDetail implements OnInit {
         this.salvataggioInCorso = false;
         this.modalitaModifica = false;
         this.successoModifica = true;
-        setTimeout(() => this.successoModifica = false, 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => { this.successoModifica = false; this.cdr.detectChanges(); }, 3000);
         // Ricarica il dettaglio aggiornato
         this.caricaDettaglio(this.issue!.id);
       },
       error: (err) => {
         this.salvataggioInCorso = false;
+        this.cdr.detectChanges();
         if (err.status === 403) {
           this.erroreModifica = 'Non hai i permessi per modificare questa issue.';
         } else {
@@ -189,10 +196,12 @@ export class IssueDetail implements OnInit {
         this.nuovoCommento = '';
         this.invioCommento = false;
         this.successoCommento = true;
-        setTimeout(() => this.successoCommento = false, 2000);
+        this.cdr.detectChanges();
+        setTimeout(() => { this.successoCommento = false; this.cdr.detectChanges(); }, 2000);
       },
       error: () => {
         this.invioCommento = false;
+        this.cdr.detectChanges();
         this.erroreCommento = 'Errore durante l\'invio del commento. Riprova.';
       }
     });

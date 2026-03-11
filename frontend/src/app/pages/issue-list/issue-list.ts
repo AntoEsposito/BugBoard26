@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -32,7 +32,8 @@ export class IssueList implements OnInit {
     private readonly router: Router,
     private readonly progettoService: ProgettoService,
     private readonly issueService: IssueService,
-    protected readonly authService: AuthService
+    protected readonly authService: AuthService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +43,7 @@ export class IssueList implements OnInit {
         this.progettoSelezionato = progetti[0];
         this.caricaIssue();
       }
+      this.cdr.detectChanges();
     });
   }
 
@@ -50,6 +52,7 @@ export class IssueList implements OnInit {
       this.issueService.ottieniIssuePerProgetto(this.progettoSelezionato.id).subscribe(issues => {
         this.issueListCompleta = issues;
         this.issueList = issues;
+        this.cdr.detectChanges();
       });
     }
   }
