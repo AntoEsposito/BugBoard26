@@ -51,6 +51,16 @@ services:
     depends_on:
       - database
 
+  frontend:
+    build: ./frontend
+    container_name: bugboard26-frontend
+    restart: always
+    ports:
+      - "4200:4200"
+    depends_on:
+      - auth-service
+      - core-service
+
 volumes:
   db_data:
   core_uploads:
