@@ -63,7 +63,7 @@
           <div class="sezione-dettaglio">
             <h2 class="etichetta-sezione">Allegato</h2>
             <div class="contenitore-allegato">
-              <img [src]="'/api/uploads/' + issue.immaginePath" alt="Allegato issue" class="immagine-allegato" />
+              <img [src]="issue.immaginePath" alt="Allegato issue" class="immagine-allegato anteprima-cliccabile" (click)="immagineFullscreen = true" />
             </div>
           </div>
         }
@@ -212,3 +212,9 @@
   }
 
 </div>
+
+@if (immagineFullscreen && issue?.immaginePath) {
+  <div class="overlay-fullscreen" (click)="immagineFullscreen = false" (keydown.escape)="immagineFullscreen = false">
+    <img [src]="issue!.immaginePath" alt="Allegato issue" class="immagine-fullscreen" />
+  </div>
+}

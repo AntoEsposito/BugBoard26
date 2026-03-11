@@ -31,6 +31,9 @@ export class IssueDetail implements OnInit {
   erroreCommento = '';
   successoCommento = false;
 
+  // Fullscreen immagine
+  immagineFullscreen = false;
+
   // Modifica
   modalitaModifica = false;
   puoModificare = false;

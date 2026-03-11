@@ -189,6 +189,37 @@
   object-fit: contain;
 }
 
+.anteprima-cliccabile {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.anteprima-cliccabile:hover {
+  opacity: 0.8;
+}
+
+/* Overlay fullscreen immagine */
+.overlay-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+.immagine-fullscreen {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
 /* Griglia info */
 .griglia-info {
   display: grid;
