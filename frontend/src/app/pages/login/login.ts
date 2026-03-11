@@ -44,7 +44,9 @@ export class Login {
       },
       error: (err) => {
         this.caricamento = false;
-        if (err.status === 401 || err.status === 404) {
+        if (err.status === 400) {
+          this.messaggioErrore = 'Formato email non valido.';
+        } else if (err.status === 401 || err.status === 404) {
           this.messaggioErrore = 'Email o password non corretti.';
         } else {
           this.messaggioErrore = 'Errore di connessione. Riprova più tardi.';
