@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -25,7 +25,8 @@ export class AdminUtenti {
 
   constructor(
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   mostraNascondiPassword(): void {
@@ -87,6 +88,7 @@ export class AdminUtenti {
         this.successo = true;
         this.messaggioSuccesso = `Utente "${risposta.nome} ${risposta.cognome}" creato con successo!`;
         this.resetForm();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.caricamento = false;
@@ -97,6 +99,7 @@ export class AdminUtenti {
         } else {
           this.errore = 'Errore durante la creazione. Riprova.';
         }
+        this.cdr.detectChanges();
       }
     });
   }
