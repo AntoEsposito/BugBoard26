@@ -113,22 +113,24 @@
           ></textarea>
         </div>
 
-        <div class="sezione-dettaglio">
-          <h2 class="etichetta-sezione">Assegnatari</h2>
-          <div class="lista-assegnatari-modifica">
-            @for (utente of utentiDisponibili; track utente.id) {
-              <label class="checkbox-assegnatario">
-                <input
-                  type="checkbox"
-                  [checked]="assegnatariModifica.includes(utente.id)"
-                  (change)="toggleAssegnatario(utente.id)"
-                />
-                <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
-                <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
-              </label>
-            }
+        @if (authService.isAdmin()) {
+          <div class="sezione-dettaglio">
+            <h2 class="etichetta-sezione">Assegnatari</h2>
+            <div class="lista-assegnatari-modifica">
+              @for (utente of utentiDisponibili; track utente.id) {
+                <label class="checkbox-assegnatario">
+                  <input
+                    type="checkbox"
+                    [checked]="assegnatariModifica.includes(utente.id)"
+                    (change)="toggleAssegnatario(utente.id)"
+                  />
+                  <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
+                  <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
+                </label>
+              }
+            </div>
           </div>
-        </div>
+        }
 
       }
 

@@ -115,17 +115,19 @@ export class IssueDetail implements OnInit {
     this.descrizioneModifica = this.issue.descrizione || '';
     this.assegnatariModifica = this.issue.assegnatari.map(a => a.id);
 
-    // Carica tutti gli utenti per la selezione assegnatari
-    this.utenteService.ottieniUtenti().subscribe({
-      next: (utenti) => {
-        this.utentiDisponibili = utenti;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.utentiDisponibili = this.issue!.assegnatari;
-        this.cdr.detectChanges();
-      }
-    });
+    // Carica tutti gli utenti per la selezione assegnatari (solo admin)
+    if (this.authService.isAdmin()) {
+      this.utenteService.ottieniUtenti().subscribe({
+        next: (utenti) => {
+          this.utentiDisponibili = utenti;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.utentiDisponibili = this.issue!.assegnatari;
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 
   annullaModifica(): void {

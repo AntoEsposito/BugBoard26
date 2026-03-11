@@ -139,7 +139,7 @@ public class IssueServiceImplementation implements IssueService
         if (request.getStato() != null) issue.setStato(request.getStato());
         if (request.getPriorita() != null) issue.setPriorita(request.getPriorita());
         if (request.getTipo() != null) issue.setTipo(request.getTipo());
-        if (request.getIdAssegnatari() != null && !request.getIdAssegnatari().isEmpty())
+        if (utenteCorrente.isAdmin() && request.getIdAssegnatari() != null && !request.getIdAssegnatari().isEmpty())
         {
             List<Utente> trovati = utenteRepository.findAllByIdIn(request.getIdAssegnatari());
             if (trovati.size() != request.getIdAssegnatari().size())
