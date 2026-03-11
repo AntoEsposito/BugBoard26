@@ -77,6 +77,7 @@ public class Issue
     private void impostaDataCreazione()
     {
         this.dataCreazione = OffsetDateTime.now();
+        this.dataUltimaModifica = this.dataCreazione;
     }
 
     @PreUpdate
