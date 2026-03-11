@@ -26,10 +26,10 @@
       </div>
 
       <!-- Campo Tipo -->
-      <div class="campo-form">
-        <label class="etichetta">
+      <fieldset class="campo-form">
+        <legend class="etichetta">
           Tipo <span class="obbligatorio">*</span>
-        </label>
+        </legend>
         <div class="gruppo-bottoni">
           <button
             type="button"
@@ -64,11 +64,11 @@
             ✨ Feature
           </button>
         </div>
-      </div>
+      </fieldset>
 
       <!-- Campo Priorità -->
-      <div class="campo-form">
-        <label class="etichetta">Priorità <span class="opzionale">(opzionale, default: Low)</span></label>
+      <fieldset class="campo-form">
+        <legend class="etichetta">Priorità <span class="opzionale">(opzionale, default: Low)</span></legend>
         <div class="gruppo-bottoni">
           <button
             type="button"
@@ -95,7 +95,7 @@
             High
           </button>
         </div>
-      </div>
+      </fieldset>
 
       <!-- Campo Descrizione -->
       <div class="campo-form">
@@ -113,7 +113,7 @@
 
       <!-- Campo Immagine -->
       <div class="campo-form">
-        <label class="etichetta">Allegato immagine <span class="opzionale">(opzionale)</span></label>
+        <label class="etichetta" for="immagine">Allegato immagine <span class="opzionale">(opzionale)</span></label>
         <div class="contenitore-upload">
           <input
             #inputImmagine
