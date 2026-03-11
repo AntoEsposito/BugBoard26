@@ -165,6 +165,18 @@
 
   </div>
 
+  <!-- Popup errore -->
+  @if (mostraErrore) {
+    <div class="overlay-conferma">
+      <div class="popup-conferma">
+        <p class="testo-conferma">Si è verificato un errore, riprova più tardi.</p>
+        <div class="azioni-conferma">
+          <button type="button" class="btn-conferma" (click)="chiudiErrore()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
+
   <!-- Popup conferma creazione -->
   @if (mostraConferma) {
     <div class="overlay-conferma" (click)="annullaConferma()" (keydown.escape)="annullaConferma()">

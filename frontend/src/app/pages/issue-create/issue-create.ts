@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -25,13 +25,15 @@ export class IssueCreate implements OnInit {
   errore: string = '';
   successo: boolean = false;
   mostraConferma: boolean = false;
+  mostraErrore: boolean = false;
 
   @ViewChild('inputImmagine') inputImmagine!: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly issueService: IssueService
+    private readonly issueService: IssueService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -77,13 +79,17 @@ export class IssueCreate implements OnInit {
       },
       error: () => {
         this.caricamento = false;
-        this.errore = 'Errore durante la creazione dell\'issue. Riprova.';
+        this.mostraErrore = true;
       }
     });
   }
 
   annullaConferma(): void {
     this.mostraConferma = false;
+  }
+
+  chiudiErrore(): void {
+    this.mostraErrore = false;
   }
 
   onFileSelezionato(event: Event): void {
@@ -93,6 +99,7 @@ export class IssueCreate implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.anteprimaImmagine = reader.result as string;
+        this.cdr.detectChanges();
       };
       reader.readAsDataURL(this.immagineSelezionata);
     }
