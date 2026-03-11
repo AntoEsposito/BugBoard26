@@ -11,7 +11,7 @@ Piattaforma web per il tracciamento di issue software — progetto universitario
 ```bash
 git clone <repo-url>
 cd BugBoard26
-docker compose up -d --build
+docker compose up -d --build (ci vogliono un paio di minuti)
 ```
 
 L'applicazione sarà disponibile su `http://localhost:4200`.
