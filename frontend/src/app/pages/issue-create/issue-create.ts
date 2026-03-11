@@ -24,6 +24,7 @@ export class IssueCreate implements OnInit {
   caricamento: boolean = false;
   errore: string = '';
   successo: boolean = false;
+  mostraConferma: boolean = false;
 
   @ViewChild('inputImmagine') inputImmagine!: ElementRef<HTMLInputElement>;
 
@@ -53,6 +54,12 @@ export class IssueCreate implements OnInit {
       return;
     }
 
+    this.mostraConferma = true;
+  }
+
+  confermaCreazione(): void {
+    this.mostraConferma = false;
+
     const request: CreaIssueRequest = {
       idProgetto: this.idProgetto,
       titolo: this.titolo.trim(),
@@ -73,6 +80,10 @@ export class IssueCreate implements OnInit {
         this.errore = 'Errore durante la creazione dell\'issue. Riprova.';
       }
     });
+  }
+
+  annullaConferma(): void {
+    this.mostraConferma = false;
   }
 
   onFileSelezionato(event: Event): void {

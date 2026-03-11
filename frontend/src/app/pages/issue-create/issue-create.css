@@ -267,3 +267,72 @@
 .btn-rimuovi-immagine:hover {
   color: #f87171;
 }
+
+/* Popup conferma */
+.overlay-conferma {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-conferma {
+  background-color: #1c1c1e;
+  border: 1px solid #3a3a3e;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.testo-conferma {
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0 0 24px 0;
+}
+
+.azioni-conferma {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-annulla-conferma {
+  background: transparent;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 12px 24px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-annulla-conferma:hover {
+  border-color: #6b7280;
+  color: #ffffff;
+}
+
+.btn-conferma {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-conferma:hover {
+  background-color: #1d4ed8;
+}

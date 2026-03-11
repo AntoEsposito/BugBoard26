@@ -165,4 +165,17 @@
 
   </div>
 
+  <!-- Popup conferma creazione -->
+  @if (mostraConferma) {
+    <div class="overlay-conferma" (click)="annullaConferma()" (keydown.escape)="annullaConferma()">
+      <div class="popup-conferma" (click)="$event.stopPropagation()" (keydown.escape)="annullaConferma()">
+        <p class="testo-conferma">Una nuova issue verrà creata nel sistema.</p>
+        <div class="azioni-conferma">
+          <button type="button" class="btn-annulla-conferma" (click)="annullaConferma()">Annulla</button>
+          <button type="button" class="btn-conferma" (click)="confermaCreazione()">Conferma</button>
+        </div>
+      </div>
+    </div>
+  }
+
 </div>
