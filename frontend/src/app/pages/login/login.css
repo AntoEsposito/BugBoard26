@@ -12,10 +12,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
   background-color: #0f0f0f;
-  padding: 32px 16px;
+  padding: 100px 16px 32px;
   gap: 20px;
 }
 
@@ -32,9 +32,11 @@
 }
 
 .logo-immagine {
-  width: 90px;
-  height: 90px;
+  width: 450px;
+  height: auto;
   object-fit: contain;
+  background-color: #0f0f0f;
+  border-radius: 12px;
 }
 
 .logo-wrapper {
@@ -75,15 +77,16 @@
 
 .scheda-login {
   width: 100%;
-  max-width: 480px;
+  max-width: 400px;
   background-color: #1c1c1e;
   border-radius: 16px;
-  padding: 36px 40px;
+  padding: 28px 32px 40px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .intestazione-scheda {
   margin-bottom: 28px;
+  text-align: center;
 }
 
 .titolo-accedi {
@@ -307,7 +310,7 @@
 
 .scheda-demo {
   width: 100%;
-  max-width: 480px;
+  max-width: 400px;
   background-color: #1c1c1e;
   border-radius: 12px;
   padding: 16px 24px;
