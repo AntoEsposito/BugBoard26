@@ -234,7 +234,7 @@ export class IssueDetail implements OnInit {
 
     this.commentoService.aggiungiCommento(this.issue.id, request).subscribe({
       next: (commento) => {
-        this.issue!.commenti.push(commento);
+        this.issue!.commenti.unshift(commento);
         this.nuovoCommento = '';
         this.invioCommento = false;
         this.successoCommento = true;
