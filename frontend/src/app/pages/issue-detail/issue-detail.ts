@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -48,6 +48,10 @@ export class IssueDetail implements OnInit {
   descrizioneModifica = '';
   assegnatariModifica: number[] = [];
   utentiDisponibili: UtenteResponse[] = [];
+
+  // Dropdown assegnatari
+  dropdownAssegnatariAperto = false;
+  filtroAssegnatari = '';
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -136,6 +140,8 @@ export class IssueDetail implements OnInit {
   annullaModifica(): void {
     this.modalitaModifica = false;
     this.erroreModifica = '';
+    this.dropdownAssegnatariAperto = false;
+    this.filtroAssegnatari = '';
   }
 
   toggleAssegnatario(idUtente: number): void {
@@ -145,6 +151,37 @@ export class IssueDetail implements OnInit {
     } else {
       this.assegnatariModifica.splice(index, 1);
     }
+  }
+
+  toggleDropdownAssegnatari(): void {
+    this.dropdownAssegnatariAperto = !this.dropdownAssegnatariAperto;
+    if (!this.dropdownAssegnatariAperto) this.filtroAssegnatari = '';
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    if (this.dropdownAssegnatariAperto) {
+      this.dropdownAssegnatariAperto = false;
+      this.filtroAssegnatari = '';
+    }
+  }
+
+  get utentiFiltrati(): UtenteResponse[] {
+    if (!this.filtroAssegnatari.trim()) return this.utentiDisponibili;
+    const filtro = this.filtroAssegnatari.toLowerCase();
+    return this.utentiDisponibili.filter(u =>
+      (u.nome + ' ' + u.cognome).toLowerCase().includes(filtro)
+    );
+  }
+
+  get etichettaAssegnatari(): string {
+    const n = this.assegnatariModifica.length;
+    if (n === 0) return 'Nessun assegnatario';
+    if (n === 1) {
+      const u = this.utentiDisponibili.find(ut => ut.id === this.assegnatariModifica[0]);
+      return u ? u.nome + ' ' + u.cognome : '1 assegnatario selezionato';
+    }
+    return n + ' assegnatari selezionati';
   }
 
   onSalvaModifica(): void {

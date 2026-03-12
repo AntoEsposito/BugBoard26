@@ -108,18 +108,41 @@
         @if (authService.isAdmin()) {
           <div class="sezione-dettaglio">
             <h2 class="etichetta-sezione">Assegnatari</h2>
-            <div class="lista-assegnatari-modifica">
-              @for (utente of utentiDisponibili; track utente.id) {
-                <label class="checkbox-assegnatario">
+            <div class="dropdown-assegnatari" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+
+              <button type="button" class="dropdown-trigger" (click)="toggleDropdownAssegnatari()">
+                <span class="dropdown-trigger-testo">{{ etichettaAssegnatari }}</span>
+                <span class="dropdown-freccia" [class.aperta]="dropdownAssegnatariAperto">▼</span>
+              </button>
+
+              @if (dropdownAssegnatariAperto) {
+                <div class="dropdown-pannello">
                   <input
-                    type="checkbox"
-                    [checked]="assegnatariModifica.includes(utente.id)"
-                    (change)="toggleAssegnatario(utente.id)"
+                    type="text"
+                    class="dropdown-ricerca"
+                    placeholder="Cerca utente..."
+                    [(ngModel)]="filtroAssegnatari"
+                    name="filtroAssegnatari"
                   />
-                  <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
-                  <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
-                </label>
+                  <div class="dropdown-lista">
+                    @for (utente of utentiFiltrati; track utente.id) {
+                      <label class="dropdown-opzione">
+                        <input
+                          type="checkbox"
+                          [checked]="assegnatariModifica.includes(utente.id)"
+                          (change)="toggleAssegnatario(utente.id)"
+                        />
+                        <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
+                        <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
+                      </label>
+                    }
+                    @if (utentiFiltrati.length === 0) {
+                      <p class="dropdown-nessun-risultato">Nessun utente trovato.</p>
+                    }
+                  </div>
+                </div>
               }
+
             </div>
           </div>
         }

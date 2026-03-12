@@ -1,11 +1,8 @@
-/* ===========================
-   DETTAGLIO ISSUE - BugBoard26
-   =========================== */
-
 :host {
   display: block;
   background-color: #0f0f0f;
   min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .pagina-dettaglio {
@@ -14,7 +11,6 @@
   padding: 32px 16px;
 }
 
-/* Stato caricamento/errore */
 .stato-caricamento,
 .stato-errore {
   display: flex;
@@ -28,22 +24,18 @@
 .testo-caricamento {
   color: #9ca3af;
   font-size: 16px;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .testo-errore {
   color: #ef4444;
   font-size: 16px;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Bottone torna */
 .btn-torna {
   background: none;
   border: none;
   color: #3b82f6;
   font-size: 14px;
-  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   padding: 8px 0;
   margin-bottom: 16px;
@@ -54,7 +46,6 @@
   color: #60a5fa;
 }
 
-/* Intestazione */
 .intestazione-dettaglio {
   margin-bottom: 24px;
 }
@@ -75,7 +66,6 @@
   font-weight: 700;
   color: #ffffff;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .badge-riga {
@@ -91,7 +81,6 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .badge-tipo {
@@ -131,7 +120,6 @@
   background-color: #6b7280;
 }
 
-/* Card dettagli */
 .scheda-dettagli {
   background-color: #1c1c1e;
   border-radius: 16px;
@@ -152,7 +140,6 @@
   font-weight: 600;
   color: #9ca3af;
   margin: 0 0 10px 0;
-  font-family: 'Segoe UI', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -162,7 +149,6 @@
   color: #d1d5db;
   line-height: 1.6;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
   white-space: pre-wrap;
 }
 
@@ -170,10 +156,8 @@
   font-size: 14px;
   color: #6b7280;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Allegato immagine */
 .contenitore-allegato {
   background-color: #2a2a2e;
   border-radius: 10px;
@@ -198,14 +182,12 @@
   opacity: 0.8;
 }
 
-/* Bottone anteprima immagine */
 .bottone-anteprima {
   all: unset;
   display: inline-block;
   cursor: pointer;
 }
 
-/* Overlay fullscreen immagine */
 .overlay-fullscreen {
   all: unset;
   position: fixed;
@@ -228,7 +210,6 @@
   border-radius: 8px;
 }
 
-/* Griglia info */
 .griglia-info {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -248,17 +229,14 @@
 .info-etichetta {
   font-size: 12px;
   color: #6b7280;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .info-valore {
   font-size: 14px;
   color: #ffffff;
   font-weight: 500;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Assegnatari */
 .lista-assegnatari {
   display: flex;
   flex-wrap: wrap;
@@ -285,16 +263,13 @@
   font-size: 11px;
   font-weight: 700;
   color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .nome-assegnatario {
   font-size: 13px;
   color: #d1d5db;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Sezione commenti */
 .scheda-commenti {
   background-color: #1c1c1e;
   border-radius: 16px;
@@ -306,10 +281,8 @@
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 20px 0;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Lista commenti */
 .lista-commenti {
   display: flex;
   flex-direction: column;
@@ -340,13 +313,11 @@
   font-size: 13px;
   font-weight: 600;
   color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .commento-data {
   font-size: 12px;
   color: #6b7280;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .commento-testo {
@@ -354,11 +325,9 @@
   color: #d1d5db;
   line-height: 1.5;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
   white-space: pre-wrap;
 }
 
-/* Form nuovo commento */
 .form-commento {
   border-top: 1px solid #2a2a2e;
   padding-top: 20px;
@@ -369,7 +338,6 @@
   font-weight: 600;
   color: #ffffff;
   margin: 0 0 14px 0;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .campo-form {
@@ -383,7 +351,6 @@
   font-size: 13px;
   font-weight: 600;
   color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .gruppo-bottoni {
@@ -399,7 +366,6 @@
   padding: 8px 16px;
   color: #d1d5db;
   font-size: 13px;
-  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -423,7 +389,6 @@
   padding: 14px;
   color: #ffffff;
   font-size: 14px;
-  font-family: 'Segoe UI', sans-serif;
   outline: none;
   resize: vertical;
   min-height: 100px;
@@ -447,7 +412,6 @@
   padding: 10px 14px;
   color: #ffffff;
   font-size: 13px;
-  font-family: 'Segoe UI', sans-serif;
   margin-bottom: 12px;
 }
 
@@ -458,7 +422,6 @@
   padding: 10px 14px;
   color: #6ee7b7;
   font-size: 13px;
-  font-family: 'Segoe UI', sans-serif;
   margin-bottom: 12px;
 }
 
@@ -470,7 +433,6 @@
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -485,7 +447,6 @@
   color: #d1d5db;
 }
 
-/* Azioni intestazione */
 .azioni-intestazione {
   display: flex;
   gap: 10px;
@@ -500,7 +461,6 @@
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -517,7 +477,6 @@
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -540,7 +499,6 @@
   color: #d1d5db;
   font-size: 14px;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -549,7 +507,6 @@
   background-color: #4b5563;
 }
 
-/* Textarea modifica descrizione */
 .input-modifica-descrizione {
   width: 100%;
   background-color: #2a2a2e;
@@ -558,7 +515,6 @@
   padding: 14px;
   color: #ffffff;
   font-size: 14px;
-  font-family: 'Segoe UI', sans-serif;
   outline: none;
   resize: vertical;
   min-height: 120px;
@@ -574,36 +530,119 @@
   border-color: #3b82f6;
 }
 
-/* Assegnatari modifica */
-.lista-assegnatari-modifica {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.dropdown-assegnatari {
+  position: relative;
 }
 
-.checkbox-assegnatario {
+.dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #d1d5db;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.dropdown-trigger:hover {
+  border-color: #3b82f6;
+}
+
+.dropdown-trigger-testo {
+  flex: 1;
+  text-align: left;
+}
+
+.dropdown-freccia {
+  font-size: 10px;
+  color: #6b7280;
+  transition: transform 0.2s;
+}
+
+.dropdown-freccia.aperta {
+  transform: rotate(180deg);
+}
+
+.dropdown-pannello {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: #1c1c1e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdown-ricerca {
+  width: 100%;
+  background-color: #2a2a2e;
+  border: none;
+  border-bottom: 1px solid #3a3a3e;
+  padding: 12px 14px;
+  color: #ffffff;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.dropdown-ricerca::placeholder {
+  color: #4b5563;
+}
+
+.dropdown-lista {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.dropdown-opzione {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: #2a2a2e;
-  border-radius: 10px;
   padding: 10px 14px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.checkbox-assegnatario:hover {
-  background-color: #3a3a3e;
+.dropdown-opzione:hover {
+  background-color: #2a2a2e;
 }
 
-.checkbox-assegnatario input[type="checkbox"] {
+.dropdown-opzione input[type="checkbox"] {
   width: 18px;
   height: 18px;
   accent-color: #3b82f6;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-/* Messaggi modifica */
+.dropdown-nessun-risultato {
+  padding: 14px;
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+
+.dropdown-lista::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-lista::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-lista::-webkit-scrollbar-thumb {
+  background-color: #3a3a3e;
+  border-radius: 3px;
+}
+
 .messaggio-errore-modifica,
 .messaggio-successo-modifica {
   margin-bottom: 20px;
