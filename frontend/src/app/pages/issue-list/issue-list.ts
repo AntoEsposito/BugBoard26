@@ -17,7 +17,7 @@ export class IssueList implements OnInit {
   avatarNonCaricato = false;
   testoRicerca = '';
 
-  ordinamento = 'data_creazione';
+  ordinamento = 'data_desc';
   mostraFiltri = false;
   filtroTipo = '';
   filtroPriorita = '';
@@ -87,17 +87,16 @@ export class IssueList implements OnInit {
 
   ordinaIssue(lista: IssueRiepilogoResponse[]): IssueRiepilogoResponse[] {
     const pesoPriorita: Record<string, number> = { 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
-    const pesoStato: Record<string, number> = { 'TODO': 1, 'IN_PROGRESS': 2, 'DONE': 3 };
 
     return [...lista].sort((a, b) => {
       switch (this.ordinamento) {
-        case 'priorita':
+        case 'data_asc':
+          return new Date(a.dataCreazione).getTime() - new Date(b.dataCreazione).getTime();
+        case 'priorita_desc':
           return (pesoPriorita[b.priorita] ?? 0) - (pesoPriorita[a.priorita] ?? 0);
-        case 'stato':
-          return (pesoStato[a.stato] ?? 0) - (pesoStato[b.stato] ?? 0);
-        case 'tipo':
-          return a.tipo.localeCompare(b.tipo);
-        case 'data_creazione':
+        case 'priorita_asc':
+          return (pesoPriorita[a.priorita] ?? 0) - (pesoPriorita[b.priorita] ?? 0);
+        case 'data_desc':
         default:
           return new Date(b.dataCreazione).getTime() - new Date(a.dataCreazione).getTime();
       }
