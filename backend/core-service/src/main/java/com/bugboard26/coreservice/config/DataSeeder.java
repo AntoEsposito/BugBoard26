@@ -43,7 +43,7 @@ public class DataSeeder implements ApplicationRunner
     @Transactional
     public void run(ApplicationArguments args)
     {
-        seedProgetto("BugBoard26", "Piattaforma web per il tracciamento di issue software.");
+        seedProgetto("Progetto BugBoard26", "Piattaforma web per il tracciamento di issue software.");
         seedProgetto("Progetto Walrider", "Sviluppo di un'arma informatica a sciame guidata da un'intelligenza artificiale");
         seedProgetto("Progetto Pegasus", "Sviluppo del software di spionaggio più avanzato al mondo.");
     }
