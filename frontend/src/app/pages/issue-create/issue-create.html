@@ -99,13 +99,14 @@
 
       <!-- Campo Descrizione -->
       <div class="campo-form">
-        <label class="etichetta" for="descrizione">Descrizione <span class="opzionale">(opzionale)</span></label>
+        <label class="etichetta" for="descrizione">Descrizione <span class="obbligatorio">*</span></label>
         <textarea
           id="descrizione"
           class="input-textarea"
           placeholder="Descrivi la issue in dettaglio..."
           [(ngModel)]="descrizione"
           name="descrizione"
+          required
           maxlength="500"
           rows="5"
         ></textarea>

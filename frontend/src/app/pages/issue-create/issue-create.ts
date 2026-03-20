@@ -56,6 +56,11 @@ export class IssueCreate implements OnInit {
       return;
     }
 
+    if (this.descrizione.trim() === '') {
+      this.errore = 'La descrizione è obbligatoria.';
+      return;
+    }
+
     this.mostraConferma = true;
   }
 
@@ -66,7 +71,7 @@ export class IssueCreate implements OnInit {
       idProgetto: this.idProgetto,
       titolo: this.titolo.trim(),
       tipo: this.tipo,
-      descrizione: this.descrizione.trim() === '' ? undefined : this.descrizione.trim(),
+      descrizione: this.descrizione.trim(),
       priorita: this.priorita === '' ? undefined : this.priorita,
     };
 

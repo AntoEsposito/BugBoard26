@@ -42,7 +42,7 @@ export interface CreaIssueRequest {
   idProgetto: number;
   titolo: string;
   tipo: string;
-  descrizione?: string;
+  descrizione: string;
   priorita?: string;
 }
 

@@ -20,6 +20,7 @@ public class CreaIssueRequest
     @NotNull
     private TipoIssue tipo;
 
+    @NotBlank
     @Size(max = 500)
     private String descrizione;
 
