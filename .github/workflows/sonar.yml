@@ -31,11 +31,11 @@ jobs:
 
       - name: Compile auth-service
         working-directory: backend/auth-service
-        run: chmod +x mvnw && ./mvnw compile -B
+        run: mvn compile -B
 
       - name: Compile core-service
         working-directory: backend/core-service
-        run: chmod +x mvnw && ./mvnw compile -B
+        run: mvn compile -B
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
