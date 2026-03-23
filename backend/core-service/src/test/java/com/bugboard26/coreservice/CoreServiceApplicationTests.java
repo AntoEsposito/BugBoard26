@@ -8,6 +8,7 @@ class CoreServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Verifica che lo Spring Context si avvii correttamente senza errori
 	}
 
 }
