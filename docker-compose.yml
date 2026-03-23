@@ -56,7 +56,7 @@ services:
     container_name: bugboard26-frontend
     restart: always
     ports:
-      - "80:4200"
+      - "80:80"
     depends_on:
       - auth-service
       - core-service
