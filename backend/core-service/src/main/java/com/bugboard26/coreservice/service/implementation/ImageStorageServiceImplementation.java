@@ -40,13 +40,16 @@ public class ImageStorageServiceImplementation implements ImageStorageService
     public String salva(MultipartFile file)
     {
         String nomeOriginale = file.getOriginalFilename();
+        if (nomeOriginale == null || nomeOriginale.isBlank())
+            throw new FormatoNonValidoException("Nome file non valido o privo di estensione");
         String estensione = estraiEstensione(nomeOriginale);
 
         if (!ESTENSIONI_AMMESSE.contains(estensione.toLowerCase()))
             throw new FormatoNonValidoException("Formato immagine non supportato: " + estensione);
 
         String nomeFile = UUID.randomUUID() + "." + estensione.toLowerCase();
-        Path destinazione = Paths.get(uploadDir, nomeFile);
+        Path destinazione = Paths.get(uploadDir, nomeFile).normalize();
+        validaPath(destinazione);
 
         try
         {
@@ -67,7 +70,8 @@ public class ImageStorageServiceImplementation implements ImageStorageService
         if (percorsoRelativo == null || percorsoRelativo.isBlank()) return;
 
         String nomeFile = Paths.get(percorsoRelativo).getFileName().toString();
-        Path file = Paths.get(uploadDir, nomeFile);
+        Path file = Paths.get(uploadDir, nomeFile).normalize();
+        validaPath(file);
 
         try
         {
@@ -78,6 +82,13 @@ public class ImageStorageServiceImplementation implements ImageStorageService
         {
             log.warn("Impossibile eliminare l'immagine {}: {}", file.toAbsolutePath(), e.getMessage());
         }
+    }
+
+    private void validaPath(Path path)
+    {
+        Path dirConsentita = Paths.get(uploadDir).normalize().toAbsolutePath();
+        if (!path.toAbsolutePath().startsWith(dirConsentita))
+            throw new FormatoNonValidoException("Percorso file non consentito");
     }
 
     private String estraiEstensione(String nomeFile)
