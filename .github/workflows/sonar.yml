@@ -31,11 +31,11 @@ jobs:
 
       - name: Compile auth-service
         working-directory: backend/auth-service
-        run: mvn compile -B
+        run: mvn compile dependency:copy-dependencies -B
 
       - name: Compile core-service
         working-directory: backend/core-service
-        run: mvn compile -B
+        run: mvn compile dependency:copy-dependencies -B
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
