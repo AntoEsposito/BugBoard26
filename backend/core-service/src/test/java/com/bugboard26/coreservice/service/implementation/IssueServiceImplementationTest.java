@@ -34,7 +34,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -430,6 +430,38 @@ class IssueServiceImplementationTest
         // Act + Assert
         assertThatThrownBy(() -> issueService.creaIssue(request, null, UTENTE))
                 .isInstanceOf(RisorsaNonTrovataException.class);
+    }
+
+    // ── TC-OI-01: ottieniIssuePerProgetto — admin vede tutte le issue ────────
+
+    @Test
+    @DisplayName("TC-OI-01: ottieniIssuePerProgetto — admin vede tutte le issue")
+    void ottieniIssuePerProgetto_adminVedeTutte()
+    {
+        // Arrange
+        Utente admin = creaUtente(1, "admin@test.com", "Admin", "Test");
+        when(utenteRepository.findByEmail("admin@test.com")).thenReturn(Optional.of(admin));
+        when(progettoRepository.existsById(10)).thenReturn(true);
+
+        Issue issue1 = Issue.builder()
+                .id(1).idProgetto(10).titolo("Issue 1")
+                .stato(StatoIssue.TODO).tipo(TipoIssue.BUG).priorita(PrioritaIssue.LOW)
+                .build();
+        Issue issue2 = Issue.builder()
+                .id(2).idProgetto(10).titolo("Issue 2")
+                .stato(StatoIssue.DONE).tipo(TipoIssue.FEATURE).priorita(PrioritaIssue.HIGH)
+                .build();
+        when(issueRepository.findByIdProgettoOrderByDataCreazioneDesc(10))
+                .thenReturn(List.of(issue1, issue2));
+
+        // Act
+        List<IssueRiepilogoResponse> risultato = issueService.ottieniIssuePerProgetto(10, ADMIN);
+
+        // Assert
+        assertThat(risultato).hasSize(2);
+        verify(issueRepository).findByIdProgettoOrderByDataCreazioneDesc(10);
+        verify(issueRepository, never())
+                .findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(anyInt(), anyInt());
     }
 
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
