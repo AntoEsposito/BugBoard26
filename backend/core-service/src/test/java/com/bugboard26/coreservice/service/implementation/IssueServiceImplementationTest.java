@@ -464,6 +464,33 @@ class IssueServiceImplementationTest
                 .findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(anyInt(), anyInt());
     }
 
+    // ── TC-OI-02: ottieniIssuePerProgetto — utente vede solo issue assegnate ─
+
+    @Test
+    @DisplayName("TC-OI-02: ottieniIssuePerProgetto — utente vede solo issue assegnate")
+    void ottieniIssuePerProgetto_utenteVedeSoloAssegnate()
+    {
+        // Arrange
+        Utente utente = creaUtente(2, "utente@test.com", "Utente", "Test");
+        when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
+        when(progettoRepository.existsById(10)).thenReturn(true);
+
+        Issue issueAssegnata = Issue.builder()
+                .id(1).idProgetto(10).titolo("Assegnata")
+                .stato(StatoIssue.TODO).tipo(TipoIssue.BUG).priorita(PrioritaIssue.LOW)
+                .build();
+        when(issueRepository.findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(10, 2))
+                .thenReturn(List.of(issueAssegnata));
+
+        // Act
+        List<IssueRiepilogoResponse> risultato = issueService.ottieniIssuePerProgetto(10, UTENTE);
+
+        // Assert
+        assertThat(risultato).hasSize(1);
+        assertThat(risultato.getFirst().getTitolo()).isEqualTo("Assegnata");
+        verify(issueRepository).findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(10, 2);
+    }
+
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
 
     @Test
