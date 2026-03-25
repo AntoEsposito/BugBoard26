@@ -1,5 +1,6 @@
 package com.bugboard26.coreservice.service.implementation;
 
+import com.bugboard26.coreservice.dto.request.CreaIssueRequest;
 import com.bugboard26.coreservice.dto.request.ModificaIssueRequest;
 import com.bugboard26.coreservice.dto.response.IssueRiepilogoResponse;
 import com.bugboard26.coreservice.entity.Issue;
@@ -18,6 +19,7 @@ import com.bugboard26.coreservice.service.ImageStorageService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -297,6 +299,50 @@ class IssueServiceImplementationTest
         verify(imageStorageService).elimina("/api/uploads/old.jpg");
         verify(imageStorageService).salva(nuovaImmagine);
         assertThat(response.getImmaginePath()).isEqualTo("/api/uploads/replaced.png");
+    }
+
+    // ── TC-CI-01: creaIssue — progetto esistente, no immagine, priorita null ─
+
+    @Test
+    @DisplayName("TC-CI-01: creaIssue — progetto esistente, no immagine, priorita null")
+    void creaIssue_progettoEsistenteSenzaImmaginePrioritaNull()
+    {
+        // Arrange
+        Utente utente = creaUtente(1, "utente@test.com", "Utente", "Test");
+        when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
+        when(progettoRepository.existsById(10)).thenReturn(true);
+
+        CreaIssueRequest request = new CreaIssueRequest();
+        request.setIdProgetto(10);
+        request.setTitolo("Bug critico");
+        request.setTipo(TipoIssue.BUG);
+        request.setDescrizione("Descrizione del bug");
+        request.setPriorita(null);
+
+        ArgumentCaptor<Issue> issueCaptor = ArgumentCaptor.forClass(Issue.class);
+        Issue issueSalvata = Issue.builder()
+                .id(100)
+                .idProgetto(10)
+                .titolo("Bug critico")
+                .stato(StatoIssue.TODO)
+                .tipo(TipoIssue.BUG)
+                .priorita(PrioritaIssue.LOW)
+                .descrizione("Descrizione del bug")
+                .assegnatari(new HashSet<>(Set.of(utente)))
+                .build();
+        when(issueRepository.save(any(Issue.class))).thenReturn(issueSalvata);
+
+        // Act
+        IssueRiepilogoResponse response = issueService.creaIssue(request, null, UTENTE);
+
+        // Assert
+        assertThat(response.getStato()).isEqualTo(StatoIssue.TODO);
+        assertThat(response.getPriorita()).isEqualTo(PrioritaIssue.LOW);
+
+        verify(issueRepository).save(issueCaptor.capture());
+        assertThat(issueCaptor.getValue().getAssegnatari()).contains(utente);
+
+        verify(imageStorageService, never()).salva(any());
     }
 
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
