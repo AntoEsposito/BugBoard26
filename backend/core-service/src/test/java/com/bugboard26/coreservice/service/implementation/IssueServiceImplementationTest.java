@@ -491,6 +491,25 @@ class IssueServiceImplementationTest
         verify(issueRepository).findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(10, 2);
     }
 
+    // ── TC-OI-03: ottieniIssuePerProgetto — progetto esistente senza issue ───
+
+    @Test
+    @DisplayName("TC-OI-03: ottieniIssuePerProgetto — progetto esistente senza issue")
+    void ottieniIssuePerProgetto_progettoSenzaIssue()
+    {
+        // Arrange
+        Utente admin = creaUtente(1, "admin@test.com", "Admin", "Test");
+        when(utenteRepository.findByEmail("admin@test.com")).thenReturn(Optional.of(admin));
+        when(progettoRepository.existsById(10)).thenReturn(true);
+        when(issueRepository.findByIdProgettoOrderByDataCreazioneDesc(10)).thenReturn(List.of());
+
+        // Act
+        List<IssueRiepilogoResponse> risultato = issueService.ottieniIssuePerProgetto(10, ADMIN);
+
+        // Assert
+        assertThat(risultato).isEmpty();
+    }
+
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
 
     @Test
