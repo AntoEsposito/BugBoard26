@@ -411,6 +411,27 @@ class IssueServiceImplementationTest
                 .isInstanceOf(RisorsaNonTrovataException.class);
     }
 
+    // ── TC-CI-04: creaIssue — utente inesistente ─────────────────────────────
+
+    @Test
+    @DisplayName("TC-CI-04: creaIssue — utente inesistente")
+    void creaIssue_utenteInesistente()
+    {
+        // Arrange
+        when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.empty());
+        when(progettoRepository.existsById(10)).thenReturn(true);
+
+        CreaIssueRequest request = new CreaIssueRequest();
+        request.setIdProgetto(10);
+        request.setTitolo("Bug utente inesistente");
+        request.setTipo(TipoIssue.BUG);
+        request.setDescrizione("Descrizione");
+
+        // Act + Assert
+        assertThatThrownBy(() -> issueService.creaIssue(request, null, UTENTE))
+                .isInstanceOf(RisorsaNonTrovataException.class);
+    }
+
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
 
     @Test
