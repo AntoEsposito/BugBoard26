@@ -389,6 +389,28 @@ class IssueServiceImplementationTest
         verify(imageStorageService).salva(immagine);
     }
 
+    // ── TC-CI-03: creaIssue — progetto inesistente ───────────────────────────
+
+    @Test
+    @DisplayName("TC-CI-03: creaIssue — progetto inesistente")
+    void creaIssue_progettoInesistente()
+    {
+        // Arrange
+        Utente utente = creaUtente(1, "utente@test.com", "Utente", "Test");
+        when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
+        when(progettoRepository.existsById(999)).thenReturn(false);
+
+        CreaIssueRequest request = new CreaIssueRequest();
+        request.setIdProgetto(999);
+        request.setTitolo("Bug su progetto inesistente");
+        request.setTipo(TipoIssue.BUG);
+        request.setDescrizione("Descrizione");
+
+        // Act + Assert
+        assertThatThrownBy(() -> issueService.creaIssue(request, null, UTENTE))
+                .isInstanceOf(RisorsaNonTrovataException.class);
+    }
+
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
 
     @Test
