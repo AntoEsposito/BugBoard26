@@ -510,6 +510,20 @@ class IssueServiceImplementationTest
         assertThat(risultato).isEmpty();
     }
 
+    // ── TC-OI-04: ottieniIssuePerProgetto — progetto inesistente ─────────────
+
+    @Test
+    @DisplayName("TC-OI-04: ottieniIssuePerProgetto — progetto inesistente")
+    void ottieniIssuePerProgetto_progettoInesistente()
+    {
+        // Arrange
+        when(progettoRepository.existsById(999)).thenReturn(false);
+
+        // Act + Assert
+        assertThatThrownBy(() -> issueService.ottieniIssuePerProgetto(999, ADMIN))
+                .isInstanceOf(RisorsaNonTrovataException.class);
+    }
+
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
 
     @Test
