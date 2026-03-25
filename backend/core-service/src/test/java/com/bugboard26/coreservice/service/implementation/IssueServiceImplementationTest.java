@@ -345,6 +345,50 @@ class IssueServiceImplementationTest
         verify(imageStorageService, never()).salva(any());
     }
 
+    // ── TC-CI-02: creaIssue — con immagine e priorita=HIGH ───────────────────
+
+    @Test
+    @DisplayName("TC-CI-02: creaIssue — con immagine e priorita=HIGH")
+    void creaIssue_conImmaginePrioritaEsplicita()
+    {
+        // Arrange
+        Utente utente = creaUtente(1, "utente@test.com", "Utente", "Test");
+        when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
+        when(progettoRepository.existsById(10)).thenReturn(true);
+
+        MultipartFile immagine = mock(MultipartFile.class);
+        when(immagine.isEmpty()).thenReturn(false);
+        when(imageStorageService.salva(immagine)).thenReturn("/api/uploads/uuid-img.png");
+
+        CreaIssueRequest request = new CreaIssueRequest();
+        request.setIdProgetto(10);
+        request.setTitolo("Bug con immagine");
+        request.setTipo(TipoIssue.BUG);
+        request.setDescrizione("Descrizione con immagine");
+        request.setPriorita(PrioritaIssue.HIGH);
+
+        Issue issueSalvata = Issue.builder()
+                .id(101)
+                .idProgetto(10)
+                .titolo("Bug con immagine")
+                .stato(StatoIssue.TODO)
+                .tipo(TipoIssue.BUG)
+                .priorita(PrioritaIssue.HIGH)
+                .descrizione("Descrizione con immagine")
+                .immaginePath("/api/uploads/uuid-img.png")
+                .assegnatari(new HashSet<>(Set.of(utente)))
+                .build();
+        when(issueRepository.save(any(Issue.class))).thenReturn(issueSalvata);
+
+        // Act
+        IssueRiepilogoResponse response = issueService.creaIssue(request, immagine, UTENTE);
+
+        // Assert
+        assertThat(response.getPriorita()).isEqualTo(PrioritaIssue.HIGH);
+        assertThat(response.getImmaginePath()).isEqualTo("/api/uploads/uuid-img.png");
+        verify(imageStorageService).salva(immagine);
+    }
+
     // ── Test Case 11: Request vuota ──────────────────────────────────────────
 
     @Test
