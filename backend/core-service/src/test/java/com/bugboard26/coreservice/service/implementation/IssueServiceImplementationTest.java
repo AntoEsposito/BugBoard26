@@ -301,13 +301,12 @@ class IssueServiceImplementationTest
         assertThat(response.getImmaginePath()).isEqualTo("/api/uploads/replaced.png");
     }
 
-    // ── TC-CI-01: creaIssue — progetto esistente, no immagine, priorita null ─
+    // ── Test Case 12: creaIssue — progetto esistente, no immagine, priorita null ─
 
     @Test
-    @DisplayName("TC-CI-01: creaIssue — progetto esistente, no immagine, priorita null")
+    @DisplayName("Test Case 12: creaIssue — progetto esistente, no immagine, priorita null")
     void creaIssue_progettoEsistenteSenzaImmaginePrioritaNull()
     {
-        // Arrange
         Utente utente = creaUtente(1, "utente@test.com", "Utente", "Test");
         when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
         when(progettoRepository.existsById(10)).thenReturn(true);
@@ -332,10 +331,8 @@ class IssueServiceImplementationTest
                 .build();
         when(issueRepository.save(any(Issue.class))).thenReturn(issueSalvata);
 
-        // Act
         IssueRiepilogoResponse response = issueService.creaIssue(request, null, UTENTE);
 
-        // Assert
         assertThat(response.getStato()).isEqualTo(StatoIssue.TODO);
         assertThat(response.getPriorita()).isEqualTo(PrioritaIssue.LOW);
 
@@ -345,13 +342,12 @@ class IssueServiceImplementationTest
         verify(imageStorageService, never()).salva(any());
     }
 
-    // ── TC-CI-02: creaIssue — con immagine e priorita=HIGH ───────────────────
+    // ── Test Case 13: creaIssue — con immagine e priorita=HIGH ───────────────────
 
     @Test
-    @DisplayName("TC-CI-02: creaIssue — con immagine e priorita=HIGH")
+    @DisplayName("Test Case 13: creaIssue — con immagine e priorita=HIGH")
     void creaIssue_conImmaginePrioritaEsplicita()
     {
-        // Arrange
         Utente utente = creaUtente(1, "utente@test.com", "Utente", "Test");
         when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
         when(progettoRepository.existsById(10)).thenReturn(true);
@@ -380,22 +376,19 @@ class IssueServiceImplementationTest
                 .build();
         when(issueRepository.save(any(Issue.class))).thenReturn(issueSalvata);
 
-        // Act
         IssueRiepilogoResponse response = issueService.creaIssue(request, immagine, UTENTE);
 
-        // Assert
         assertThat(response.getPriorita()).isEqualTo(PrioritaIssue.HIGH);
         assertThat(response.getImmaginePath()).isEqualTo("/api/uploads/uuid-img.png");
         verify(imageStorageService).salva(immagine);
     }
 
-    // ── TC-CI-03: creaIssue — progetto inesistente ───────────────────────────
+    // ── Test Case 14: creaIssue — progetto inesistente ───────────────────────────
 
     @Test
-    @DisplayName("TC-CI-03: creaIssue — progetto inesistente")
+    @DisplayName("Test Case 14: creaIssue — progetto inesistente")
     void creaIssue_progettoInesistente()
     {
-        // Arrange
         Utente utente = creaUtente(1, "utente@test.com", "Utente", "Test");
         when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
         when(progettoRepository.existsById(999)).thenReturn(false);
@@ -406,20 +399,17 @@ class IssueServiceImplementationTest
         request.setTipo(TipoIssue.BUG);
         request.setDescrizione("Descrizione");
 
-        // Act + Assert
         assertThatThrownBy(() -> issueService.creaIssue(request, null, UTENTE))
                 .isInstanceOf(RisorsaNonTrovataException.class);
     }
 
-    // ── TC-CI-04: creaIssue — utente inesistente ─────────────────────────────
+    // ── Test Case 15: creaIssue — utente inesistente ─────────────────────────────
 
     @Test
-    @DisplayName("TC-CI-04: creaIssue — utente inesistente")
+    @DisplayName("Test Case 15: creaIssue — utente inesistente")
     void creaIssue_utenteInesistente()
     {
-        // Arrange
         when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.empty());
-        when(progettoRepository.existsById(10)).thenReturn(true);
 
         CreaIssueRequest request = new CreaIssueRequest();
         request.setIdProgetto(10);
@@ -427,18 +417,16 @@ class IssueServiceImplementationTest
         request.setTipo(TipoIssue.BUG);
         request.setDescrizione("Descrizione");
 
-        // Act + Assert
         assertThatThrownBy(() -> issueService.creaIssue(request, null, UTENTE))
                 .isInstanceOf(RisorsaNonTrovataException.class);
     }
 
-    // ── TC-OI-01: ottieniIssuePerProgetto — admin vede tutte le issue ────────
+    // ── Test Case 16: ottieniIssuePerProgetto — admin vede tutte le issue ────────
 
     @Test
-    @DisplayName("TC-OI-01: ottieniIssuePerProgetto — admin vede tutte le issue")
+    @DisplayName("Test Case 16: ottieniIssuePerProgetto — admin vede tutte le issue")
     void ottieniIssuePerProgetto_adminVedeTutte()
     {
-        // Arrange
         Utente admin = creaUtente(1, "admin@test.com", "Admin", "Test");
         when(utenteRepository.findByEmail("admin@test.com")).thenReturn(Optional.of(admin));
         when(progettoRepository.existsById(10)).thenReturn(true);
@@ -454,23 +442,20 @@ class IssueServiceImplementationTest
         when(issueRepository.findByIdProgettoOrderByDataCreazioneDesc(10))
                 .thenReturn(List.of(issue1, issue2));
 
-        // Act
         List<IssueRiepilogoResponse> risultato = issueService.ottieniIssuePerProgetto(10, ADMIN);
 
-        // Assert
         assertThat(risultato).hasSize(2);
         verify(issueRepository).findByIdProgettoOrderByDataCreazioneDesc(10);
         verify(issueRepository, never())
                 .findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(anyInt(), anyInt());
     }
 
-    // ── TC-OI-02: ottieniIssuePerProgetto — utente vede solo issue assegnate ─
+    // ── Test Case 17: ottieniIssuePerProgetto — utente vede solo issue assegnate ─
 
     @Test
-    @DisplayName("TC-OI-02: ottieniIssuePerProgetto — utente vede solo issue assegnate")
+    @DisplayName("Test Case 17: ottieniIssuePerProgetto — utente vede solo issue assegnate")
     void ottieniIssuePerProgetto_utenteVedeSoloAssegnate()
     {
-        // Arrange
         Utente utente = creaUtente(2, "utente@test.com", "Utente", "Test");
         when(utenteRepository.findByEmail("utente@test.com")).thenReturn(Optional.of(utente));
         when(progettoRepository.existsById(10)).thenReturn(true);
@@ -482,44 +467,37 @@ class IssueServiceImplementationTest
         when(issueRepository.findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(10, 2))
                 .thenReturn(List.of(issueAssegnata));
 
-        // Act
         List<IssueRiepilogoResponse> risultato = issueService.ottieniIssuePerProgetto(10, UTENTE);
 
-        // Assert
         assertThat(risultato).hasSize(1);
         assertThat(risultato.getFirst().getTitolo()).isEqualTo("Assegnata");
         verify(issueRepository).findByIdProgettoAndAssegnatari_IdOrderByDataCreazioneDesc(10, 2);
     }
 
-    // ── TC-OI-03: ottieniIssuePerProgetto — progetto esistente senza issue ───
+    // ── Test Case 18: ottieniIssuePerProgetto — progetto esistente senza issue ───
 
     @Test
-    @DisplayName("TC-OI-03: ottieniIssuePerProgetto — progetto esistente senza issue")
+    @DisplayName("Test Case 18: ottieniIssuePerProgetto — progetto esistente senza issue")
     void ottieniIssuePerProgetto_progettoSenzaIssue()
     {
-        // Arrange
         Utente admin = creaUtente(1, "admin@test.com", "Admin", "Test");
         when(utenteRepository.findByEmail("admin@test.com")).thenReturn(Optional.of(admin));
         when(progettoRepository.existsById(10)).thenReturn(true);
         when(issueRepository.findByIdProgettoOrderByDataCreazioneDesc(10)).thenReturn(List.of());
 
-        // Act
         List<IssueRiepilogoResponse> risultato = issueService.ottieniIssuePerProgetto(10, ADMIN);
 
-        // Assert
         assertThat(risultato).isEmpty();
     }
 
-    // ── TC-OI-04: ottieniIssuePerProgetto — progetto inesistente ─────────────
+    // ── Test Case 19: ottieniIssuePerProgetto — progetto inesistente ─────────────
 
     @Test
-    @DisplayName("TC-OI-04: ottieniIssuePerProgetto — progetto inesistente")
+    @DisplayName("Test Case 19: ottieniIssuePerProgetto — progetto inesistente")
     void ottieniIssuePerProgetto_progettoInesistente()
     {
-        // Arrange
         when(progettoRepository.existsById(999)).thenReturn(false);
 
-        // Act + Assert
         assertThatThrownBy(() -> issueService.ottieniIssuePerProgetto(999, ADMIN))
                 .isInstanceOf(RisorsaNonTrovataException.class);
     }
