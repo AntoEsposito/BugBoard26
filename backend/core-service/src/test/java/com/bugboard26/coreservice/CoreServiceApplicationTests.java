@@ -10,6 +10,7 @@ class CoreServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Testa se il contesto dell'applicazione si carica correttamente
 	}
 
 }
