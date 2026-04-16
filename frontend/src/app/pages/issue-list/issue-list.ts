@@ -28,6 +28,9 @@ export class IssueList implements OnInit {
   issueListCompleta: IssueRiepilogoResponse[] = [];
   issueList: IssueRiepilogoResponse[] = [];
 
+  mostraErroreCaricamento = false;
+  messaggioErroreCaricamento = 'Si è verificato un errore, riprova più tardi.';
+
   constructor(
     private readonly router: Router,
     private readonly progettoService: ProgettoService,
@@ -37,24 +40,42 @@ export class IssueList implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.progettoService.ottieniProgetti().subscribe(progetti => {
-      this.progetti = progetti;
-      if (progetti.length > 0) {
-        this.progettoSelezionato = progetti[0];
-        this.caricaIssue();
+    this.progettoService.ottieniProgetti().subscribe({
+      next: (progetti) => {
+        this.progetti = progetti;
+        if (progetti.length > 0) {
+          this.progettoSelezionato = progetti[0];
+          this.caricaIssue();
+        }
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.mostraErroreCaricamento = true;
+        this.cdr.detectChanges();
       }
-      this.cdr.detectChanges();
     });
   }
 
   caricaIssue(): void {
     if (this.progettoSelezionato !== null) {
-      this.issueService.ottieniIssuePerProgetto(this.progettoSelezionato.id).subscribe(issues => {
-        this.issueListCompleta = issues;
-        this.issueList = issues;
-        this.cdr.detectChanges();
+      this.issueService.ottieniIssuePerProgetto(this.progettoSelezionato.id).subscribe({
+        next: (issues) => {
+          this.issueListCompleta = issues;
+          this.issueList = issues;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.mostraErroreCaricamento = true;
+          this.cdr.detectChanges();
+        }
       });
     }
+  }
+
+  chiudiErroreCaricamento(): void {
+    this.mostraErroreCaricamento = false;
+    this.authService.esci();
+    this.router.navigate(['/login']);
   }
 
   applicaFiltri(): void {

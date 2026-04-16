@@ -538,3 +538,69 @@
   font-size: 18px;
   color: #6b7280;
 }
+
+/* ===========================
+   MESSAGGIO VUOTO / EMPTY STATE
+   =========================== */
+
+.messaggio-vuoto {
+  text-align: center;
+  color: #9ca3af;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+/* ===========================
+   POPUP ERRORE CARICAMENTO
+   =========================== */
+
+.overlay-errore {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-errore {
+  background-color: #1c1c1e;
+  border: 1px solid #3a3a3e;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.testo-errore {
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0 0 24px 0;
+}
+
+.azioni-errore {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-ok-errore {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-ok-errore:hover {
+  background-color: #1d4ed8;
+}

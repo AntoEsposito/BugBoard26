@@ -189,23 +189,41 @@
 
     <!-- Lista Issue -->
     <div class="lista-issue">
-      <button class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)">
-        <div class="scheda-sinistra">
-          <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo.toLowerCase()">
-            {{ getIconaTipo(issue.tipo) }}
-          </div>
-          <div class="issue-dettagli">
-            <p class="issue-titolo">{{ issue.titolo }}</p>
-            <div class="issue-etichetta">
-              <span class="etichetta tipo">{{ issue.tipo }}</span>
-              <span class="etichetta stato">{{ issue.stato }}</span>
-              <span class="etichetta priorita" [ngClass]="'priorita-' + issue.priorita.toLowerCase()">{{ issue.priorita }}</span>
+      @if (issueList.length > 0) {
+        <button class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)">
+          <div class="scheda-sinistra">
+            <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo.toLowerCase()">
+              {{ getIconaTipo(issue.tipo) }}
             </div>
-            <p class="issue-meta">ID #{{ issue.id }} &bull; {{ issue.dataCreazione | date:'dd/MM/yyyy' }}</p>
+            <div class="issue-dettagli">
+              <p class="issue-titolo">{{ issue.titolo }}</p>
+              <div class="issue-etichetta">
+                <span class="etichetta tipo">{{ issue.tipo }}</span>
+                <span class="etichetta stato">{{ issue.stato }}</span>
+                <span class="etichetta priorita" [ngClass]="'priorita-' + issue.priorita.toLowerCase()">{{ issue.priorita }}</span>
+              </div>
+              <p class="issue-meta">ID #{{ issue.id }} &bull; {{ issue.dataCreazione | date:'dd/MM/yyyy' }}</p>
+            </div>
           </div>
-        </div>
-      </button>
+        </button>
+      } @else if (issueListCompleta.length === 0) {
+        <p class="messaggio-vuoto">Nessuna issue trovata nel database</p>
+      } @else {
+        <p class="messaggio-vuoto">Nessuna issue corrisponde ai criteri selezionati</p>
+      }
     </div>
 
   </main>
+
+  <!-- Popup errore caricamento -->
+  @if (mostraErroreCaricamento) {
+    <div class="overlay-errore">
+      <div class="popup-errore">
+        <p class="testo-errore">{{ messaggioErroreCaricamento }}</p>
+        <div class="azioni-errore">
+          <button type="button" class="btn-ok-errore" (click)="chiudiErroreCaricamento()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>
