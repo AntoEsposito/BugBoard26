@@ -1,0 +1,27 @@
+package com.bugboard26.coreservice.dto.request;
+
+import com.bugboard26.coreservice.entity.enums.PrioritaIssue;
+import com.bugboard26.coreservice.entity.enums.StatoIssue;
+import com.bugboard26.coreservice.entity.enums.TipoIssue;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+import java.util.Set;
+
+@Data
+public class ModificaIssueRequest
+{
+    @Size(max = 500)
+    private String descrizione;
+
+    private StatoIssue stato;
+
+    private PrioritaIssue priorita;
+
+    private TipoIssue tipo;
+
+    private Set<Integer> idAssegnatari;
+
+    /** Se true, rimuove l'immagine esistente (ignorato se viene fornita una nuova immagine). */
+    private boolean rimuoviImmagine;
+}

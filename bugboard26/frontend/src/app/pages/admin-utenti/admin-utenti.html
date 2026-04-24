@@ -1,0 +1,142 @@
+<div class="pagina-crea-utente">
+
+  <div class="intestazione">
+    <h1 class="titolo-pagina">Nuovo Utente</h1>
+    <p class="sottotitolo-pagina">Compila i campi per creare un nuovo account</p>
+  </div>
+
+  <div class="scheda-form">
+
+    <form (ngSubmit)="onCreaUtente()">
+
+      <!-- Campo Nome -->
+      <div class="campo-form">
+        <label class="etichetta" for="nome">
+          Nome <span class="obbligatorio">*</span>
+        </label>
+        <div class="contenitore-input">
+          <span class="icona-input">👤</span>
+          <input
+            id="nome"
+            type="text"
+            class="input-testo"
+            placeholder="Nome dell'utente"
+            [(ngModel)]="nome"
+            name="nome"
+          />
+        </div>
+      </div>
+
+      <!-- Campo Cognome -->
+      <div class="campo-form">
+        <label class="etichetta" for="cognome">
+          Cognome <span class="obbligatorio">*</span>
+        </label>
+        <div class="contenitore-input">
+          <span class="icona-input">👤</span>
+          <input
+            id="cognome"
+            type="text"
+            class="input-testo"
+            placeholder="Cognome dell'utente"
+            [(ngModel)]="cognome"
+            name="cognome"
+          />
+        </div>
+      </div>
+
+      <!-- Campo Email -->
+      <div class="campo-form">
+        <label class="etichetta" for="email">
+          Email <span class="obbligatorio">*</span>
+        </label>
+        <div class="contenitore-input">
+          <span class="icona-input">✉</span>
+          <input
+            id="email"
+            type="email"
+            class="input-testo"
+            placeholder="email@esempio.com"
+            [(ngModel)]="email"
+            name="email"
+          />
+        </div>
+      </div>
+
+      <!-- Campo Password -->
+      <div class="campo-form">
+        <label class="etichetta" for="password">
+          Password <span class="obbligatorio">*</span>
+        </label>
+        <div class="contenitore-input">
+          <span class="icona-input">🔒</span>
+          <input
+            id="password"
+            [type]="mostraPassword ? 'text' : 'password'"
+            class="input-testo"
+            placeholder="Password dell'utente"
+            [(ngModel)]="password"
+            name="password"
+          />
+          <button type="button" class="btn-mostra-password" (click)="mostraNascondiPassword()">
+            {{ mostraPassword ? '🙈' : '👁' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo Ruolo -->
+      <div class="campo-form">
+        <fieldset class="gruppo-bottoni-fieldset">
+          <legend class="etichetta">
+            Ruolo <span class="obbligatorio">*</span>
+          </legend>
+          <div class="gruppo-bottoni">
+            <button
+              type="button"
+              class="btn-scelta"
+              [class.attivo]="ruolo === 'ROLE_UTENTE'"
+              (click)="ruolo = 'ROLE_UTENTE'"
+            >
+              👤 Utente
+            </button>
+            <button
+              type="button"
+              class="btn-scelta"
+              [class.attivo]="ruolo === 'ROLE_ADMIN'"
+              (click)="ruolo = 'ROLE_ADMIN'"
+            >
+              🛡️ Amministratore
+            </button>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Messaggio errore -->
+      @if (errore) {
+        <div class="messaggio-errore">
+          {{ errore }}
+        </div>
+      }
+
+      <!-- Messaggio successo -->
+      @if (successo) {
+        <div class="messaggio-successo">
+          {{ messaggioSuccesso }}
+        </div>
+      }
+
+      <!-- Bottoni azione -->
+      <div class="gruppo-azioni">
+        <button type="button" class="btn-annulla" (click)="onTornaIndietro()">
+          ← Torna alla lista
+        </button>
+        <button type="submit" class="btn-crea" [disabled]="caricamento">
+          {{ caricamento ? 'Creazione in corso...' : 'Crea Utente' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

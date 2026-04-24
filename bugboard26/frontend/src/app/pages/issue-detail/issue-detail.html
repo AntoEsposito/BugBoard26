@@ -1,0 +1,245 @@
+<div class="pagina-dettaglio">
+
+  @if (caricamento) {
+    <div class="stato-caricamento">
+      <p class="testo-caricamento">Caricamento issue...</p>
+    </div>
+  }
+
+  @if (erroreCaricamento) {
+    <div class="stato-errore">
+      <p class="testo-errore">{{ erroreCaricamento }}</p>
+      <button class="btn-torna" (click)="tornaAllaLista()">← Torna alla lista</button>
+    </div>
+  }
+
+  @if (issue && !caricamento) {
+
+    <div class="intestazione-dettaglio">
+      <button class="btn-torna" (click)="tornaAllaLista()">← Torna alla lista</button>
+      <div class="titolo-riga">
+        <span class="icona-tipo">{{ getIconaTipo(modalitaModifica ? tipoModifica : issue.tipo) }}</span>
+        <h1 class="titolo-issue">{{ issue.titolo }}</h1>
+      </div>
+      <div class="badge-riga">
+        @if (!modalitaModifica) {
+          <span class="badge-tipo">{{ issue.tipo }}</span>
+          <span class="badge-stato" [ngClass]="getClasseStato(issue.stato)">{{ getEtichettaStato(issue.stato) }}</span>
+          <span class="badge-priorita" [ngClass]="getClassePriorita(issue.priorita)">{{ issue.priorita }}</span>
+        }
+      </div>
+      <div class="azioni-intestazione">
+        @if (puoModificare && !modalitaModifica) {
+          <button class="btn-modifica" (click)="attivaModifica()">✏️ Modifica</button>
+        }
+        @if (modalitaModifica) {
+          <button class="btn-salva" (click)="onSalvaModifica()" [disabled]="salvataggioInCorso">
+            {{ salvataggioInCorso ? 'Salvataggio...' : '💾 Salva' }}
+          </button>
+          <button class="btn-annulla-modifica" (click)="annullaModifica()">Annulla</button>
+        }
+      </div>
+    </div>
+
+    @if (erroreModifica) {
+      <div class="messaggio-errore messaggio-errore-modifica">{{ erroreModifica }}</div>
+    }
+
+    @if (successoModifica) {
+      <div class="messaggio-successo messaggio-successo-modifica">Modifiche salvate con successo!</div>
+    }
+
+    <div class="scheda-dettagli">
+
+      <!-- Modalità visualizzazione -->
+      @if (!modalitaModifica) {
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Descrizione</h2>
+          <p class="testo-descrizione">{{ issue.descrizione || 'Nessuna descrizione fornita.' }}</p>
+        </div>
+
+        @if (issue.immaginePath) {
+          <div class="sezione-dettaglio">
+            <h2 class="etichetta-sezione">Allegato</h2>
+            <div class="contenitore-allegato">
+              <button type="button" class="bottone-anteprima" (click)="immagineFullscreen = true">
+                <img [src]="issue.immaginePath" alt="Allegato issue" class="immagine-allegato anteprima-cliccabile" />
+              </button>
+            </div>
+          </div>
+        }
+
+      }
+
+      <!-- Modalità modifica -->
+      @if (modalitaModifica) {
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Stato</h2>
+          <div class="gruppo-bottoni">
+            <button type="button" class="btn-scelta" [class.attivo]="statoModifica === 'TODO'" (click)="statoModifica = 'TODO'">To Do</button>
+            <button type="button" class="btn-scelta" [class.attivo]="statoModifica === 'IN_PROGRESS'" (click)="statoModifica = 'IN_PROGRESS'">In Progress</button>
+            <button type="button" class="btn-scelta" [class.attivo]="statoModifica === 'DONE'" (click)="statoModifica = 'DONE'">Done</button>
+          </div>
+        </div>
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Priorità</h2>
+          <div class="gruppo-bottoni">
+            <button type="button" class="btn-scelta" [class.attivo]="prioritaModifica === 'LOW'" (click)="prioritaModifica = 'LOW'">Low</button>
+            <button type="button" class="btn-scelta" [class.attivo]="prioritaModifica === 'MEDIUM'" (click)="prioritaModifica = 'MEDIUM'">Medium</button>
+            <button type="button" class="btn-scelta" [class.attivo]="prioritaModifica === 'HIGH'" (click)="prioritaModifica = 'HIGH'">High</button>
+          </div>
+        </div>
+
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Descrizione</h2>
+          <textarea
+            class="input-modifica-descrizione"
+            [(ngModel)]="descrizioneModifica"
+            name="descrizioneModifica"
+            rows="5"
+            maxlength="500"
+            placeholder="Descrivi la issue..."
+          ></textarea>
+        </div>
+
+        @if (authService.isAdmin()) {
+          <div class="sezione-dettaglio">
+            <h2 class="etichetta-sezione">Assegnatari</h2>
+            <div class="dropdown-assegnatari" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+
+              <button type="button" class="dropdown-trigger" (click)="toggleDropdownAssegnatari()">
+                <span class="dropdown-trigger-testo">{{ etichettaAssegnatari }}</span>
+                <span class="dropdown-freccia" [class.aperta]="dropdownAssegnatariAperto">▼</span>
+              </button>
+
+              @if (dropdownAssegnatariAperto) {
+                <div class="dropdown-pannello">
+                  <input
+                    type="text"
+                    class="dropdown-ricerca"
+                    placeholder="Cerca utente..."
+                    [(ngModel)]="filtroAssegnatari"
+                    name="filtroAssegnatari"
+                  />
+                  <div class="dropdown-lista">
+                    @for (utente of utentiFiltrati; track utente.id) {
+                      <label class="dropdown-opzione">
+                        <input
+                          type="checkbox"
+                          [checked]="assegnatariModifica.includes(utente.id)"
+                          (change)="toggleAssegnatario(utente.id)"
+                        />
+                        <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
+                        <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
+                      </label>
+                    }
+                    @if (utentiFiltrati.length === 0) {
+                      <p class="dropdown-nessun-risultato">Nessun utente trovato.</p>
+                    }
+                  </div>
+                </div>
+              }
+
+            </div>
+          </div>
+        }
+
+      }
+
+      <!-- Info (sempre visibili) -->
+      <div class="griglia-info">
+        <div class="info-elemento">
+          <span class="info-etichetta">Creata il</span>
+          <span class="info-valore">{{ issue.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="info-elemento">
+          <span class="info-etichetta">Ultima modifica</span>
+          <span class="info-valore">{{ issue.dataUltimaModifica | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="info-elemento">
+          <span class="info-etichetta">ID Progetto</span>
+          <span class="info-valore">{{ issue.idProgetto }}</span>
+        </div>
+      </div>
+
+      <!-- Assegnatari in visualizzazione -->
+      @if (!modalitaModifica) {
+        <div class="sezione-dettaglio">
+          <h2 class="etichetta-sezione">Assegnatari</h2>
+          @if (issue.assegnatari.length === 0) {
+            <p class="testo-vuoto">Nessun assegnatario.</p>
+          }
+          <div class="lista-assegnatari">
+            @for (utente of issue.assegnatari; track utente.id) {
+              <div class="chip-assegnatario">
+                <span class="avatar-piccolo">{{ (utente.nome[0] + utente.cognome[0]).toUpperCase() }}</span>
+                <span class="nome-assegnatario">{{ utente.nome }} {{ utente.cognome }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- Sezione commenti -->
+    <div class="scheda-commenti">
+      <h2 class="titolo-commenti">Commenti ({{ issue.commenti.length }})</h2>
+
+      @if (issue.commenti.length === 0) {
+        <p class="testo-vuoto">Nessun commento ancora. Sii il primo!</p>
+      }
+
+      <div class="lista-commenti">
+        @for (commento of issue.commenti; track commento.id) {
+          <div class="commento-card">
+            <div class="commento-intestazione">
+              <div class="commento-autore">
+                <span class="avatar-piccolo">{{ getInizialiUtente(commento) }}</span>
+                <span class="nome-autore">{{ getNomeUtente(commento) }}</span>
+              </div>
+              <span class="commento-data">{{ commento.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <p class="commento-testo">{{ commento.contenuto }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="form-commento">
+        <h3 class="etichetta-nuovo-commento">Aggiungi un commento</h3>
+
+        <textarea
+          class="input-commento"
+          placeholder="Scrivi il tuo commento..."
+          [(ngModel)]="nuovoCommento"
+          name="nuovoCommento"
+          rows="4"
+          maxlength="500"
+        ></textarea>
+
+        @if (erroreCommento) {
+          <div class="messaggio-errore">{{ erroreCommento }}</div>
+        }
+
+        @if (successoCommento) {
+          <div class="messaggio-successo">Commento aggiunto!</div>
+        }
+
+        <button class="btn-invia-commento" (click)="onInviaCommento()" [disabled]="invioCommento || nuovoCommento.trim() === ''">
+          {{ invioCommento ? 'Invio in corso...' : 'Invia commento' }}
+        </button>
+      </div>
+    </div>
+
+  }
+
+</div>
+
+@if (immagineFullscreen && issue?.immaginePath) {
+  <button type="button" class="overlay-fullscreen" (click)="immagineFullscreen = false" (keydown.escape)="immagineFullscreen = false">
+    <img [src]="issue!.immaginePath" alt="Allegato issue" class="immagine-fullscreen" />
+  </button>
+}

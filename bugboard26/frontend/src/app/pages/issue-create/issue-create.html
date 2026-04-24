@@ -1,0 +1,201 @@
+<div class="pagina-crea-issue">
+
+  <div class="intestazione">
+    <h1 class="titolo-pagina">Nuova Issue</h1>
+    <p class="sottotitolo-pagina">Compila i campi per segnalare una nuova issue</p>
+  </div>
+
+  <div class="scheda-form">
+
+    <form (ngSubmit)="onCreaIssue()">
+
+      <!-- Campo Titolo -->
+      <div class="campo-form">
+        <label class="etichetta" for="titolo">
+          Titolo <span class="obbligatorio">*</span>
+        </label>
+        <input
+          id="titolo"
+          type="text"
+          class="input-testo"
+          placeholder="Titolo della issue"
+          [(ngModel)]="titolo"
+          name="titolo"
+          maxlength="32"
+        />
+      </div>
+
+      <!-- Campo Tipo -->
+      <fieldset class="campo-form">
+        <legend class="etichetta">
+          Tipo <span class="obbligatorio">*</span>
+        </legend>
+        <div class="gruppo-bottoni">
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'BUG'"
+            (click)="tipo = 'BUG'"
+          >
+            🐛 Bug
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'QUESTION'"
+            (click)="tipo = 'QUESTION'"
+          >
+            ❓ Question
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'DOCUMENTATION'"
+            (click)="tipo = 'DOCUMENTATION'"
+          >
+            📄 Documentation
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="tipo === 'FEATURE'"
+            (click)="tipo = 'FEATURE'"
+          >
+            ✨ Feature
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- Campo Priorità -->
+      <fieldset class="campo-form">
+        <legend class="etichetta">Priorità <span class="opzionale">(opzionale, default: Low)</span></legend>
+        <div class="gruppo-bottoni">
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="priorita === 'LOW'"
+            (click)="priorita = priorita === 'LOW' ? '' : 'LOW'"
+          >
+            Low
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="priorita === 'MEDIUM'"
+            (click)="priorita = priorita === 'MEDIUM' ? '' : 'MEDIUM'"
+          >
+            Medium
+          </button>
+          <button
+            type="button"
+            class="btn-scelta"
+            [class.attivo]="priorita === 'HIGH'"
+            (click)="priorita = priorita === 'HIGH' ? '' : 'HIGH'"
+          >
+            High
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- Campo Descrizione -->
+      <div class="campo-form">
+        <label class="etichetta" for="descrizione">Descrizione <span class="obbligatorio">*</span></label>
+        <textarea
+          id="descrizione"
+          class="input-textarea"
+          placeholder="Descrivi la issue in dettaglio..."
+          [(ngModel)]="descrizione"
+          name="descrizione"
+          required
+          maxlength="500"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <!-- Campo Immagine -->
+      <div class="campo-form">
+        <label class="etichetta" for="immagine">Allegato immagine <span class="opzionale">(opzionale)</span></label>
+        <div class="contenitore-upload">
+          <input
+            #inputImmagine
+            type="file"
+            id="immagine"
+            accept="image/*"
+            (change)="onFileSelezionato($event)"
+            style="display: none"
+          />
+          @if (!anteprimaImmagine) {
+            <button type="button" class="btn-upload" (click)="apriSelezioneFile()">
+              📎 Seleziona immagine
+            </button>
+          }
+          @if (anteprimaImmagine) {
+            <div class="anteprima-immagine">
+              <img [src]="anteprimaImmagine" alt="Anteprima" class="img-anteprima" />
+              <button type="button" class="btn-rimuovi-immagine" (click)="rimuoviImmagine()">✕ Rimuovi</button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Messaggio errore -->
+      @if (errore) {
+        <div class="messaggio-errore">
+          {{ errore }}
+        </div>
+      }
+
+      <!-- Messaggio successo (mostrato come popup) -->
+
+      <!-- Bottoni azione -->
+      <div class="gruppo-azioni">
+        <button type="button" class="btn-annulla" (click)="onAnnulla()">
+          Annulla
+        </button>
+        <button type="submit" class="btn-crea" [disabled]="caricamento">
+          {{ caricamento ? 'Creazione in corso...' : 'Crea Issue' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- Popup successo -->
+  @if (successo) {
+    <div class="overlay-conferma">
+      <div class="popup-conferma">
+        <p class="testo-conferma">Issue creata con successo!</p>
+        <div class="azioni-conferma">
+          <button type="button" class="btn-conferma" (click)="chiudiSuccesso()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Popup errore -->
+  @if (mostraErrore) {
+    <div class="overlay-conferma">
+      <div class="popup-conferma">
+        <p class="testo-conferma">Si è verificato un errore, riprova più tardi.</p>
+        <div class="azioni-conferma">
+          <button type="button" class="btn-conferma" (click)="chiudiErrore()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Popup conferma creazione -->
+  @if (mostraConferma) {
+    <div class="overlay-conferma" (click)="annullaConferma()" (keydown.escape)="annullaConferma()">
+      <div class="popup-conferma" (click)="$event.stopPropagation()" (keydown.escape)="annullaConferma()">
+        <p class="testo-conferma">Una nuova issue verrà creata nel sistema.</p>
+        <div class="azioni-conferma">
+          <button type="button" class="btn-annulla-conferma" (click)="annullaConferma()">Annulla</button>
+          <button type="button" class="btn-conferma" (click)="confermaCreazione()">Conferma</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

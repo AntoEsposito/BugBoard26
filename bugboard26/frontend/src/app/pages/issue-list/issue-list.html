@@ -1,0 +1,229 @@
+<div class="layout-principale">
+
+  <!-- SIDEBAR -->
+  <aside class="barra-laterale">
+
+    <!-- Logo -->
+    <div class="barra-laterale-logo">
+      <img src="images/LogoBugBoard.png" alt="BugBoard26" class="logo-immagine" />
+    </div>
+
+    <!-- Navigazione -->
+    <nav class="barra-laterale-nav">
+      <button
+        class="nav-collegamento"
+        *ngFor="let progetto of progetti"
+        [class.attivo]="progettoSelezionato?.id === progetto.id"
+        (click)="selezionaProgetto(progetto)"
+      >
+        <span class="nav-icona">📁</span>
+        <span>{{ progetto.nome }}</span>
+      </button>
+    </nav>
+
+    <!-- Sezione Admin -->
+    <div class="barra-laterale-admin" *ngIf="authService.isAdmin()">
+      <button class="nav-collegamento admin-link" (click)="onGestioneUtenti()">
+        <span class="nav-icona">🛡️</span>
+        <span>Crea Nuova Utenza</span>
+      </button>
+    </div>
+
+    <!-- Utente in basso -->
+    <div class="barra-laterale-utente">
+      <div class="utente-info">
+        <div class="utente-avatar">
+          <img src="assets/avatar.png" alt="avatar" [hidden]="avatarNonCaricato" (error)="avatarNonCaricato = true" />
+          <span class="avatar-riserva">{{ authService.getIniziali() }}</span>
+        </div>
+        <div class="utente-testi">
+          <span class="utente-nome">{{ authService.getNome() }} {{ authService.getCognome() }}</span>
+          <span class="utente-email">{{ authService.getEmail() }}</span>
+        </div>
+      </div>
+      <button class="btn-esci" (click)="onEsci()">
+        <span class="esci-icona">↪</span>
+        <span class="esci-testo">Esci</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- CONTENUTO PRINCIPALE -->
+  <main class="contenuto">
+
+    <!-- Header pagina -->
+    <div class="pagina-header">
+      <div class="intestazione-sinistra">
+        <h1 class="titolo-pagina">Issue</h1>
+        <p class="sottotitolo-pagina">{{ issueList.length }} issue trovate</p>
+      </div>
+      <button class="btn-nuova-issue" (click)="onNuovaIssue()">
+        <span>+</span> Nuova Issue
+      </button>
+    </div>
+
+    <!-- Barra ricerca e filtri -->
+    <div class="barra-ricerca-filtri">
+      <div class="contenitore-ricerca">
+        <span class="icona-ricerca">🔍</span>
+        <input
+          type="text"
+          class="input-ricerca"
+          placeholder="Cerca issue per titolo o descrizione..."
+          [(ngModel)]="testoRicerca"
+          (ngModelChange)="applicaFiltri()"
+          name="ricerca"
+        />
+      </div>
+      <button class="btn-filtri" (click)="toggleFiltri()">
+        <span>⚙</span> Filtri
+      </button>
+      <div class="contenitore-select">
+        <select class="select-ordinamento" [(ngModel)]="ordinamento" name="ordinamento" (ngModelChange)="applicaFiltri()">
+          <option value="data_desc">Più recenti</option>
+          <option value="data_asc">Meno recenti</option>
+          <option value="priorita_desc">Priorità ↓</option>
+          <option value="priorita_asc">Priorità ↑</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Pannello filtri -->
+    <div class="pannello-filtri" *ngIf="mostraFiltri">
+
+      <p class="filtri-titolo">Filtra per</p>
+
+      <!-- Filtro Tipo -->
+      <div class="filtro-gruppo">
+        <p class="filtro-etichetta">Tipo</p>
+        <div class="filtro-opzioni">
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'BUG'"
+            (click)="setFiltroTipo('BUG')"
+          >
+            🐛 Bug
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'QUESTION'"
+            (click)="setFiltroTipo('QUESTION')"
+          >
+            ❓ Question
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'DOCUMENTATION'"
+            (click)="setFiltroTipo('DOCUMENTATION')"
+          >
+            📄 Documentation
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroTipo === 'FEATURE'"
+            (click)="setFiltroTipo('FEATURE')"
+          >
+            ✨ Feature
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtro Priorità -->
+      <div class="filtro-gruppo">
+        <p class="filtro-etichetta">Priorità</p>
+        <div class="filtro-opzioni">
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'LOW'"
+            (click)="setFiltroPriorita('LOW')"
+          >
+            Low
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'MEDIUM'"
+            (click)="setFiltroPriorita('MEDIUM')"
+          >
+            Medium
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroPriorita === 'HIGH'"
+            (click)="setFiltroPriorita('HIGH')"
+          >
+            High
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtro Stato -->
+      <div class="filtro-gruppo">
+        <p class="filtro-etichetta">Stato</p>
+        <div class="filtro-opzioni">
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroStato === 'TODO'"
+            (click)="setFiltroStato('TODO')"
+          >
+            Todo
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroStato === 'IN_PROGRESS'"
+            (click)="setFiltroStato('IN_PROGRESS')"
+          >
+            In Progress
+          </button>
+          <button
+            class="btn-filtro"
+            [class.attivo]="filtroStato === 'DONE'"
+            (click)="setFiltroStato('DONE')"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lista Issue -->
+    <div class="lista-issue">
+      @if (issueList.length > 0) {
+        <button class="scheda-issue" *ngFor="let issue of issueList" (click)="onApriIssue(issue)">
+          <div class="scheda-sinistra">
+            <div class="issue-icona" [ngClass]="'tipo-' + issue.tipo.toLowerCase()">
+              {{ getIconaTipo(issue.tipo) }}
+            </div>
+            <div class="issue-dettagli">
+              <p class="issue-titolo">{{ issue.titolo }}</p>
+              <div class="issue-etichetta">
+                <span class="etichetta tipo">{{ issue.tipo }}</span>
+                <span class="etichetta stato">{{ issue.stato }}</span>
+                <span class="etichetta priorita" [ngClass]="'priorita-' + issue.priorita.toLowerCase()">{{ issue.priorita }}</span>
+              </div>
+              <p class="issue-meta">ID #{{ issue.id }} &bull; {{ issue.dataCreazione | date:'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+        </button>
+      } @else if (issueListCompleta.length === 0) {
+        <p class="messaggio-vuoto">Nessuna issue trovata nel database</p>
+      } @else {
+        <p class="messaggio-vuoto">Nessuna issue corrisponde ai criteri selezionati</p>
+      }
+    </div>
+
+  </main>
+
+  <!-- Popup errore caricamento -->
+  @if (mostraErroreCaricamento) {
+    <div class="overlay-errore">
+      <div class="popup-errore">
+        <p class="testo-errore">{{ messaggioErroreCaricamento }}</p>
+        <div class="azioni-errore">
+          <button type="button" class="btn-ok-errore" (click)="chiudiErroreCaricamento()">OK</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

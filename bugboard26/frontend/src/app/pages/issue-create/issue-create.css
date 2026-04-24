@@ -1,0 +1,338 @@
+/* ===========================
+   CREA ISSUE - BugBoard26
+   =========================== */
+
+:host {
+  display: block;
+  background-color: #0f0f0f;
+  min-height: 100vh;
+}
+
+.pagina-crea-issue {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Intestazione */
+.intestazione {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.titolo-pagina {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.sottotitolo-pagina {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Card form */
+.scheda-form {
+  background-color: #1c1c1e;
+  border-radius: 16px;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Campi form */
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.etichetta {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.obbligatorio {
+  color: #ef4444;
+}
+
+.opzionale {
+  font-weight: 400;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Input e textarea */
+.input-testo,
+.input-textarea {
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 14px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-testo::placeholder,
+.input-textarea::placeholder {
+  color: #4b5563;
+}
+
+.input-testo:focus,
+.input-textarea:focus {
+  border-color: #3b82f6;
+}
+
+.input-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Gruppo bottoni tipo/priorità */
+.gruppo-bottoni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-scelta {
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 20px;
+  padding: 10px 18px;
+  color: #d1d5db;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-scelta:hover {
+  background-color: #3a3a3e;
+  color: #ffffff;
+}
+
+.btn-scelta.attivo {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+/* Messaggi */
+.messaggio-errore {
+  background-color: #2d1515;
+  border: 1px solid #5c2020;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 16px;
+}
+
+.messaggio-successo {
+  background-color: #1a3a2e;
+  border: 1px solid #2d5a3e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #6ee7b7;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 16px;
+}
+
+/* Bottoni azione */
+.gruppo-azioni {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btn-annulla {
+  background: transparent;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 14px 24px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-annulla:hover {
+  border-color: #6b7280;
+  color: #ffffff;
+}
+
+.btn-crea {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-crea:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-crea:active {
+  transform: scale(0.98);
+}
+
+.btn-crea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Upload immagine */
+.contenitore-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-upload {
+  background-color: #2a2a2e;
+  border: 1px dashed #3a3a3e;
+  border-radius: 10px;
+  padding: 16px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.btn-upload:hover {
+  border-color: #3b82f6;
+  color: #ffffff;
+  background-color: #1e293b;
+}
+
+.anteprima-immagine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.img-anteprima {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.btn-rimuovi-immagine {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.btn-rimuovi-immagine:hover {
+  color: #f87171;
+}
+
+/* Popup conferma */
+.overlay-conferma {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-conferma {
+  background-color: #1c1c1e;
+  border: 1px solid #3a3a3e;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.testo-conferma {
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0 0 24px 0;
+}
+
+.azioni-conferma {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-annulla-conferma {
+  background: transparent;
+  border: 1px solid #3a3a3e;
+  border-radius: 10px;
+  padding: 12px 24px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-annulla-conferma:hover {
+  border-color: #6b7280;
+  color: #ffffff;
+}
+
+.btn-conferma {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-conferma:hover {
+  background-color: #1d4ed8;
+}
